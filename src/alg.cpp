@@ -1,10 +1,68 @@
 // Copyright 2021 NNTU-CS
+int cbinsearch(int *arr, int size, int value) {
+    int counter = 0;
+    int lowInd = 0;
+    int highInd = size-1;
+    while (lowInd <= highInd) {
+        int middleInd = (highInd+lowInd)/2;
+        if (arr[middleInd] > value) {
+            highInd = middleInd-1;
+        } else if (arr[middleInd] < value) {
+            lowInd = middleInd+1;
+        } else {
+            counter++;
+            int nowInd = middleInd-1;
+            middleInd++;
+            while (arr[middleInd] == value && middleInd < size) {
+                middleInd++;
+                counter++;
+            }
+            while (arr[nowInd] == value && nowInd >= 0) {
+                nowInd--;
+                counter++;
+            }
+            break;
+        }
+    }
+    return counter;
+}
 int countPairs1(int *arr, int len, int value) {
-  return 0;
+    int counter = 0;
+    for (int i = 0; i < len; i++) {
+        int num1 = arr[i];
+        for (int j = i+1; j < len; j++) {
+            int num2 = arr[j];
+            if (num1+num2 == value) {
+                counter++;
+            }
+        }
+    }
+    return counter;
 }
 int countPairs2(int *arr, int len, int value) {
-  return 0;
+    int counter = 0;
+    int stepRight = len-1;
+    while (arr[stepRight] > value)
+        stepRight--;
+    for (int i = 0; i < stepRight; i++) {
+        int num1 = arr[i];
+        for (int j = stepRight; j > i; j--) {
+            int num2 = arr[j];
+            if (num1+num2 == value) {
+                counter++;
+            }
+        }
+    }
+    return counter;
 }
 int countPairs3(int *arr, int len, int value) {
-  return 0;
+    int counter = 0;
+    int leftInd = 0;
+    int middleInd = len/2;
+    while (leftInd < middleInd) {
+        int ostSlag = value - arr[leftInd];
+        counter += cbinsearch(arr+leftInd+1, len-leftInd-1, ostSlag);
+        leftInd++;
+    }
+    return counter;
 }
