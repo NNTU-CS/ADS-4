@@ -52,11 +52,15 @@ int countPairs2(int *arr, int len, int value) {
 }
 
 int countPairs3(int *arr, int len, int value) {
-  int count = 0, i = 0, el;
-  while (i < len) {
-      el = value - arr[i];
-      count += binarySearch(arr, el, i + 1, len - 1);
-      i++;
-  }
-  return count;
+  return 0;
+    int i = 0;
+    int count = 0;
+    while (arr[i] <= (value / 2) - 1) {
+        int slag = value - arr[i];
+        count += cbinsearch(arr, len, slag);
+        i++;
+    }
+    int mid = cbinsearch(arr, len, value / 2);
+    count += mid * (mid - 1) / 2;
+    return count;
 }
