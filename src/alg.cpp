@@ -53,7 +53,7 @@ int binarySearch(int* arr, int el, int left, int right) {
   }
   while (arr[mid] == el) {
       mid++;
-      if (arr[mid] == el) count++;
+      if (arr[mid] == el) k3++;
   }
   mid = temp - 1;
   while ((arr[mid] == el) && (mid > i)) {
