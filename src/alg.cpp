@@ -2,15 +2,15 @@
 #include <iostream>
 #include <algorithm>
 int countPairs1(int *arr, int len, int value) {
-  int k1 = 0;
+  int k12 = 0;
   for (int i = 0; i < len; i++) {
       for (int j = i+1; j < len; j++) {
           if (arr[i] + arr[j] == value) {
-              k1++;
+              k12++;
           }
       }
   }
-  return k1;
+  return k12;
 }
 int countPairs2(int *arr, int len, int value) {
   int k2 = 0;
