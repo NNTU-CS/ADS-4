@@ -13,6 +13,7 @@ int countPairs1(int *arr, int len, int value) {
     k++;
   }
   return count;
+  return 0;
 }
 int countPairs2(int *arr, int len, int value) {
   int count = 0;
@@ -20,7 +21,7 @@ int countPairs2(int *arr, int len, int value) {
   do {
     k = k - 1;
   } 
-  while (arr[k] > value);
+  while (arr[k] > value) {
     int i = 0;
     while (i < endl) {
       int j = endl;
@@ -32,7 +33,9 @@ int countPairs2(int *arr, int len, int value) {
         }
         i++;
     }
-    return count;
+  }
+  return count;
+  return 0;
 }
 int cbinsearch(int *arr, int size, int value) {
   int count = 0;
@@ -53,4 +56,5 @@ int countPairs3(int *arr, int len, int value) {
     k++;
   }
   return count;
+  return 0;
 }
