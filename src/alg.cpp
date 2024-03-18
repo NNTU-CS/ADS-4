@@ -4,24 +4,24 @@ int cbinsearch(int *arr, int size, int value) {
     int left = 0;
     int right = size - 1;
     while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == value) {
+        int cent = left + (right - left) / 2;
+        if (arr[cent] == value) {
             count++;
-            int i = mid + 1;
+            int i = cent + 1;
             while (i < size && arr[i] == value) {
                 count++;
                 i++;
             }
-            i = mid - 1;
+            i = cent - 1;
             while (i >= 0 && arr[i] == value) {
                 count++;
                 i--;
             }
             return count;
-        } else if (arr[mid] < value) {
-            left = mid + 1;
+        } else if (arr[cent] < value) {
+            left = cent + 1;
         } else {
-            right = mid - 1;
+            right = cent - 1;
         }
     }
     return 0;
@@ -41,7 +41,6 @@ int countPairs1(int *arr, int len, int value) {
     k++;
   }
   return count;
-  return 0;
 }
 
 int countPairs2(int *arr, int len, int value) {
@@ -64,7 +63,6 @@ int countPairs2(int *arr, int len, int value) {
     }
   }
   return count;
-  return 0;
 }
 
 int countPairs3(int *arr, int len, int value) {
@@ -76,5 +74,4 @@ int countPairs3(int *arr, int len, int value) {
     k++;
   }
   return count;
-  return 0;
 }
