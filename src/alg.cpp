@@ -1,4 +1,5 @@
 // Copyright 2021 NNTU-CS
+#include <algorithm>
 int countPairs1(int *arr, int len, int value) {
   int k1 = 0;
   for (int i = 0; i < len; i++) {
@@ -41,35 +42,22 @@ int countPairs2(int *arr, int len, int value) {
   return k2;
   return 0;
 }
-int binarySearch(int arr, int low, int jef, int har) {
-  while (low <= jef) {
-      int mid = low + (jef - low) / 2;
-      if (arr[mid] == har) {
-          return mid;
-      } else if (arr[mid] < har) {
-          low = mid + 1;
-      } else {
-          jef = mid - 1;
-      }
-  }
-  return -1;
-}
 int countPairs3(int *arr, int len, int value) {
   int k3 = 0;
-  for (int i = 0; i < len - 1; i++) {
-      for (int j = i + 1; j < len; j++) {
-          if (arr[i] > arr[j]) {
-              int temp = arr[i];
-              arr[i] = arr[j];
-              arr[j] = temp;
-          }
-      }
-  }
+  std::sort(arr, arr + len);
   for (int i = 0; i < len; i++) {
-      int target = value - arr[i];
-      int index = binarySearch(arr, i+1, len-1, target);
-      if (index != -1) {
-          k3++;
+      int low = i + 1, high = len - 1;
+      while (low <= high) {
+          int mid = low + (high - low) / 2;
+          int sum = arr[i] + arr[mid];
+          if (sum == value) {
+              k3++;
+              break;
+          } else if (sum < value) {
+              low = mid + 1;
+          } else {
+              high = mid - 1;
+          }
       }
   }
   return k3;
