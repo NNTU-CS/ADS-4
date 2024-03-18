@@ -42,23 +42,40 @@ int countPairs2(int *arr, int len, int value) {
   return k2;
   return 0;
 }
+int cbinsearch(int *arr, int size, int value) {
+  int counter = 0;
+  int left = 0;
+  int right = size - 1;
+  while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (arr[mid] == value) {
+          counter++;
+          int i = mid + 1;
+          while (i < size && arr[i] == value) {
+              counter++;
+              i++;
+          }
+          i = mid - 1;
+          while (i >= 0 && arr[i] == value) {
+              counter++;
+              i--;
+          }
+          return counter;
+      } else if (arr[mid] < value) {
+          left = mid + 1;
+      } else {
+          right = mid - 1;
+      }
+  }
+  return 0;
+}
 int countPairs3(int *arr, int len, int value) {
   int k3 = 0;
-  std::sort(arr, arr + len);
-  for (int i = 0; i < len; i++) {
-      int low = i + 1, high = len - 1;
-      while (low <= high) {
-          int mid = low + (high - low) / 2;
-          int sum = arr[i] + arr[mid];
-          if (sum == value) {
-              k3++;
-              break;
-          } else if (sum < value) {
-              low = mid + 1;
-          } else {
-              high = mid - 1;
-          }
-      }
+  int i = 0;
+  while (i < len) {
+      int numbers = value - arr[i];
+      k3 = k3 + cbinsearch(&arr[i + 1], len - i - 1, numbers);
+      i++;
   }
   return k3;
   return 0;
