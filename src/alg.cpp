@@ -70,7 +70,7 @@ int countPairs3(int *arr, int len, int value) {
       count += cbinsearch(arr, len, num);
       i++;
   }
-  int middle = cbinsearch(arr, len, value / 2);
-  count += middle * (middle - 1) / 2;
+  int mid = cbinsearch(arr, len, value / 2);
+  count += mid * (mid - 1) / 2;
   return count;
 }
