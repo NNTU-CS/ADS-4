@@ -47,7 +47,7 @@ int countPairs2(int *arr, int len, int value) {
                     count += countLeft;
                 } else if (countRight > 1) {
                     count += countRight;
-                } else{
+                } else {
                     count++;
                 }
             }
