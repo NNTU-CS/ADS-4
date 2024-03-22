@@ -7,12 +7,6 @@ int cbinsearch(int* arr, int left, int right, int value) {
   if (arr[middle] == value) {
     return middle;
   }
-  if (arr[left] == value) {
-    return left;
-  }
-  if (arr[right] == value) {
-    return right;
-  }
   if (arr[middle] > value) {
     return cbinsearch(arr, left, middle - 1, value);
   } else {
@@ -72,14 +66,23 @@ int countPairs2(int* arr, int len, int value) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  int right = len - 1, counter = 0;
+  int right = len - 1, counter = 0, b_res = -1, b_val = -1;
   while (arr[right] > value) {
     right -= 1;
   }
   while (right > 1) {
-    int to_find = value - arr[right];
-    int result = findenteres(arr, right, to_find);
-    counter += result;
+    if (arr[right] == b_val) {
+      if (b_val == 25) {
+        b_res -= 1;
+      }
+      counter += b_res;
+    } else {
+      int to_find = value - arr[right];
+      int result = findenteres(arr, right, to_find);
+      counter += result;
+      b_val = arr[right];
+      b_res = result;
+    }
     right -= 1;
   }
   return counter;
