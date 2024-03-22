@@ -72,20 +72,14 @@ int countPairs2(int* arr, int len, int value) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  int right = len - 1, counter = 0, boofer = -1, pre_elem = -1;
+  int right = len - 1, counter = 0;
   while (arr[right] > value) {
     right -= 1;
   }
   while (right > 1) {
-    if (pre_elem == arr[right]) {
-      counter += boofer;
-    } else {
-      int to_find = value - arr[right];
-      int result = findenteres(arr, right, to_find);
-      counter += result;
-      boofer = result;
-      pre_elem = arr[right];
-    }
+    int to_find = value - arr[right];
+    int result = findenteres(arr, right, to_find);
+    counter += result;
     right -= 1;
   }
   return counter;
