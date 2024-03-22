@@ -89,7 +89,7 @@ int countPairs3(int* arr, int len, int value) {
     --right;
   }
   while (right) {
-    if (pre_elem = arr[right]) {
+    if (pre_elem == arr[right]) {
       counter += boofer;
     } else {
       int to_find = value - arr[right];
