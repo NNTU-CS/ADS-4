@@ -1,23 +1,24 @@
 // Copyright 2021 NNTU-CS
 int cbinsearch(int* arr, int size, int value) {
   int left = 0, right = size - 1;
-  int middle = (right - left + 1) / 2, counter = 0;
-  int stop = 0;
+  int middle = (right + left) / 2, counter = 0;
   while (arr[middle] != value) {
+    if (arr[right] == value) {
+      middle = right;
+      break;
+    } else if (arr[left] == value) {
+      middle = left;
+      break;
+    }
+    if (right == middle || left == middle) {
+      return 0;
+    }
     if (arr[middle] < value) {
       left = middle;
     } else if (arr[middle] > value) {
       right = middle;
     }
-    middle = (right - left) / 2;
-    if (right - left <= 1) {
-      counter -= 1;
-      break;
-    }
-    stop += 1;
-    if (stop == 10) {
-      return 0;
-    }
+    middle = (right + left) / 2;
   }
   counter += 1;
   bool one = true, two = true;
@@ -84,7 +85,7 @@ int countPairs2(int* arr, int len, int value) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  int right = len - 1, counter = 0, b_right = right, boofer = -1, pre_elem = -1;
+  int right = len - 1, counter = 0, boofer = -1, pre_elem = -1;
   while (arr[right] > value) {
     --right;
   }
@@ -93,7 +94,7 @@ int countPairs3(int* arr, int len, int value) {
       counter += boofer;
     } else {
       int to_find = value - arr[right];
-      int result = cbinsearch(arr, len, to_find);
+      int result = cbinsearch(arr, right, to_find);
       counter += result;
       boofer = result;
       pre_elem = arr[right];
