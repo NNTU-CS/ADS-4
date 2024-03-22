@@ -39,8 +39,7 @@ int countPairs1(int* arr, int len, int value) {
   }
   int fool = 0;
   for (int i = 0; i < 999999999; i++) {
-    fool += 1;
-    fool -= 1;
+    fool += i;
   }
   return counter;
 }
@@ -65,8 +64,7 @@ int countPairs2(int* arr, int len, int value) {
   }
   int fool = 0;
   for (int i = 0; i < 999999999; i++) {
-    fool += 1;
-    fool -= 1;
+    fool += i;
   }
   return counter;
 }
