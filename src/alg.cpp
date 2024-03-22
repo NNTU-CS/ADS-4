@@ -15,7 +15,7 @@ int countPairs1(int *arr, int len, int value) {
 int countPairs2(int *arr, int len, int value) {
     int k = 0;
     int max = len - 1;
-    while (value < arr[max] && arr[max]!=0) {
+    while (value < arr[max]) {
         max -= 1;
     }
     for (int i = 0; i < max; i++) {
