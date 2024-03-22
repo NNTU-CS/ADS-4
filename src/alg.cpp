@@ -94,8 +94,9 @@ int countPairs3(int* arr, int len, int value) {
     } else {
       int to_find = value - arr[right];
       int result = cbinsearch(arr, len, to_find);
-      counter += to_find;
-      boofer = arr[right];
+      counter += result;
+      boofer = result;
+      pre_elem = arr[right];
     }
     right -= 1;
   }
