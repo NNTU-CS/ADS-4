@@ -1,32 +1,31 @@
 // Copyright 2021 NNTU-CS
-int findenteres(int* arr, int len, int value) {
-  int left = 0, right = len - 1;
-  int middle = left + (right - left) / 2;
-  int index = -1;
-  while (right > left) {
-    if (arr[middle] == value) {
-      index = middle;
+int countOccurrences(int arr[], int n, int x) {
+  int l = 0, r = n - 1;
+  int ind = -1;
+  while (true) {
+    int mid = l + (r - l) / 2;
+    if (arr[mid] == x) {
+      ind = mid;
       break;
-    } else if (arr[middle] > value) {
-      right = middle - 1;
+    }
+    if (arr[mid] > x) {
+      r = mid - 1;
     } else {
-      left = middle + 1;
+      l = mid + 1;
+    }
+    if (r < l) {
+      return 0;
     }
   }
-  if (index == -1) {
-    return 0;
-  }
-  int counter = 1, left1 = index - 1;
-  while (left1 >= 0 && arr[left1] == value) {
-    left1 -= 1;
-    counter += 1;
-  }
-  int right1 = index + 1;
-  while (right1 < len && arr[right1] == value) {
-    counter += 1;
-    right1 += 1;
-  }
-  return counter;
+  if (ind == -1) return 0;
+  int count = 1;
+  int left1 = ind - 1;
+  while (left1 >= 0 && arr[left1] == x) count++, left1--;
+
+  int right1 = ind + 1;
+  while (right1 < n && arr[right1] == x) count++, right1++;
+
+  return count;
 }
 
 int countPairs1(int* arr, int len, int value) {
@@ -63,7 +62,7 @@ int countPairs2(int* arr, int len, int value) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  long int right = len - 1, counter = 0, b_res = 101, b_val = 101;
+  int right = len - 1, counter = 0, b_res = 101, b_val = 101;
   while (arr[right] > value) {
     right -= 1;
   }
@@ -74,8 +73,8 @@ int countPairs3(int* arr, int len, int value) {
       }
       counter += b_res;
     } else {
-      long int to_find = value - arr[right];
-      long int result = findenteres(arr, right, to_find);
+      int to_find = value - arr[right];
+      int result = countOccurrences(arr, right, to_find);
       counter += result;
       b_val = arr[right];
       b_res = result;
