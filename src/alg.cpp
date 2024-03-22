@@ -1,33 +1,30 @@
 // Copyright 2021 NNTU-CS
-int cbinsearch(int* arr, int left, int right, int value) {
-  int middle = left + (right - left) / 2;
-  if (right < left) {
-    return -1;
-  }
-  if (arr[middle] == value) {
-    return middle;
-  }
-  if (arr[middle] > value) {
-    return cbinsearch(arr, left, middle - 1, value);
-  } else {
-    return cbinsearch(arr, middle + 1, right, value);
-  }
-}
-
 int findenteres(int* arr, int len, int value) {
-  int index = cbinsearch(arr, 0, len - 1, value);
+  int left = 0, right = len - 1;
+  int middle = left + (right - left) / 2;
+  int index = -1;
+  while (right > left) {
+    if (arr[middle] == value) {
+      index = middle;
+      break;
+    } else if (arr[middle] > value) {
+      right = middle - 1;
+    } else {
+      left = middle + 1;
+    }
+  }
   if (index == -1) {
     return 0;
   }
-  int counter = 1, left = index - 1;
-  while (left >= 0 && arr[left] == value) {
-    left -= 1;
+  int counter = 1, left1 = index - 1;
+  while (left1 >= 0 && arr[left1] == value) {
+    left1 -= 1;
     counter += 1;
   }
-  int right = index + 1;
-  while (right < len && arr[right] == value) {
+  int right1 = index + 1;
+  while (right1 < len && arr[right1] == value) {
     counter += 1;
-    right += 1;
+    right1 += 1;
   }
   return counter;
 }
