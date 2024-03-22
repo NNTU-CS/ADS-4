@@ -72,24 +72,23 @@ int countPairs2(int* arr, int len, int value) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  int right = len - 1, counter = 0, b_res = 101, b_val = 101;
+  int left = 0, right = len - 1, counter = 0;
   while (arr[right] > value) {
-    right -= 1;
+    --right;
   }
-  while (right > 1) {
-    if (arr[right] == b_val) {
-      if (b_val == 25) {
-        b_res -= 1;
-      }
-      counter += b_res;
-    } else {
-      int to_find = value - arr[right];
-      int result = countOccurrences(arr, right, to_find);
-      counter += result;
-      b_val = arr[right];
-      b_res = result;
+  int b_right = right;
+  while (true) {
+    if (arr[left] + arr[right] == value) {
+      ++counter;
     }
     right -= 1;
+    if (right == left) {
+      right = b_right;
+      ++left;
+      if (right == left) {
+        break;
+      }
+    }
   }
   return counter;
 }
