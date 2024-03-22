@@ -1,67 +1,67 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
   return 0;
-int countPairs1(int* arr, int len, int value) {
-  int k = 0;
-  for (int i = 0; i < len; i++) {
-    for (int j = i + 1; j < len; j++) {
-      if ((arr[i] + arr[j] == value) && (arr[i] >= 0 && arr[j] >= 0)) {
-        k++;
-      }
+    int count = 0;
+    for (int i = 0; i < len - 1; ++i) {
+        for (int j = i + 1; j < len; ++j) {
+            if (arr[i] + arr[j] == value) {
+                count++;
+            }
+        }
     }
-  }
-  return k;
+    return count;
 }
 
 int countPairs2(int *arr, int len, int value) {
   return 0;
-  int r = len - 1;
-  while (arr[r] > value) {
-    r--;
-  }
-  int k = 0;
-  for (int i = 0; i < r; i++) {
-    for (int j = r; j > i; j--) {
-      if ((arr[i] + arr[j] == value) && (arr[i] >= 0 && arr[j] >= 0)) {
-        k++;
-      } else if (arr[i] + arr[j] < value) {
-        break;
+    int count = 0;
+    int size = len - 1;
+    while (arr[size] > value) {
+        size -= 1;
+    }
+    for (int i = 0; i < size; i++) {
+        for (int j = size; j > i; j--) {
+            if (arr[i] + arr[j] == value) {
+                count++;
+            }
         }
     }
-  }
-  return k;
+    return count;
+}
+
+int cbinsearch(int *arr, int size, int value) {
+    int count = 0;
+    int left = 0;
+    int right = size - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == value) {
+            count++;
+            int idx = mid - 1;
+            while (idx >= 0 && arr[idx] == value) {
+                count++;
+                idx--;
+            }
+            idx = mid + 1;
+            while (idx < size && arr[idx] == value) {
+                count++;
+                idx++;
+            }
+            break;
+        } else if (arr[mid] < value) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return count;
 }
 
 int countPairs3(int *arr, int len, int value) {
   return 0;
-  int k = 0;
-  int left;
-  int right, mid, sredn;
-  for (int i = 0; i < len; ++i) {
-    right = len - 1;
-    left = i + 1;
-    sredn = value - arr[i];
-    while (left <= right) {
-      mid = (left + right) / 2;
-      if (arr[mid] == sredn) {
-        k++;
-        int p = mid - 1;
-        while ((p > i) && (arr[p] == arr[mid])) {
-          k++;
-          p--;
-        }
-        int p2 = mid + 1;
-        while ((i < p2) && (arr[p2] == arr[mid])) {
-          k++;
-          p2++;
-        }
-        break;
-        } else if (arr[mid] > sredn) {
-          right = mid - 1;
-        } else {
-          left = mid + 1;
-        }
+    int count = 0;
+    for (int i = 0; i < len; i++) {
+        count += cbinsearch(&arr[i + 1], len - i - 1, value - arr[i]);
     }
-  }
-  return k;
+    return count;
 }
