@@ -1,54 +1,41 @@
 // Copyright 2021 NNTU-CS
-int cbinsearch(int* arr, int size, int value) {
-  int left = 0, right = size - 1;
-  int middle = (right + left) / 2, counter = 0;
-  while (arr[middle] != value) {
-    if (arr[right] == value) {
-      middle = right;
-      break;
-    } else if (arr[left] == value) {
-      middle = left;
-      break;
-    }
-    if (right == middle || left == middle) {
-      return 0;
-    }
-    if (arr[middle] < value) {
-      left = middle;
-    } else if (arr[middle] > value) {
-      right = middle;
-    }
-    middle = (right + left) / 2;
+int cbinsearch(int* arr, int left, int right, int value) {
+  int middle = left + (right - left) / 2;
+  if (right < left) {
+    return -1;
   }
-  counter += 1;
-  bool one = true, two = true;
-  int index1 = middle - 1, index2 = middle + 1;
-  while (true) {
-    if (one) {
-      if (index1 < 0 || index1 > size - 1) {
-        one = false;
-      } else {
-        if (arr[index1] == value) {
-          counter += 1;
-        }
-      }
-    }
-    if (two) {
-      if (index2 < 0 || index2 > size - 1) {
-        two = false;
-      } else {
-        if (arr[index2] == value) {
-          counter += 1;
-        }
-      }
-    }
-    index1 -= 1;
-    index2 += 1;
-    if (!one && !two) {
-      break;
-    }
+  if (arr[middle] == value) {
+    return middle;
   }
-  return counter;  // если ничего не найдено
+  if (arr[left] == value) {
+    return left;
+  }
+  if (arr[right] == value) {
+    return right;
+  }
+  if (arr[middle] > value) {
+    return cbinsearch(arr, left, middle - 1, value);
+  } else {
+    return cbinsearch(arr, middle + 1, right, value);
+  }
+}
+
+int findenteres(int* arr, int len, int value) {
+  int index = cbinsearch(arr, 0, len - 1, value);
+  if (index == -1) {
+    return 0;
+  }
+  int counter = 1, left = index - 1;
+  while (left >= 0 && arr[left] == value) {
+    left -= 1;
+    counter += 1;
+  }
+  int right = index + 1;
+  while (right < len && arr[right] == value) {
+    counter += 1;
+    right += 1;
+  }
+  return counter;
 }
 
 int countPairs1(int* arr, int len, int value) {
@@ -87,14 +74,14 @@ int countPairs2(int* arr, int len, int value) {
 int countPairs3(int* arr, int len, int value) {
   int right = len - 1, counter = 0, boofer = -1, pre_elem = -1;
   while (arr[right] > value) {
-    --right;
+    right -= 1;
   }
-  while (right) {
+  while (right > 1) {
     if (pre_elem == arr[right]) {
       counter += boofer;
     } else {
       int to_find = value - arr[right];
-      int result = cbinsearch(arr, right, to_find);
+      int result = findenteres(arr, right, to_find);
       counter += result;
       boofer = result;
       pre_elem = arr[right];
