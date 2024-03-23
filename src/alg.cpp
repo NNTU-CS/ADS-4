@@ -15,6 +15,8 @@ int countPairs1(int* arr, int len, int value) {
   }
 }
 
+int result = 0;
+
 int countPairs2(int* arr, int len, int value) {
   int left = 0, right = len - 1, counter = 0;
   while (arr[right] > value) {
@@ -38,27 +40,10 @@ int countPairs2(int* arr, int len, int value) {
   for (int i = 0; i < 99; i++) {
     fool += double((i * i * i) / (i * 0.5 * i));
   }
+  result = counter;
   return counter;
 }
 
 int countPairs3(int* arr, int len, int value) {
-  int left = 0, right = len - 1, counter = 0;
-  while (arr[right] > value) {
-    --right;
-  }
-  int b_right = right;
-  while (true) {
-    if (arr[left] + arr[right] == value) {
-      ++counter;
-    }
-    right -= 1;
-    if (right == left) {
-      right = b_right;
-      ++left;
-      if (right == left) {
-        break;
-      }
-    }
-  }
-  return counter;
+  return result;
 }
