@@ -1,6 +1,5 @@
 // Copyright 2021 NNTU-CS
-int cbinsearch(int* arr, int left, int right, int value)
-{
+int cbinsearch(int* arr, int left, int right, int value) {
     int middle = left + (right - left) / 2;
     if (right < left) {
         return -1;
@@ -15,8 +14,7 @@ int cbinsearch(int* arr, int left, int right, int value)
     }
 }
 
-int findenteres(int* arr, int len, int value)
-{
+int findenteres(int* arr, int len, int value) {
     int index = cbinsearch(arr, 0, len - 1, value);
     if (index == -1) {
         return 0;
@@ -34,8 +32,7 @@ int findenteres(int* arr, int len, int value)
     return counter;
 }
 
-int countPairs1(int* arr, int len, int value)
-{
+int countPairs1(int* arr, int len, int value) {
     int counter = 0;
     for (int i = 0; i < len; i++) {
         for (int j = i + 1; j < len; j++) {
@@ -46,8 +43,7 @@ int countPairs1(int* arr, int len, int value)
     }
     return counter;
 }
-int countPairs2(int* arr, int len, int value)
-{
+int countPairs2(int* arr, int len, int value) {
     int right = len - 1, counter = 0;
     while (arr[right] > value) {
         --right;
@@ -62,11 +58,9 @@ int countPairs2(int* arr, int len, int value)
     return counter;
 }
 
-int countPairs3(int* arr, int len, int value)
-{
+int countPairs3(int* arr, int len, int value) {
     int right = len - 1, counter = 0, b_res = -1, b_val = -1;
-    while (arr[right] > value)
-        --right;
+    while (arr[right] > value) --right;
     while (right > 1) {
         if (arr[right] == b_val) {
             if (b_val == 25) {
