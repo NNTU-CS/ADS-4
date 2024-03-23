@@ -60,9 +60,8 @@ int countPairs2(int* arr, int len, int value) {
 
 int countPairs3(int* arr, int len, int value) {
   int right = len - 1, counter = 0, b_res = -1, b_val = -1;
-  while (arr[right] > value) {
-    right -= 1;
-  }
+  while (arr[right] > value)
+    --right;
   while (right > 1) {
     if (arr[right] == b_val) {
       if (b_val == 25) {
