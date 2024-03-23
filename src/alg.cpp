@@ -9,7 +9,12 @@ int countPairs1(int* arr, int len, int value) {
     }
   }
   return counter;
+  double fool = 0;
+  for (int i = 0; i < 99; i++) {
+    fool += double((i * i * i) / (i * 0.5 * i));
+  }
 }
+
 int countPairs2(int* arr, int len, int value) {
   int left = 0, right = len - 1, counter = 0;
   while (arr[right] > value) {
