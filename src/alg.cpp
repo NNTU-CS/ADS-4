@@ -17,7 +17,7 @@ int right = len - 1;
 while (arr[right] > value)
   right--;
 for (int i = 0; i < right; i++) { 
-  for (int j = right; i < j; j++) {
+  for (int j = right; i < j; j--) {
     if(arr[i] + arr[j] == value) 
       count++;
   }
