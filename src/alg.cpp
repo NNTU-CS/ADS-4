@@ -13,17 +13,15 @@ int countPairs1(int *arr, int len, int value) {
 int countPairs2(int *arr, int len, int value) {
     int count = 0;
     int left = 0;
-    right = len - 1;
+    int right = len - 1;
     while (left < right) {
         if (arr[left] + arr[right] == value) {
             count++;
             left++;
             right--;
-        }
-        else if (arr[left] + arr[right] < value) {
+        } else if (arr[left] + arr[right] < value) {
             left++;
-        }
-        else {
+        } else {
             right--;
         }
     }
@@ -34,17 +32,15 @@ int countPairs3(int *arr, int len, int value) {
     for (int i = 0; i < len; ++i) {
         int com = value - arr[i];
         int left = i + 1;
-        right = len - 1;
+        int right = len - 1;
         while (left <= right) {
             int mid = left + (right - left) / 2;
             if (arr[mid] == com) {
                 count++;
                 break;
-            }
-            else if (arr[mid] < com) {
+            } else if (arr[mid] < com) {
                 left = mid + 1;
-            }
-            else {
+            } else {
                 right = mid - 1;
             }
         }
