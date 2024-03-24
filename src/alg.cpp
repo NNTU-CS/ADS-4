@@ -1,8 +1,8 @@
 // Copyright 2021 NNTU-CS
-int countPairs1(int *arr, int len, int value) {
+int countPairs1(int* arr, int len, int value) {
     int k = 0;
-    for (int j = 0; j < len; j++) {
-        for (int i = j + 1; i < len; i++) {
+    for (int j = 1; j < len; j++) {
+        for (int i = 0; i < j; i++) {
             if (arr[i] + arr[j] == value) {
                 k++;
             }
@@ -11,7 +11,7 @@ int countPairs1(int *arr, int len, int value) {
     return k;
 }
 
-int countPairs2(int *arr, int len, int value) {
+int countPairs2(int* arr, int len, int value) {
     int k = 0;
     int max = len - 1;
     while (value < arr[max]) {
@@ -27,7 +27,7 @@ int countPairs2(int *arr, int len, int value) {
     return k;
 }
 
-int bin(int *arr, int len, int value) {
+int bin(int* arr, int len, int value) {
     int k = 0;
     int left = 0;
     int right = len - 1;
@@ -46,16 +46,18 @@ int bin(int *arr, int len, int value) {
                 pup++;
             }
             break;
-        } else if (arr[mid] < value) {
+        }
+        else if (arr[mid] < value) {
             left = mid + 1;
-        } else {
+        }
+        else {
             right = mid - 1;
         }
     }
     return k;
 }
 
-int countPairs3(int *arr, int len, int value) {
+int countPairs3(int* arr, int len, int value) {
     int k = 0;
     for (int j = 0; j < len; j++) {
         k += bin(&arr[j + 1], len - 1, value - arr[j]);
