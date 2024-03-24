@@ -46,7 +46,7 @@ int pointCalc(int current_value, int searching_value_part,
         point_index += precision;
     }
     return point_index;
-}
+} 
 int countPairs3(int* arr, int len, int searching_value_summ) {
 
     int amount = 0;
