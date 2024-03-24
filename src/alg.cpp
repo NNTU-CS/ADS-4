@@ -35,7 +35,7 @@ int countPairs2(int *arr, int len, int value) {
 int countPairs3(int *arr, int len, int value) {
   std::vector<int> vectorarr(arr, arr + len);
   int amount = 0;
-  int vect_size = vectorarr.size();
+  int vect_size = vectorarr.size()-1;
 
   for (int i = 0; i < vect_size; i++) {
     int prec = vect_size / 2;
@@ -44,7 +44,7 @@ int countPairs3(int *arr, int len, int value) {
     //     point = 0;
     // }
     int search = value - vectorarr.at(i);
-    int amount_of_cycles = sqrt(vect_size);
+    int amount_of_cycles = sqrt(vect_size)+1;
 
     for (int a = 0; a < (amount_of_cycles); a++) {
       prec /= 2;
