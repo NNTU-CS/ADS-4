@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 
-
 int countPairs1(int* arr, int len, int value) {
     int sum = 0, j = 0;
     for (int i = 0; i < len; ++i) {
@@ -36,13 +35,16 @@ int countPairs3(int* arr, int len, int value) {
     int amount = 0;
     std::vector<int> vectorarr(arr, arr + len);
     int vect_size = vectorarr.size();
+
     for (int i = 0; i < vect_size; i++) {
         int prec = vect_size / 2;
         int point = prec;
-
+        if ((point <0)||(point>=vect_size)){
+            point = 0;
+        }
         int search = value - arr[i];
-
-        for (int a = 0; a < (vect_size); a++) {
+        int amount_of_cycles = sqrt(vect_size);
+        for (int a = 0; a < (amount_of_cycles); a++) {
             prec /= 2;
             if (prec == 0) {
                 prec = 1;
@@ -57,15 +59,17 @@ int countPairs3(int* arr, int len, int value) {
             }
             
             // рассчет точки
-            else if (now_value > search) {
+            if (now_value > search) {
                 point -= prec;
-                if (point < vect_size) {
+                if (point < 0) {
+                    point = 0;
                     break;
                 }
             }
             else if (now_value < search) {
                 point += prec;
-                if (point > vect_size) {
+                if (point >= vect_size) {
+                    point = vect_size - 1;
                     break;
                 }
             }
