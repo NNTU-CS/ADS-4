@@ -1,67 +1,67 @@
 // Copyright 2021 NNTU-CS
-int countPairs1(int* arr, int len, int value) {
-    int k = 0;
-    for (int j = 1; j < len; j++) {
-        for (int i = 0; i < j; i++) {
+
+int countPairs1(int *arr, int len, int value) {
+    int count = 0;
+    for (int i = 0; i < len - 1; i++) {
+        for (int j = i + 1; j < len; j++) {
             if (arr[i] + arr[j] == value) {
-                k++;
+                count++;
             }
         }
     }
-    return k;
+    return count;
 }
-
-int countPairs2(int* arr, int len, int value) {
-    int k = 0;
-    int max = len - 1;
-    while (value < arr[max]) {
-        max -= 1;
+int countPairs2(int *arr, int len, int value) {
+    int j = len - 1;
+    int count = 0;
+    while (arr[j] > value) {
+        j--;
     }
-    for (int i = 0; i < max; i++) {
-        for (int j = max; j > i; j--) {
-            if (arr[i] + arr[j] == value) {
-                k++;
+    for (int i = 0; i < j; i++) {
+        for (int n = j; n > i; n--) {
+            if (arr[i] + arr[n] == value) {
+                count++;
             }
         }
     }
-    return k;
+    return count;
 }
-
-int bin(int* arr, int len, int value) {
-    int k = 0;
-    int left = 0;
-    int right = len - 1;
-    while (left <= right) {
-        int mid = (right + left) / 2;
-        if (arr[mid] == value) {
-            k++;
-            int pup = mid - 1;
-            while (pup >= 0 && arr[pup] == value) {
-                k++;
-                pup--;
+int cbinsearch(int *arr, int size, int value) {
+    int iLeft = 0;
+    int iRight = size - 1;
+    int iCounter = 0;
+    while (iLeft <= iRight) {
+        int iMid = iLeft + (iRight - iLeft) / 2;
+        if (arr[iMid] == value) {
+            while (arr[iMid] == value) {
+                iMid--;
+            iCounter++;
+            iLeft = iMid - 1;
+            iRight = iMid + 1;
+            while (iLeft >= 0 && arr[iLeft] == value) {
+                iCounter++;
+                iLeft--;
             }
-            pup = mid + 1;
-            while (pup < len && arr[pup] == value) {
-                k++;
-                pup++;
+            iMid++;
+            while (arr[iMid] == value) {
+                iMid++;
+            while (iRight < size && arr[iRight] == value) {
+                iCounter++;
+                iRight++;
             }
             break;
-        }
-        else if (arr[mid] < value) {
-            left = mid + 1;
-        }
-        else {
-            right = mid - 1;
+        } else if (value > arr[iMid]) {
+            iLeft = iMid + 1;
+        } else {
+            iRight = iMid - 1;
         }
     }
-    return k;
+    return iCounter;
 }
-
-int countPairs3(int* arr, int len, int value) {
-    int k = 0;
-    for (int j = 0; j < len; j++) {
-        k += bin(&arr[j + 1], len - 1, value - arr[j]);
+int countPairs3(int *arr, int len, int value) {
+    int sum = 0;
+    for (int i = 0; i < len; i++) {
+        sum += cbinsearch(&arr[i + 1], len - i - 1, value - arr[i]);
     }
-    return k;
+    return sum;
 }
-
