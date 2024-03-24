@@ -34,12 +34,15 @@ int countPairs2(int* arr, int len, int value)
 
 }
 
-int pointCalc(int current_value, int searching_value_part, int point_index, int precision, int size) {
-    if ((current_value > searching_value_part) && ((point_index - precision) <= size)) {
+int pointCalc(int current_value, int searching_value_part,
+ int point_index, int precision, int size) {
+    if ((current_value > searching_value_part) && 
+    ((point_index - precision) <= size)) {
         point_index -= precision;
 
     }
-    else if ((current_value < searching_value_part) && ((point_index + precision) >= size)) {
+    else if ((current_value < searching_value_part)
+     && ((point_index + precision) >= size)) {
         point_index += precision;
     }
     return point_index;
@@ -73,7 +76,8 @@ int countPairs3(int* arr, int len, int searching_value_summ) {
             if (current_value == searching_value_part) {
                 amount++;
             }
-            point_index = pointCalc(current_value, searching_value_part, point_index, precision, max_index);
+            point_index = pointCalc(current_value, searching_value_part,
+             point_index, precision, max_index);
         }
     }
     return amount;
