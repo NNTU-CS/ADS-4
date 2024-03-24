@@ -66,13 +66,13 @@ int countPairs3(int *arr, int len, int value) {
         point -= prec;
         if (point < 0) {
           point = 0;
-          break;
+        //   break;
         }
       } else if (now_value < search) {
         point += prec;
         if (point > vect_size) {
           point = vect_size;
-          break;
+        //   break;
         }
       }
     }
