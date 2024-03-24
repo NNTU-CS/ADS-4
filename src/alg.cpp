@@ -44,7 +44,7 @@ int countPairs3(int *arr, int len, int value) {
     //     point = 0;
     // }
     int search = value - vectorarr.at(i);
-    int amount_of_cycles = sqrt(vect_size) + 1;
+    int amount_of_cycles = sqrt(vect_size);
 
     for (int a = 0; a < (amount_of_cycles); a++) {
       prec /= 2;
@@ -66,13 +66,13 @@ int countPairs3(int *arr, int len, int value) {
         point -= prec;
         if (point < 0) {
           point = 0;
-        //   break;
+          break;
         }
       } else if (now_value < search) {
         point += prec;
         if (point > vect_size) {
           point = vect_size;
-        //   break;
+          break;
         }
       }
     }
