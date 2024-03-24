@@ -1,4 +1,5 @@
-#include "math.h"
+// Copyright 2021 NNTU-CS
+#include <cmath>
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -49,7 +50,7 @@ int countPairs3(int *arr, int len, int value) {
       if (now_value == search) {
         amount++;
         vectorarr.erase(begin(vectorarr) + point);
-        std::cout << point << " " << now_value << std::endl;
+        // std::cout << point << " " << now_value << std::endl;
       } else if (now_value > search) {
         point -= prec;
       } else if (now_value < search) {
