@@ -5,8 +5,7 @@ int findParis(int* arr, int value, int n, int l, int r) {
 
   if (r < l) {
     return 0;
-  }
-  else if (n + arr[middle] == value) {
+  } else if (n + arr[middle] == value) {
     count++;
     int l_indx = -1;
     int r_indx = -1;
@@ -30,8 +29,7 @@ int findParis(int* arr, int value, int n, int l, int r) {
     }
 
     return count;
-  }
-  else {
+  } else {
     return findParis(arr, value, n, middle + 1, r);
   }
 }
@@ -53,11 +51,11 @@ int countPairs2(int* arr, int len, int value) {
   int count = 0;
   int l_indx = 0;
   int r_indx = len - 1;
-  while (arr[r_indx] > value and r_indx != l_indx) {
+  while (arr[r_indx] > value && r_indx != l_indx) {
     r_indx--;
   }
 
-  while (arr[l_indx] + arr[r_indx] > value and l_indx != r_indx) {
+  while (arr[l_indx] + arr[r_indx] > value && l_indx != r_indx) {
     l_indx++;
   }
 
