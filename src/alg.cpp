@@ -56,11 +56,11 @@ int countPairs2(int* arr, int len, int value) {
   int count = 0;
   int l_indx = 0;
   int r_indx = len - 1;
-  while (arr[r_indx] > value and r_indx != l_indx) {
+  while (arr[r_indx] > value && r_indx != l_indx) {
     r_indx--;
   }
 
-  while (arr[l_indx] + arr[r_indx] < value and l_indx != r_indx) {
+  while (arr[l_indx] + arr[r_indx] < value && l_indx != r_indx) {
     l_indx++;
   }
 
