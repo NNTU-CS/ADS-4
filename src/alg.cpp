@@ -1,7 +1,4 @@
 // Copyright 2021 NNTU-CS
-#include <iostream>
-#include <algorithm>
-
 int countPairs1(const int *arr, int len, int value) {
   int count = 0;
     for (int i = 0; i < len; ++i) {
@@ -14,11 +11,12 @@ int countPairs1(const int *arr, int len, int value) {
     return count;
 }
 int countPairs2(const int *arr, int len, int value) {
-  int count = 0;
+    int count = 0;
     int left = 0;
     int right = len - 1;
     while (left < right) {
         int sum = arr[left] + arr[right];
+
         if (sum == value) {
             count++;
             left++;
@@ -35,8 +33,18 @@ int countPairs3(const int *arr, int len, int value) {
   int count = 0;
     for (int i = 0; i < len; ++i) {
         int complement = value - arr[i];
-        if (std::binary_search(arr + i + 1, arr + len, complement)) {
-            count++;
+        int left = i + 1;
+        int right = len - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == complement) {
+                count++;
+                break;
+            } else if (arr[mid] < complement) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
         }
     }
     return count;
