@@ -1,4 +1,5 @@
 // Copyright 2021 NNTU-CS
+// cppcheck-suppress constParameterPointer
 int countPairs1(int *arr, int len, int value) {
   int kol = 0;
   for (int i = 0; i < len; i++) {
@@ -17,6 +18,7 @@ int countPairs1(int *arr, int len, int value) {
   return kol;
 }
 
+// cppcheck-suppress constParameterPointer
 int countPairs2(int *arr, int len, int value) {
   int kol = 0;
   int left = 0;
@@ -36,6 +38,7 @@ int countPairs2(int *arr, int len, int value) {
   return kol;
 }
 
+// cppcheck-suppress constParameterPointer
 int countPairs3(int *arr, int len, int value) {
   int kol = 0;
   for (int i = 0; i < len; i++) {
