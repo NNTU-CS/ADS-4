@@ -1,4 +1,6 @@
 // Copyright 2021 NNTU-CS
+#include <iostream>
+#include <algorithm>
 // cppcheck-suppress constParameterPointer
 int countPairs1(int *arr, int len, int value) {
     int count = 0;
