@@ -3,18 +3,15 @@ int findParis(int* arr, int value, int n, int l, int r) {
   int count = 0;
   int middle = (l + r) / 2;
 
-  if (middle == l) {
-    middle ++;
-  }
+  int l_indx = -1;
+  int r_indx = -1;
 
   if (r < l) {
     return 0;
   } else if (n + arr[middle] == value) {
     count++;
-    int l_indx = -1;
-    int r_indx = -1;
 
-    if (middle - 1 > l) {
+    if (middle - 1 >= l) {
       l_indx = middle - 1;
     }
 
@@ -22,23 +19,27 @@ int findParis(int* arr, int value, int n, int l, int r) {
       r_indx = middle + 1;
     }
 
-    while (l_indx > l && arr[l_indx] + n == value) {
+    while (l_indx >= l && n + arr[l_indx] == value) {
       count++;
       l_indx--;
     }
 
-    while (r_indx <= r && arr[r_indx] + n == value) {
+    while (r_indx <= r && r_indx != -1 && n + arr[r_indx] == value) {
       count++;
       r_indx++;
     }
 
     return count;
   } else {
-    return findParis(arr, value, n, middle, r);
+    if (n + arr[middle] < value) {
+      return findParis(arr, value, n, middle + 1, r);
+    }
+
+    return findParis(arr, value, n, l, middle - 1);
   }
 }
 
-int countPairs1(int* arr, int len, int value) {
+int countPairs1(const int* arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len - 1; ++i) {
     for (int j = i + 1; j < len; ++j) {
@@ -51,15 +52,15 @@ int countPairs1(int* arr, int len, int value) {
   return count;
 }
 
-int countPairs2(int* arr, int len, int value) {
+int countPairs2(const int* arr, int len, int value) {
   int count = 0;
   int l_indx = 0;
   int r_indx = len - 1;
-  while (arr[r_indx] > value && r_indx != l_indx) {
+  while (arr[r_indx] > value and r_indx != l_indx) {
     r_indx--;
   }
 
-  while (arr[l_indx] + arr[r_indx] < value && l_indx != r_indx) {
+  while (arr[l_indx] + arr[r_indx] < value and l_indx != r_indx) {
     l_indx++;
   }
 
@@ -78,7 +79,7 @@ int countPairs3(int* arr, int len, int value) {
   int count = 0;
 
   for (int i = 0; i < len - 1; ++i) {
-    count += findParis(arr, value, arr[i], i, len - 1);
+    count += findParis(arr, value, arr[i], i + 1, len - 1);
   }
 
   return count;
