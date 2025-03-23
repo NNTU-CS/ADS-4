@@ -39,7 +39,7 @@ int findParis(int* arr, int value, int n, int l, int r) {
   }
 }
 
-int countPairs1(const int* arr, int len, int value) {
+int countPairs1(int* arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len - 1; ++i) {
     for (int j = i + 1; j < len; ++j) {
@@ -52,7 +52,7 @@ int countPairs1(const int* arr, int len, int value) {
   return count;
 }
 
-int countPairs2(const int* arr, int len, int value) {
+int countPairs2(int* arr, int len, int value) {
   int count = 0;
   int l_indx = 0;
   int r_indx = len - 1;
