@@ -1,89 +1,58 @@
 // Copyright 2021 NNTU-CS
-// Copyright 2021 NNTU-CS
 // cppcheck-suppress constParameterPointer
-int countPairs1(const int *arr, int len, int value) {
-    int kol = 0;
+int countPairs1(int *arr, int len, int value) {
+    int count = 0;
     for (int i = 0; i < len; i++) {
-        if (i > 0 && arr[i] == arr[i - 1]) {
-            continue;
-        }
         for (int j = i + 1; j < len; j++) {
-            if (j > i + 1 && arr[j] == arr[j - 1]) {
-                continue;
-            }
             if (arr[i] + arr[j] == value) {
-                kol++;
+                count++;
             }
         }
     }
-    return kol;
+    return count;
 }
 
 // cppcheck-suppress constParameterPointer
-int countPairs2(const int *arr, int len, int value) {
-    int kol = 0;
+int countPairs2(int *arr, int len, int value) {
+    int count = 0;
     int left = 0;
     int right = len - 1;
+
     while (left < right) {
         int sum = arr[left] + arr[right];
         if (sum == value) {
-            if (arr[left] == arr[right]) {
-                int count = right - left + 1;
-                kol += count * (count - 1) / 2;
-                break;
-            }
-            int leftCount = 1, rightCount = 1;
-            while (left + 1 < right && arr[left] == arr[left + 1]) {
-                leftCount++;
-                left++;
-            }
-            while (left < right - 1 && arr[right] == arr[right - 1]) {
-                rightCount++;
-                right--;
-            }
-            kol += leftCount * rightCount;
+            count++;
             left++;
             right--;
+            while (left < right && arr[left] == arr[left - 1]) left++;
+            while (left < right && arr[right] == arr[right + 1]) right--;
         } else if (sum < value) {
             left++;
         } else {
             right--;
         }
     }
-    return kol;
+    return count;
 }
 
 // cppcheck-suppress constParameterPointer
-int countPairs3(const int *arr, int len, int value) {
-    int kol = 0;
+int countPairs3(int *arr, int len, int value) {
+    int count = 0;
     for (int i = 0; i < len; i++) {
-        if (i > 0 && arr[i] == arr[i - 1]) {
-            continue;
-        }
-        int vtor = value - arr[i];
-        int left = i + 1;
-        int right = len - 1;
+        int middle = value - arr[i];
+        int left = i + 1, right = len - 1;
         while (left <= right) {
-            int middle = left + (right - left) / 2;
-            if (arr[middle] == vtor) {
-                kol++;
-                int temp = middle - 1;
-                while (temp >= left && arr[temp] == vtor) {
-                    kol++;
-                    temp--;
-                }
-                temp = middle + 1;
-                while (temp <= right && arr[temp] == vtor) {
-                    kol++;
-                    temp++;
-                }
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == middle) {
+                count++;
                 break;
-            } else if (arr[middle] < vtor) {
-                left = middle + 1;
+            } else if (arr[mid] < middle) {
+                left = mid + 1;
             } else {
-                right = middle - 1;
+                right = mid - 1;
             }
         }
+        while (i + 1 < len && arr[i] == arr[i + 1]) i++;
     }
-    return kol;
+    return count;
 }
