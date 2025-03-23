@@ -48,7 +48,7 @@ int countPairs3(int *arr, int len, int value) {
     if (sum == value) {
       if (arr[left] == arr[right]) {
         int count = right - left + 1;
-        kol += count * (count - 1) / 2; 
+        kol += count * (count - 1) / 2;
         break;
       }
       int leftCount = 1, rightCount = 1;
