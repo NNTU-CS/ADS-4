@@ -15,7 +15,6 @@ int countPairs1(int *arr, int len, int value) {
 
 // cppcheck-suppress constParameterPointer
 int countPairs2(int *arr, int len, int value) {
-    std::sort(arr, arr + len);
     int kol = 0;
     int left = 0;
     int right = len - 1;
@@ -50,7 +49,6 @@ int countPairs2(int *arr, int len, int value) {
 
 // cppcheck-suppress constParameterPointer
 int countPairs3(int *arr, int len, int value) {
-    std::sort(arr, arr + len);
     int kol = 0;
     int left = 0;
     int right = len - 1;
