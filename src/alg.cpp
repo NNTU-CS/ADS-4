@@ -55,12 +55,12 @@ int countPairs2(int* arr, int len, int value) {
     r_indx--;
   }
 
-  while (arr[l_indx] + arr[r_indx] > value && l_indx != r_indx) {
+  while (arr[l_indx] + arr[r_indx] < value && l_indx != r_indx) {
     l_indx++;
   }
 
-  for (int i = l_indx; i < r_indx - 1; ++i) {
-    for (int j = i + 1; j < r_indx; ++j) {
+  for (int i = l_indx; i < r_indx; ++i) {
+    for (int j = i + 1; j <= r_indx; ++j) {
       if (arr[i] + arr[j] == value) {
         count++;
       }
