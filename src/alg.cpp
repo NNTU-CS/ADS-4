@@ -41,13 +41,13 @@ int countPairs2(int const *arr, int len, int value) {
 }
 int countPairs3(const int *arr, int len, int value) {
   int count = 0;
-  int frequency[1001] = { 0 };
+  int frequency[100000001] = { 0 };
   for (int i = 0; i < len; i++) {
     frequency[arr[i]]++;
   }
   for (int i = 0; i <= value / 2; i++) {
       int j = value - i;
-      if (j <= 1000) {
+      if (j <= 100000000) {
           if (i == j) {
               count += (frequency[i] * (frequency[i] - 1)) / 2;
           } else {
