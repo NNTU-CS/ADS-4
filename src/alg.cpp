@@ -4,7 +4,7 @@ int countPairs1(int *arr, int len, int value) {
     for (int i = 0; i < len-1; i++) {
     for (int j = i + 1; j < len; j++) {
     if (arr[i] + arr[j] == value) {
-	col++;
+    col++;
     }
     }
     }
@@ -12,19 +12,18 @@ int countPairs1(int *arr, int len, int value) {
 }
 int countPairs2(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len - 1; i++) {
-        for (int j = len - 1; j > i; j--) {
-            if (arr[i] + arr[j] == value) {
-                count++;
-                break;
-            }
-        }
+    for (int i = 0; i < len; i++) {
+    for (int j = len - 1; j > i; j--) {
+    if (arr[i] + arr[j] == value) {
+    count++;
     }
-    return count;
+    }
+    }
+    return col;
 }
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len - 1; i++) {
+    for (int i = 0; i < len - 1; ++i) {
         int other = value - arr[i];
         int left = i + 1;
         int right = len - 1;
@@ -36,21 +35,18 @@ int countPairs3(int *arr, int len, int value) {
                 left = mid + 1;
             }
         }
-        if (left < len && arr[left] == other) {
-            int first = left;
-            int last = first;
-            right = len - 1;
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                if (arr[mid] <= other) {
-                    left = mid + 1;
-                    last = mid;
-                } else {
-                    right = mid - 1;
-                }
+        int first = left;
+        if (first >= len || arr[first] != other) continue;
+        right = len - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] <= other) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
-            count += (last - first + 1);
         }
+        count += (right - first + 1);
     }
     return count;
 }
