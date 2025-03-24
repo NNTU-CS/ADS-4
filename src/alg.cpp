@@ -1,4 +1,6 @@
 // Copyright 2021 NNTU-CS
+#include <iostream>
+#include <unordered_map>
 
 int countPairs1(int const *arr, int len, int value) {
   int count = 0;
