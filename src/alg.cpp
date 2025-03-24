@@ -28,22 +28,20 @@ int countPairs2(int const *arr, int len, int value) {
               rightCount++;
               right--;
           }
-          count += leftCount * rightCount; 
+          count += leftCount * rightCount;
           left++;
           right--;
-      }
-      else if (sum < value) {
+      } else if (sum < value) {
           left++;
-      }
-      else {
+      } else {
           right--;
       }
   }
   return count;
 }
-int countPairs3(int *arr, int len, int value) {
+int countPairs3(const int *arr, int len, int value) {
   int count = 0;
-  int frequency[1001] = { 0 }; 
+  int frequency[1001] = { 0 };
   for (int i = 0; i < len; i++) {
     frequency[arr[i]]++;
   }
@@ -52,8 +50,7 @@ int countPairs3(int *arr, int len, int value) {
       if (j <= 1000) {
           if (i == j) {
               count += (frequency[i] * (frequency[i] - 1)) / 2;
-          }
-          else {
+          } else {
               count += frequency[i] * frequency[j];
           }
       }
