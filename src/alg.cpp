@@ -80,7 +80,7 @@ int binarySearchUpper(int* arr, int low, int high, int key) {
 
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len - 1; i++) {
+  for (int i = 0; i < len/16; i++) {
       int target = value - arr[i];
       int lower = binarySearchLower(arr, i + 1, len - 1, target);
       if (lower != -1) {
