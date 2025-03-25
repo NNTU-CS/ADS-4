@@ -13,57 +13,62 @@ int countPairs1(int *arr, int len, int value) {
 }
 int countPairs2(int* arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len - 1; i++) {
-      for (int j = len - 1; j > i; j--) {
-          if (arr[i] + arr[j] == value) {
+  int end = len - 1;
+  while (end > 0) {
+      if (arr[end] > value) {
+          end--;
+      }
+      else {
+          break;
+      }
+  }
+  for (int i = 0; i < len; i++) {
+      for (int j = end; j > i; j--) {
+          if (arr[i] + arr[j] == value)
               count++;
-          }
       }
   }
   return count;
 }
 
-int binarySearchLower(int* arr, int low, int high, int key) {
-  int ans = -1;
-  while (low <= high) {
-      int mid = low + (high - low) / 2;
-      if (arr[mid] == key) {
-          ans = mid;
-          high = mid - 1;
-      } else if (arr[mid] < key) {
-          low = mid + 1;
+int binSearch(int* arr, int low, int high, int value) {
+  int fst = -1;
+  int left = low, right = high;
+  while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (arr[mid] >= value) {
+          right = mid - 1;
+          if (arr[mid] == value) {
+              fst = mid;
+          }
       } else {
-          high = mid - 1;
+          left = mid + 1;
       }
   }
-  return ans;
-}
-
-int binarySearchUpper(int* arr, int low, int high, int key) {
-  int ans = -1;
-  while (low <= high) {
-      int mid = low + (high - low) / 2;
-      if (arr[mid] == key) {
-          ans = mid;
-          low = mid + 1;
-      } else if (arr[mid] < key) {
-          low = mid + 1;
+  if (fst == -1) {
+      return 0;
+  }
+  int last = fst;
+  left = fst;
+  right = high;
+  while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (arr[mid] <= value) {
+          left = mid + 1;
+          if (arr[mid] == value) {
+              last = mid;
+          }
       } else {
-          high = mid - 1;
+          right = mid - 1;
       }
   }
-  return ans;
+  return last - fst + 1;
 }
 
-int countPairs3(int *arr, int len, int value) {
+int countPairs3(int* arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len-1; i++) {
-      int target = value - arr[i];
-      int lower = binarySearchLower(arr, i + 1, len - 1, target);
-      if (lower != -1) {
-          int upper = binarySearchUpper(arr, i + 1, len - 1, target);
-          count += (upper - lower + 1);
-      }
+  for (int i = 0; i < len; i++) {
+      count += binSearch(arr, i + 1, len - 1, value - arr[i]);
   }
   return count;
 }
