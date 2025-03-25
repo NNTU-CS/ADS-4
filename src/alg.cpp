@@ -1,6 +1,4 @@
 // Copyright 2021 NNTU-CS
-#include <iostream>
-#include <unordered_map>
 
 int countPairs1(int *arr, int len, int value) {
   int count = 0;
@@ -19,44 +17,76 @@ int countPairs2(int *arr, int len, int value) {
   int right = len - 1;
   while (left < right) {
       int sum = arr[left] + arr[right];
-      if (sum == value) {
-          int leftCount = 1;
-          int rightCount = 1;
-          while (left + 1 < right && arr[left] == arr[left + 1]) {
-              leftCount++;
+      if (sum < value) {
+          left++;
+      } else if (sum > value) {
+          right--;
+      } else {
+          if (arr[left] == arr[right]) {
+              int n = right - left + 1;
+              count += (n * (n - 1)) / 2;
+              break;
+          } else {
+              int countLeft = 1;
+              while (left + 1 < right && arr[left] == arr[left + 1]) {
+                  countLeft++;
+                  left++;
+              }
+              int countRight = 1;
+              while (right - 1 > left && arr[right] == arr[right - 1]) {
+                  countRight++;
+                  right--;
+              }
+              count += (countLeft * countRight);
               left++;
-          }
-          while (right - 1 > left && arr[right] == arr[right - 1]) {
-              rightCount++;
               right--;
           }
-          count += leftCount * rightCount;
-          left++;
-          right--;
-      } else if (sum < value) {
-          left++;
-      } else {
-          right--;
       }
   }
   return count;
 }
-int countPairs3(int *arr, int len, int value) {
-  int count = 0;
-  std::unordered_map<int, int> frequency;
-  for (int i = 0; i < len; i++) {
-      frequency[arr[i]]++;
-  }
-  for (const auto& pair : frequency) {
-      int i = pair.first;
-      int j = value - i;
-      if (frequency.find(j) != frequency.end()) {
-          if (i == j) {
-              count += (frequency[i] * (frequency[i] - 1)) / 2;
-          } else if (frequency.find(j) != frequency.end()) {
-              count += pair.second * frequency[j];
-          }
+
+int binarySearchLower(int* arr, int low, int high, int key) {
+  int ans = -1;
+  while (low <= high) {
+      int mid = low + (high - low) / 2;
+      if (arr[mid] == key) {
+          ans = mid;
+          high = mid - 1;
+      } else if (arr[mid] < key) {
+          low = mid + 1;
+      } else {
+          high = mid - 1;
       }
   }
-  return count/2;
+  return ans;
+}
+
+int binarySearchUpper(int* arr, int low, int high, int key) {
+  int ans = -1;
+  while (low <= high) {
+      int mid = low + (high - low) / 2;
+      if (arr[mid] == key) {
+          ans = mid;
+          low = mid + 1;
+      } else if (arr[mid] < key) {
+          low = mid + 1;
+      } else {
+          high = mid - 1;
+      }
+  }
+  return ans;
+}
+
+int countPairs3(int *arr, int len, int value) {
+  int count = 0;
+  for (int i = 0; i < len - 1; i++) {
+      int target = value - arr[i];
+      int lower = binarySearchLower(arr, i + 1, len - 1, target);
+      if (lower != -1) {
+          int upper = binarySearchUpper(arr, i + 1, len - 1, target);
+          count += (upper - lower + 1);
+      }
+  }
+  return count;
 }
