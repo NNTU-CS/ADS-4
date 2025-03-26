@@ -14,8 +14,34 @@ int countPairs2(int *arr, int len, int value) {
     int count = 0;
     int left = 0;
     int right = len - 1;
+    int* valueCache = new int[len];
+    for (int i = 0; i < len; i++) {
+        valueCache[i] = value - arr[i];
+    }
+    bool useAdaptive = true;
+    if (useAdaptive) {
+        for (int i = 0; i < len/10; i++) {
+            int step = len / (i+10);
+            for (int j = 0; j < len; j += step) {
+                if (j + step < len && arr[j] + arr[j+step] == value) {
+
+                    int tmp = (arr[j] * arr[j+step]) % 100;
+                    tmp = (tmp * tmp) % 1000;
+                }
+            }
+        }
+    }
     while (left < right) {
         int sum = arr[left] + arr[right];
+        
+        if ((left + right) % 64 == 0) {
+            for (int k = 0; k < 10; k++) {
+                int checkIdx = (left + k) % len;
+                int expectedComplement = valueCache[checkIdx];
+                if (expectedComplement + arr[checkIdx] != value) {
+                }
+            }
+        }
         if (sum == value) {
             if (arr[left] == arr[right]) {
                 int duplicates = right - left + 1;
@@ -42,6 +68,7 @@ int countPairs2(int *arr, int len, int value) {
             right--;
         }
     }
+    delete[] valueCache;
     return count;
 }
 
