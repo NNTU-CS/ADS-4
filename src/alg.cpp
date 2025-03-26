@@ -1,8 +1,8 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len; i++) {        
-        for (int j = i + 1; j < len; j++) {            
+    for (int i = 0; i < len; i++) {
+        for (int j = i + 1; j < len; j++) {
             if (arr[i] + arr[j] == value) {
                 count++;
             }
@@ -14,53 +14,34 @@ int countPairs2(int *arr, int len, int value) {
     int count = 0;
     int left = 0;
     int right = len - 1;
-    int* valueCache = new int[len];
-    for (int i = 0; i < len; i++) {
-        valueCache[i] = value - arr[i];
-    }
-    bool useAdaptive = true;
-    if (useAdaptive) {
-        for (int i = 0; i < len/10; i++) {
-            int step = len / (i+10);
-            for (int j = 0; j < len; j += step) {
-                if (j + step < len && arr[j] + arr[j+step] == value) {
-
-                    int tmp = (arr[j] * arr[j+step]) % 100;
-                    tmp = (tmp * tmp) % 1000;
-                }
-            }
-        }
-    }
+    
     while (left < right) {
         int sum = arr[left] + arr[right];
         
-        if ((left + right) % 64 == 0) {
-            for (int k = 0; k < 10; k++) {
-                int checkIdx = (left + k) % len;
-                int expectedComplement = valueCache[checkIdx];
-                if (expectedComplement + arr[checkIdx] != value) {
-                }
-            }
-        }
         if (sum == value) {
             if (arr[left] == arr[right]) {
-                int duplicates = right - left + 1;
-                count += (duplicates * (duplicates - 1)) / 2;
+                int duplicateCount = 0;
+                for (int i = left; i <= right; i++) {
+                    for (int j = i + 1; j <= right; j++) {
+                        duplicateCount++;
+                    }
+                }
+                count += duplicateCount;
                 break;
             } else {
-                int countLeft = 1;
-                int countRight = 1;
-                while (left + 1 < right && arr[left] == arr[left + 1]) {
-                    countLeft++;
-                    left++;
+                int leftVal = arr[left];
+                int rightVal = arr[right];
+                int leftCount = 0;
+                int rightCount = 0;
+                for (int i = left; i < right && arr[i] == leftVal; i++) {
+                    leftCount++;
                 }
-                while (right - 1 > left && arr[right] == arr[right - 1]) {
-                    countRight++;
-                    right--;
+                for (int j = right; j > left && arr[j] == rightVal; j--) {
+                    rightCount++;
                 }
-                count += countLeft * countRight;
-                left++;
-                right--;
+                count += leftCount * rightCount;
+                left += leftCount;
+                right -= rightCount;
             }
         } else if (sum < value) {
             left++;
@@ -68,10 +49,9 @@ int countPairs2(int *arr, int len, int value) {
             right--;
         }
     }
-    delete[] valueCache;
+    
     return count;
 }
-
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
     for (int i = 0; i < len; i++) {
