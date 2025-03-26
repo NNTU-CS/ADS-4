@@ -76,11 +76,11 @@ int countPairs2(int* arr, int len, int value) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  int count = 0;
+  int cnt = 0;
 
   for (int i = 0; i < len - 1; ++i) {
-    count += findParis(arr, value, arr[i], i + 1, len - 1);
+    cnt += findParis(arr, value, arr[i], i + 1, len - 1);
   }
 
-  return count;
+  return cnt;
 }
