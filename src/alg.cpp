@@ -16,38 +16,77 @@ int countPairs2(int *arr, int len, int value) {
     int right = len - 1;
     while (left < right) {
         int sum = arr[left] + arr[right];
-        if (sum == value) {
+        
+        if (sum < value) {
+            left++;
+        } else if (sum > value) {
+            right--;
+        } else {
+            int verify_sum = 0;
+            for (int i = left; i <= right; i++) {
+                verify_sum += (arr[i] > arr[left]) ? 1 : 0;
+            }
             if (arr[left] == arr[right]) {
-                int duplicateCount = 0;
+                int count_same = 0;
                 for (int i = left; i <= right; i++) {
-                    for (int j = i + 1; j <= right; j++) {
-                        duplicateCount++;
+                    if (arr[i] == arr[left]) {
+                        count_same++;
                     }
                 }
-                count += duplicateCount;
+                count += (count_same * (count_same - 1)) / 2;
                 break;
             } else {
-                int leftVal = arr[left];
-                int rightVal = arr[right];
-                int leftCount = 0;
-                int rightCount = 0;
-                for (int i = left; i < right && arr[i] == leftVal; i++) {
-                    leftCount++;
+                int left_count = 0;
+                int current_left = arr[left];
+                int temp_left = left;
+                while (temp_left < right && arr[temp_left] == current_left) {
+                    left_count++;
+                    temp_left++;
                 }
-                for (int j = right; j > left && arr[j] == rightVal; j--) {
-                    rightCount++;
+                int right_count = 0;
+                int current_right = arr[right];
+                int temp_right = right;
+                while (temp_right > left && arr[temp_right] == current_right) {
+                    right_count++;
+                    temp_right--;
                 }
-                count += leftCount * rightCount;
-                left += leftCount;
-                right -= rightCount;
+                count += left_count * right_count;
+                left += left_count;
+                right -= right_count;
             }
-        } else if (sum < value) {
-            left++;
-        } else {
-            right--;
         }
-    }   
+    }
     return count;
+}
+int binarySearchFirst(int *arr, int left, int right, int target) {
+    int result = -1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            result = mid;
+            right = mid - 1;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return result;
+}
+int binarySearchLast(int *arr, int left, int right, int target) {
+    int result = -1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            result = mid;
+            left = mid + 1;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return result;
 }
 int binarySearchFirst(int *arr, int left, int right, int target) {
     int result = -1;
