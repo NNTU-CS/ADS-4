@@ -114,7 +114,8 @@ int countPairs3(int *arr, int len, int value) {
             if (first != -1) {
                 int last = binarySearchLast(arr, first, len - 1, target);
                 int count_current = i;
-                while (count_current < len && arr[count_current] == current) count_current++;
+                while (count_current < len && arr[count_current] == current)
+                    count_current++;
                 count_current -= i;
                 count += count_current * (last - first + 1);
             }
