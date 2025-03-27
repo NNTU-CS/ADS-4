@@ -30,7 +30,6 @@ int countPairs2(int *arr, int len, int value) {
 }
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
-  std::sort(arr, arr + len);
   for (int i = 0; i < len; ++i) {
     int target = value - arr[i];
     if (target < arr[i]) continue;
