@@ -1,5 +1,5 @@
 // Copyright 2021 NNTU-CS
-#include <iostream>
+
 int countPairs1(int *arr, int len, int value) {
   int cnt = 0;
     for (int i = 0; i < len; i++) {
