@@ -9,7 +9,7 @@ int countPairs1(int *arr, int len, int value) {
   }
   return cnt;
 }
-int countPairs2(int *arr, int len, int value) {
+int countPairs2(const int *arr, int len, int value) {
     int count = 0;
     int left = 0;
     int right = len - 1;
@@ -29,7 +29,7 @@ int countPairs2(int *arr, int len, int value) {
     }
     return count;
 }
-int binarySearch(int *arr, int left, int right, int target) {
+int binarySearch(const int *arr, int left, int right, int target) {
     while (left <= right) {
         int mid = left + (right - left) / 2;
         if (arr[mid] == target) {
@@ -42,10 +42,12 @@ int binarySearch(int *arr, int left, int right, int target) {
     }
     return -1;
 }
-int countPairs3(int *arr, int lenf, int value) {
+int countPairs3(const int *arr, int lenf, int value) {
   int cnt = 0;
   for (int i = 0; i < lenf; i++) {
-    cnt += binary(arr, i+1, lenf - 1, value - arr[i]);
+    if (binarySearch(arr, i+1, lenf - 1, value - arr[i]) != -1) {
+      cnt++;
+    }
   }
   return cnt;
 }
