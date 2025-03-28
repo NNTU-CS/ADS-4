@@ -9,7 +9,7 @@ int countPairs1(int *arr, int len, int value) {
   return cnt;
 }
 int countPairs2(int *arr, int len, int value) {
-  int cnt = 0;
+  int llcnt = 0;
   int trr = len - 1;
   while (trr > 0) {
     if (arr[trr] > value) {
@@ -20,10 +20,10 @@ int countPairs2(int *arr, int len, int value) {
   }
   for (int i = 0; i < len; i++) {
     for (int j = trr; j > i; j--) {
-      if (arr[i] + arr[j] == value) cnt++;
+      if (arr[i] + arr[j] == value) llcnt++;
     }
   }
-  return cnt;
+  return llcnt;
 }
 int binary(int *arr, int low, int high, int value) {
   int begin = -1;
@@ -53,9 +53,9 @@ int binary(int *arr, int low, int high, int value) {
   return fin - begin + 1;
 }
 int countPairs3(int *arr, int len, int value) {
-  int cnt = 0;
+  int ppcnt = 0;
   for (int i = 0; i < len; ++i) {
-    cnt += binary(arr, i + 1, len - 1, value - arr[i]);
+    ppcnt += binary(arr, i + 1, len - 1, value - arr[i]);
   }
-  return cnt;
+  return ppcnt;
 }
