@@ -30,8 +30,8 @@ int binarySearch(int *arr, int s, int fiin, int uka) {
   int low = s, high = fiin;
   while (low <= high) {
     int mid = low + (high - low) / 2;
-    if (array[mid] >= uka) {
-      if (array[mid] == uka) {
+    if (arr[mid] >= uka) {
+      if (arr[mid] == uka) {
         beg = mid;
       }
       high = mid - 1;
@@ -44,8 +44,8 @@ int binarySearch(int *arr, int s, int fiin, int uka) {
   high = fiin;
   while (low <= high) {
     int mid = low + (high - low) / 2;
-    if (array[mid] <= uka) {
-      if (array[mid] == uka) {
+    if (arr[mid] <= uka) {
+      if (arr[mid] == uka) {
         fin = mid;
       }
       low = mid + 1;
