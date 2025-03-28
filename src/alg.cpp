@@ -1,4 +1,5 @@
 // Copyright 2021 NNTU-CS
+
 int countPairs1(int *arr, int len, int value) {
   int parCnt = 0;
   for (int i = 0; i < len - 1; i++) {
@@ -55,7 +56,6 @@ int binarySearch(int *arr, int s, int fiin, int uka) {
   }
   return (fin - beg) + 1;
 }
-
 int countPairs3(int *arr, int len, int value) {
   int ppcnt = 0;
   for (int i = 0; i < len; ++i) {
