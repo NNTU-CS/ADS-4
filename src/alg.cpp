@@ -1,6 +1,6 @@
 // Copyright 2021 NNTU-CS
 
-int countPairs1(int *arr, int len, int value) {
+int countPairs1(int* arr, int len, int value) {
   int parCnt = 0;
   for (int i = 0; i < len - 1; i++) {
     for (int j = i + 1; j < len; j++) {
@@ -11,7 +11,7 @@ int countPairs1(int *arr, int len, int value) {
   }
   return parCnt;
 }
-int countPairs2(int *arr, int len, int value) {
+int countPairs2(int* arr, int len, int value) {
   int parcnt = 0;
   int kk = len - 1;
   while (kk > 0 && arr[kk] > value) {
@@ -26,7 +26,7 @@ int countPairs2(int *arr, int len, int value) {
   }
   return parcnt;
 }
-int binarySearch(int *arr, int s, int fiin, int uka) {
+int binarySearch(int* arr, int s, int fiin, int uka) {
   int beg = -1, fin = -1;
   int low = s, high = fiin;
   while (low <= high) {
@@ -56,7 +56,7 @@ int binarySearch(int *arr, int s, int fiin, int uka) {
   }
   return (fin - beg) + 1;
 }
-int countPairs3(int *arr, int len, int value) {
+int countPairs3(int* arr, int len, int value) {
   int ppcnt = 0;
   for (int i = 0; i < len; ++i) {
     ppcnt += binarySearch(arr, i + 1, len - 1, value - arr[i]);
