@@ -25,7 +25,7 @@ int countPairs2(int *arr, int len, int value) {
   }
   return parcnt;
 }
-int binarySearch(int *array, int s, int fiin, int uka) {
+int binarySearch(int *arr, int s, int fiin, int uka) {
   int beg = -1, fin = -1;
   int low = s, high = fiin;
   while (low <= high) {
@@ -42,7 +42,6 @@ int binarySearch(int *array, int s, int fiin, int uka) {
   if (beg == -1) return 0;
   low = beg;
   high = fiin;
-  
   while (low <= high) {
     int mid = low + (high - low) / 2;
     if (array[mid] <= uka) {
