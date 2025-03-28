@@ -1,54 +1,67 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
-  int count = 0;
-  for (int i = 0; i < len; ++i) {
-    if (i > 0 && arr[i] == arr[i - 1]) continue;
-    for (int j = i + 1; j < len; ++j) {
-      if (j > i + 1 && arr[j] == arr[j - 1]) continue;
-      if (arr[i] + arr[j] == value) {
-        count++;
+  int pairCount = 0;
+  for (int x = 0; x < len - 1; x++) {
+    for (int y = x + 1; y < len; y++) {
+      if (arr[x] + arr[y] == value) {
+        pairCount++;
       }
     }
   }
-  return count;
+  return pairCount;
 }
 
 int countPairs2(int *arr, int len, int value) {
   int count = 0;
-  int left = 0, right = len - 1;
-  while (left < right) {
-    int sum = arr[left] + arr[right];
-    if (sum == value) {
-      count++;
-      int prevLeft = arr[left], prevRight = arr[right];
-      while (left < right && arr[left] == prevLeft) left++;
-      while (left < right && arr[right] == prevRight) right--;
-    } else if (sum < value) {
-      left++;
-    } else {
-      right--;
+  int limit = len - 1;
+  while (limit > 0 && arr[limit] > value) {
+    limit--;
+  }
+  for (int left = 0; left < len; left++) {
+    for (int right = limit; right > left; right--) {
+      if (arr[left] + arr[right] == value) {
+        count++;
+      }
     }
   }
   return count;
 }
 
-int countPairs3(int *arr, int len, int value) {
-  int count = 0;
-  for (int i = 0; i < len; ++i) {
-    if (i > 0 && arr[i] == arr[i - 1]) continue; // Пропускаем дубликаты
-    int target = value - arr[i];
-    int left = i + 1, right = len - 1;
-    while (left <= right) {
-      int mid = left + (right - left) / 2;
-      if (arr[mid] == target) {
-        count++;
-        break;
-      } else if (arr[mid] < target) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
+int binarySearchCount(int *array, int start, int end, int key) {
+  int firstOccurrence = -1, lastOccurrence = -1;
+  int low = start, high = end;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if (array[mid] >= key) {
+      if (array[mid] == key) {
+        firstOccurrence = mid;
       }
+      high = mid - 1;
+    } else {
+      low = mid + 1;
     }
   }
-  return count;
+  if (firstOccurrence == -1) return 0;
+  low = firstOccurrence;
+  high = end;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if (array[mid] <= key) {
+      if (array[mid] == key) {
+        lastOccurrence = mid;
+      }
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return (lastOccurrence - firstOccurrence) + 1;
+}
+
+int countPairs3(int *arr, int len, int value) {
+  int totalPairs = 0;
+  for (int i = 0; i < len; i++) {
+    totalPairs += binarySearchCount(arr, i + 1, len - 1, value - arr[i]);
+  }
+  return totalPairs;
 }
