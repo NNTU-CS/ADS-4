@@ -1,61 +1,66 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
-  int cnt = 0;
+  int parCnt = 0;
   for (int i = 0; i < len - 1; i++) {
     for (int j = i + 1; j < len; j++) {
-      if (arr[i] + arr[j] == value)cnt++;
+      if (arr[i] + arr[j] == value) {
+        parCnt++;
+      }
     }
   }
-  return cnt;
+  return parCnt;
 }
 int countPairs2(int *arr, int len, int value) {
-  int llcnt = 0;
-  int trr = len - 1;
-  while (trr > 0) {
-    if (arr[trr] > value) {
-      trr--;
-    } else {
-      break;
+  int parcnt = 0;
+  int kk = len - 1;
+  while (kk > 0 && arr[kk] > value) {
+    kk--;
+  }
+  for (int left = 0; left < len; left++) {
+    for (int right = kk; right > left; right--) {
+      if (arr[left] + arr[right] == value) {
+        parcnt++;
+      }
     }
   }
-  for (int i = 0; i < len; i++) {
-    for (int j = trr; j > i; j--) {
-      if (arr[i] + arr[j] == value) llcnt++;
-    }
-  }
-  return llcnt;
+  return parcnt;
 }
-int binary(int *arr, int low, int high, int value) {
-  int begin = -1;
-  int led = low, rig = high;
-  while (led <= rig) {
-    int mid = led + (rig - led) / 2;
-    if (arr[mid] >= value) {
-      rig = mid - 1;
-      if (arr[mid] == value) begin = mid;
+int binarySearch(int *array, int s, int fiin, int uka) {
+  int beg = -1, fin = -1;
+  int low = s, high = fiin;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if (array[mid] >= uka) {
+      if (array[mid] == uka) {
+        beg = mid;
+      }
+      high = mid - 1;
     } else {
-      led = mid + 1;
+      low = mid + 1;
     }
   }
-  if (begin == -1) return 0;
-  int fin = begin;
-  led = begin;
-  rig = high;
-  while (led <= rig) {
-    int mid = led + (rig - led) / 2;
-    if (arr[mid] <= value) {
-      led = mid + 1;
-      if (arr[mid] == value) fin = mid;
+  if (beg == -1) return 0;
+  low = beg;
+  high = fiin;
+  
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    if (array[mid] <= uka) {
+      if (array[mid] == uka) {
+        fin = mid;
+      }
+      low = mid + 1;
     } else {
-      rig = mid - 1;
+      high = mid - 1;
     }
   }
-  return fin - begin + 1;
+  return (fin - beg) + 1;
 }
+
 int countPairs3(int *arr, int len, int value) {
   int ppcnt = 0;
   for (int i = 0; i < len; ++i) {
-    ppcnt += binary(arr, i + 1, len - 1, value - arr[i]);
+    ppcnt += binarySearch(arr, i + 1, len - 1, value - arr[i]);
   }
   return ppcnt;
 }
