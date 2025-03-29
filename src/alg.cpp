@@ -1,5 +1,17 @@
 // Copyright 2021 NNTU-CS
+void insertionSort(int* arr, int len) {
+  for (int i = 1; i < len; i++) {
+    int key = arr[i];
+    int j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+        j--;
+    }
+    arr[j + 1] = key;
+  }
+}
 int countPairs1(int *arr, int len, int value) {
+  insertionSort(arr, len);
   int count = 0;
   for (int i = 0; i < len; i++) {
     for (int j = i+1; j < len; j++) {
@@ -11,6 +23,7 @@ int countPairs1(int *arr, int len, int value) {
   return count;
 }
 int countPairs2(int *arr, int len, int value) {
+  insertionSort(arr, len);
   int temp;
   int left = 0;
   int right = len-1;
@@ -62,6 +75,7 @@ int binarySearch(int* arr, int left, int right, int value) {
   return 0;
 }
 int countPairs3(int *arr, int len, int value) {
+  insertionSort(arr, len);
   int count = 0;
   for (int i = 0; i < len - 1; i++) {
     int complement = value - arr[i];
