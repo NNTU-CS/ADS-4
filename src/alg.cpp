@@ -54,23 +54,29 @@ int countPairs2(int *arr, int len, int value) {
 // cppcheck-suppress constParameterPointer
 int countPairs3(int *arr, int len, int value) {
     int kol = 0;
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i < len; ) {
         int cel = value - arr[i];
         int left = i + 1;
         int right = len - 1;
+        int first = len;
         while (left <= right) {
             int mid = left + (right - left) / 2;
             if (arr[mid] >= cel) {
+                first = mid;
                 right = mid - 1;
             } else {
                 left = mid + 1;
             }
         }
-        int first = left;
-        right = len - 1;
-        while (first <= right && arr[first] == cel) {
-            kol++;
+        int dag = 0;
+        while (first < len && arr[first] == cel) {
+            dag++;
             first++;
+        }
+        kol += dag;
+        int current = arr[i];
+        while (i < len && arr[i] == current) {
+            i++;
         }
     }
     return kol;
