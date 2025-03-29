@@ -7,7 +7,7 @@ int countPairs1(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len; i++) {
     for (int j = i + 1; j < len; j++) {
-      if (arr[i] + arr[j] == value && arr[i] < arr[j]) {
+      if (arr[i] + arr[j] == value) {
         count++;
       }
     }
@@ -15,44 +15,57 @@ int countPairs1(int *arr, int len, int value) {
   return count;
 }
 
-int countPairs2(int *arr, int len, int value) {
-  std::sort(arr, arr + len);
+int countPairs2(int* arr, int len, int value) {
   int count = 0;
-  int left = 0;
-  int right = len - 1;
-  while (left < right) {
-    int sum = arr[left] + arr[right];
-    if (sum == value) {
-      count++;
-      left++;
-      right--;
-    } else if (sum < value) {
-      left++;
+  int end = len - 1;
+  while (end > 0) {
+    if (arr[end] > value) {
+      end--;
     } else {
-      right--;
+      break;
+    }
+  }
+  for (int i = 0; i < len; i++) {
+    for (int j = end; j > i; j--) {
+      if (arr[i] + arr[j] == value)
+        count++;
     }
   }
   return count;
+}
+
+int Binar(int *arr, int low, int high, int value) {
+  int first = -1;
+  int left = low, right = high;
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] >= value) {
+      right = mid - 1;
+      if (arr[mid] == value) first = mid;
+    } else {
+    left = mid + 1;
+    }
+  }
+  if (first == -1) return 0;
+  int last = first;
+  left = first;
+  right = high;
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] <= value) {
+      left = mid + 1;
+      if (arr[mid] == value) last = mid;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return last - first + 1;
 }
 
 int countPairs3(int *arr, int len, int value) {
-  std::sort(arr, arr + len);
   int count = 0;
-  for (int i = 0; i < len; i++) {
-    int target = value - arr[i];
-    int low = i + 1;
-    int high = len - 1;
-    while (low <= high) {
-      int mid = low + (high - low) / 2;
-      if (arr[mid] == target) {
-        count++;
-        break;
-      } else if (arr[mid] < target) {
-        low = mid + 1;
-      } else {
-        high = mid - 1;
-      }
-    }
+  for (int i = 0; i < len; ++i) {
+    count += Binar(arr, i + 1, len - 1, value - arr[i]);
   }
   return count;
 }
