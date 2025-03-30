@@ -60,32 +60,65 @@ int countPairs2(int *arr, int len, int value) {
     }
     return count;
 }
-int countPairs3(int *arr, int len, int value) {
-    int col = 0;
-    for (int i = 0; i < len - 1; ++i) {
-        int other = value - arr[i];
-        int left = i + 1;
-        int right = len - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (arr[mid] >= other) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
+int findFirstOccurrence(int *data, int start, int end, int key) {
+    int position = -1;
+    while (start <= end) {
+        int middle = start + (end - start) / 2;
+        if (data[middle] >= key) {
+            end = middle - 1;
+            if (data[middle] == key) position = middle;
+        } else {
+            start = middle + 1;
         }
-        int first = left;
-        if (first >= len || arr[first] != other) continue;
-        right = len - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (arr[mid] <= other) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        col += (right - first + 1);
     }
-    return col;
+    return position;
+}
+
+int findLastOccurrence(int *data, int start, int end, int key) {
+    int position = -1;
+    while (start <= end) {
+        int middle = start + (end - start) / 2;
+        if (data[middle] <= key) {
+            start = middle + 1;
+            if (data[middle] == key) position = middle;
+        } else {
+            end = middle - 1;
+        }
+    }
+    return position;
+}
+
+int countPairs3(int *elements, int size, int targetSum) {
+    int total = 0;
+    for (int idx = 0; idx < size; idx++) {
+        if (idx > 0 && elements[idx] == elements[idx-1]) continue;
+        
+        int current = elements[idx];
+        int complement = targetSum - current;
+        
+        if (current == complement) {
+            int left = idx, right = size - 1;
+            while (left < right) {
+                int mid = left + (right - left + 1) / 2;
+                if (elements[mid] > current) {
+                    right = mid - 1;
+                } else {
+                    left = mid;
+                }
+            }
+            int cnt = right - idx + 1;
+            total += cnt * (cnt - 1) / 2;
+        } else {
+            int firstPos = findFirstOccurrence(elements, idx + 1, size - 1, complement);
+            if (firstPos != -1) {
+                int lastPos = findLastOccurrence(elements, firstPos, size - 1, complement);
+                int currentCnt = 1;
+                while (idx + currentCnt < size && elements[idx + currentCnt] == current) {
+                    currentCnt++;
+                }
+                total += currentCnt * (lastPos - firstPos + 1);
+            }
+        }
+    }
+    return total;
 }
