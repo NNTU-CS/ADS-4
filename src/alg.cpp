@@ -5,7 +5,6 @@ int countPairs1(int *arr, int len, int value) {
     for (int j = i + 1; j < len; ++j) {
       if (arr[i] + arr[j] == value) {
         ++count1;
-        break;
       }
     }
   }
@@ -19,15 +18,24 @@ int countPairs2(int *arr, int len, int value) {
   while (left_inde < right_inde) {
     int summ = arr[left_inde] + arr[right_inde];
     if (summ == value) {
-      ++count2;
+      if (arr[left_inde] == arr[right_inde]) {
+        int num = right_inde - left_inde + 1;
+        count += num * (num - 1) / 2;
+        break;
+      }
       int currentLeft_inde = arr[left_inde];
       int currentRight_inde = arr[right_inde];
-      while (left_inde < right_inde && arr[left_inde] == currentLeft_inde) {
+      int left_count = 0;
+      int right_count = 0;
+      while (left_inde < len && arr[left_inde] == currentLeft_inde) {
         ++left_inde;
+        ++left_count;
       }
-      while (left_inde < right_inde && arr[right_inde] == currentRight_inde) {
+      while (right_inde >= 0 && arr[right_inde] == currentRight_inde) {
         --right_inde;
+        ++right_count;
       }
+      count2 += left_count * right_count;
     } else if (summ < value) {
       ++left_inde;
     } else {
@@ -58,8 +66,15 @@ int countPairs3(int *arr, int len, int value) {
     int pos = binarySecondSearch(arr, i + 1, len - 1, complement);
     if (pos != -1) {
       ++count3;
-      while (i + 1 < len && arr[i] == arr[i + 1]) {
-        ++i;
+      int left_inde = pos - 1;
+      while (left_inde > i && arr[left_inde] == complement) {
+        ++count3;
+        --left_inde;
+      }
+      int right_inde = pos + 1;
+      while (right_inde < len && arr[right_inde] == complement) {
+        ++count3;
+        ++right_inde;
       }
     }
   }
