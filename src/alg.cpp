@@ -20,8 +20,14 @@ int countPairs2(int *arr, int len, int value) {
     int summ = arr[left_inde] + arr[right_inde];
     if (summ == value) {
       ++count;
-      ++left_inde;
-      --right_inde;
+      int currentLeft_inde = arr[left_inde];
+      int currentRight_inde = arr[right_inde];
+      while (left_inde < right_inde && arr[left_inde] == currentLeft_inde) {
+        ++left_inde;
+      }
+      while (left_inde < right_inde && arr[right_inde] == currentRight_inde) {
+        --right_inde;
+      }
     } else if (summ < value) {
       ++left_inde;
     } else {
@@ -49,8 +55,11 @@ int countPairs3(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len; ++i) {
     int complement = value - arr[i];
-    if (binarySecondSearch(arr, i + 1, len - 1, complement) != -1) {
+    if ((binarySecondSearch(arr, i + 1, len - 1, complement)) != -1) {
       ++count;
+      while ((i + 1) < len && arr[i] == arr[i + 1]) {
+        ++i;
+      }
     }
   }
   return count;
