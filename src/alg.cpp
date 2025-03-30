@@ -57,25 +57,25 @@ int countPairs(int *arr, int len, int value) {
     std::sort(arr, arr + len);
     for (int i = 0; i < len; ++i) {
         int target = value - arr[i];
-        int first = -1;
+        int leftIndex = i + 1;
         int right = len - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
+        int first = -1;
+        while (leftIndex <= right) {
+            int mid = leftIndex + (right - leftIndex) / 2;
             if (arr[mid] >= target) {
                 right = mid - 1;
                 if (arr[mid] == target) first = mid;
             } else {
-                left = mid + 1;
+                leftIndex = mid + 1;
             }
         }
         if (first == -1) continue;
         int last = first;
-        left = first;
-        right = len - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
+        leftIndex = first;
+        while (leftIndex <= right) {
+            int mid = leftIndex + (right - leftIndex) / 2;
             if (arr[mid] <= target) {
-                left = mid + 1;
+                leftIndex = mid + 1;
                 if (arr[mid] == target) last = mid;
             } else {
                 right = mid - 1;
