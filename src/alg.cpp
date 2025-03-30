@@ -55,7 +55,7 @@ int countPairs3(int *arr, int len, int value) {
   int count3 = 0;
   for (int i = 0; i < len; ++i) {
     int complement = value - arr[i];
-    int pos = binarySearch(arr, i + 1, len - 1, complement);
+    int pos = binarySecondSearch(arr, i + 1, len - 1, complement);
     if (pos != -1) {
       ++count;
       while (i + 1 < len && arr[i] == arr[i + 1]) {
