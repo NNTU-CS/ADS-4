@@ -14,49 +14,41 @@ int countPairs1(int *arr, int len, int value) {
 
 int countPairs2(int *arr, int len, int value) {
   int count2 = 0;
-  int up = len - 1;
-  while (up > 0 && arr[up] > value) {
-    up--;
-  }
-  for (int current = 0; current < len; current++) {
-    for (int reversed = up; reversed > current; reversed--) {
-      if (arr[current] + arr[reversed] == value) {
-        count2++;
+  int left_inde = 0;
+  int right_inde = len - 1;
+  while (left_inde < right_inde) {
+    int summ = arr[left_inde] + arr[right_inde];
+    if (summ == value) {
+      ++count2;
+      int currentLeft_inde = arr[left_inde];
+      int currentRight_inde = arr[right_inde];
+      while (left_inde < right_inde && arr[left_inde] == currentLeft_inde) {
+        ++left_inde;
       }
+      while (left_inde < right_inde && arr[right_inde] == currentRight_inde) {
+        --right_inde;
+      }
+    } else if (summ < value) {
+      ++left_inde;
+    } else {
+      --right_inde;
     }
   }
   return count2;
 }
 
 int binarySecondSearch(int *arr, int left_inde, int right_inde, int target) {
-  int start = -1;
-  int low = left_inde;
-  int high = right_inde;
-  while (low <= high) {
-    int mid_inde = low + (high - low) / 2;
-    if (arr[mid_inde] >= target) {
-      high = mid_inde - 1;
-      if (arr[mid_inde] == target) start = mid_inde;
+  while (left_inde <= right_inde) {
+    int mid_inde = left_inde + (right_inde - left_inde) / 2;
+    if (arr[mid_inde] == target) {
+      return mid_inde;
+    } else if (arr[mid_inde] < target) {
+      left_inde = mid_inde + 1;
     } else {
-      low = mid_inde + 1;
+      right_inde = mid_inde - 1;
     }
   }
-  if (start == -1) {
-    return 0;
-  }
-  int end = start;
-  low = start;
-  high = right_inde;
-  while (low <= high) {
-    int mid_inde = low + (high - low) / 2;
-    if (arr[mid_inde] <= target) {
-      low = mid_inde + 1;
-      if (arr[mid_inde] == target) end = mid_inde;
-    } else {
-      high = mid_inde - 1;
-    }
-  }
-  return end - start + 1;
+  return -1;
 }
 
 int countPairs3(int *arr, int len, int value) {
