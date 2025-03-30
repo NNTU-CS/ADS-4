@@ -92,10 +92,8 @@ int countPairs3(int *elements, int size, int targetSum) {
     int total = 0;
     for (int idx = 0; idx < size; idx++) {
         if (idx > 0 && elements[idx] == elements[idx-1]) continue;
-        
         int current = elements[idx];
-        int complement = targetSum - current;
-        
+        int complement = targetSum - current; 
         if (current == complement) {
             int left = idx, right = size - 1;
             while (left < right) {
@@ -109,11 +107,14 @@ int countPairs3(int *elements, int size, int targetSum) {
             int cnt = right - idx + 1;
             total += cnt * (cnt - 1) / 2;
         } else {
-            int firstPos = findFirstOccurrence(elements, idx + 1, size - 1, complement);
+            int firstPos = findFirstOccurrence(elements,
+            idx + 1, size - 1, complement);
             if (firstPos != -1) {
-                int lastPos = findLastOccurrence(elements, firstPos, size - 1, complement);
+                int lastPos = findLastOccurrence(elements,
+                firstPos, size - 1, complement);
                 int currentCnt = 1;
-                while (idx + currentCnt < size && elements[idx + currentCnt] == current) {
+                while (idx + currentCnt < size &&
+                    elements[idx + currentCnt] == current) {
                     currentCnt++;
                 }
                 total += currentCnt * (lastPos - firstPos + 1);
