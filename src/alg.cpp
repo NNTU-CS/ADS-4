@@ -93,7 +93,7 @@ int countPairs3(int *elements, int size, int targetSum) {
     for (int idx = 0; idx < size; idx++) {
         if (idx > 0 && elements[idx] == elements[idx-1]) continue;
         int current = elements[idx];
-        int complement = targetSum - current; 
+        int complement = targetSum - current;
         if (current == complement) {
             int left = idx, right = size - 1;
             while (left < right) {
