@@ -53,15 +53,8 @@ int binarySecondSearch(int *arr, int left_inde, int right_inde, int target) {
 
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len; ++i) {
-    int complement = value - arr[i];
-    if ((binarySecondSearch(arr, i + 1, len - 1, complement)) != -1) {
-      ++count;
-      while ((i + 1) < len && arr[i] == arr[i + 1]) {
-        ++i;
-      }
-    }
+  for (int i = 0; i < len; i++) {
+    count += binarySecondSearch(arr, i + 1, len - 1, value - arr[i]);
   }
   return count;
 }
-
