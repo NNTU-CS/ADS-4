@@ -34,9 +34,9 @@ int binarySecondSearch(int *arr, int left_inde, int right_inde, int target) {
   int high = right_inde;
   while (low <= high) {
     int mid_inde = low + (high - low) / 2;
-    if (array[mid_inde] >= target) {
+    if (arr[mid_inde] >= target) {
       high = mid_inde - 1;
-      if (array[mid_inde] == target) start = mid_inde;
+      if (arr[mid_inde] == target) start = mid_inde;
     } else {
       low = mid_inde + 1;
     }
@@ -49,9 +49,9 @@ int binarySecondSearch(int *arr, int left_inde, int right_inde, int target) {
   high = right_inde;
   while (low <= high) {
     int mid_inde = low + (high - low) / 2;
-    if (array[mid_inde] <= target) {
+    if (arr[mid_inde] <= target) {
       low = mid_inde + 1;
-      if (array[mid_inde] == target) end = mid_inde;
+      if (arr[mid_inde] == target) end = mid_inde;
     } else {
       high = mid_inde - 1;
     }
