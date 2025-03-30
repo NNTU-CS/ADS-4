@@ -20,7 +20,7 @@ int countPairs2(int *arr, int len, int value) {
     if (summ == value) {
       if (arr[left_inde] == arr[right_inde]) {
         int num = right_inde - left_inde + 1;
-        count += num * (num - 1) / 2;
+        count2 += num * (num - 1) / 2;
         break;
       }
       int currentLeft_inde = arr[left_inde];
