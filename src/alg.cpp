@@ -1,7 +1,7 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
   int count1 = 0;
-  for (int i = 0; i < len; ++i) {
+  for (int i = 0; i < len - 1; ++i) {
     for (int j = i + 1; j < len; ++j) {
       if (arr[i] + arr[j] == value) {
         ++count1;
@@ -27,19 +27,19 @@ int countPairs2(int *arr, int len, int value) {
       int currentRight_inde = arr[right_inde];
       int left_count = 0;
       int right_count = 0;
-      while (left_inde < len && arr[left_inde] == currentLeft_inde) {
-        ++left_inde;
-        ++left_count;
+      while (arr[left_inde] == currentLeft_inde) {
+        left_inde++;
+        left_count++;
       }
-      while (right_inde >= 0 && arr[right_inde] == currentRight_inde) {
-        --right_inde;
-        ++right_count;
+      while (arr[right_inde] == currentRight_inde) {
+        right_inde--;
+        right_count++;
       }
       count2 += left_count * right_count;
     } else if (summ < value) {
-      ++left_inde;
+      left_inde++;
     } else {
-      --right_inde;
+      right_inde--;
     }
   }
   return count2;
@@ -61,7 +61,7 @@ int binarySecondSearch(int *arr, int left_inde, int right_inde, int target) {
 
 int countPairs3(int *arr, int len, int value) {
   int count3 = 0;
-  for (int i = 0; i < len; ++i) {
+  for (int i = 0; i < len - 1; ++i) {
     int complement = value - arr[i];
     int pos = binarySecondSearch(arr, i + 1, len - 1, complement);
     if (pos != -1) {
