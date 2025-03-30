@@ -52,32 +52,36 @@ int countPairs2(int *arr, int len, int value) {
 }
 
 // cppcheck-suppress constParameterPointer
-int countPairs3(int *arr, int len, int value) {
+int countPairs(int *arr, int len, int value) {
     int kol = 0;
-    for (int i = 0; i < len; ) {
-        int cel = value - arr[i];
-        int left = i + 1;
+    std::sort(arr, arr + len);
+    for (int i = 0; i < len; ++i) {
+        int target = value - arr[i];
+        int first = -1;
         int right = len - 1;
-        int first = len;
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            if (arr[mid] >= cel) {
-                first = mid;
+            if (arr[mid] >= target) {
                 right = mid - 1;
+                if (arr[mid] == target) first = mid;
             } else {
                 left = mid + 1;
             }
         }
-        int dag = 0;
-        while (first < len && arr[first] == cel) {
-            dag++;
-            first++;
+        if (first == -1) continue;
+        int last = first;
+        left = first;
+        right = len - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] <= target) {
+                left = mid + 1;
+                if (arr[mid] == target) last = mid;
+            } else {
+                right = mid - 1;
+            }
         }
-        kol += dag;
-        int current = arr[i];
-        while (i < len && arr[i] == current) {
-            i++;
-        }
+        kol += (last - first + 1);
     }
     return kol;
 }
