@@ -17,11 +17,20 @@ int countPairs2(int *arr, int len, int value) {
   while (left < right) {
     int sum = arr[left] + arr[right];
     if (sum == value) {
-      count++;
-      while (left < right && arr[left] == arr[left + 1]) left++;
-      while (left < right && arr[right] == arr[right - 1]) right--;
-      left++;
-      right--;
+      if (arr[left] == arr[right]) {
+        int num = right - left + 1;
+        count += num * (num - 1) / 2;
+        break;
+      } else {
+        int cntLeft = 1, cntRight = 1;
+        while (left + cntLeft < right && arr[left + cntLeft] == arr[left]) 
+          cntLeft++;
+        while (right - cntRight > left && arr[right - cntRight] == arr[right]) 
+          cntRight++;
+        count += cntLeft * cntRight;
+        left += cntLeft;
+        right -= cntRight;
+      }
     } else if (sum < value) {
       left++;
     } else {
@@ -31,31 +40,28 @@ int countPairs2(int *arr, int len, int value) {
   return count;
 }
 int countOccurrences(int *arr, int low, int high, int value) {
+  int countOccurrences(int *arr, int left, int right, int target) {
+  int low = left, high = right, mid;
   int first = -1, last = -1;
-  int left = low, right = high;
-  while (left <= right) {
-    int mid = left + (right - left) / 2;
-    if (arr[mid] == value) {
-      first = mid;
-      right = mid - 1;
-    } else if (arr[mid] < value) {
-      left = mid + 1;
+  while (low <= high) {
+    mid = low + (high - low) / 2;
+    if (arr[mid] >= target) {
+      if (arr[mid] == target) first = mid;
+      high = mid - 1;
     } else {
-      right = mid - 1;
+      low = mid + 1;
     }
   }
   if (first == -1)
     return 0;
-  left = low, right = high;
-  while (left <= right) {
-    int mid = left + (right - left) / 2;
-    if (arr[mid] == value) {
-      last = mid;
-      left = mid + 1;
-    } else if (arr[mid] < value) {
-      left = mid + 1;
+  low = first, high = right;
+  while (low <= high) {
+    mid = low + (high - low) / 2;
+    if (arr[mid] <= target) {
+      if (arr[mid] == target) last = mid;
+      low = mid + 1;
     } else {
-      right = mid - 1;
+      high = mid - 1;
     }
   }
   return last - first + 1;
@@ -64,7 +70,6 @@ int countPairs3(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len - 1; i++) {
     count += countOccurrences(arr, i + 1, len - 1, value - arr[i]);
-    while (i + 1 < len && arr[i] == arr[i + 1]) i++;
   }
   return count;
 }
