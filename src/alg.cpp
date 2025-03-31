@@ -78,7 +78,10 @@ int countPairs3(int *arr, int len, int value) {
   int count = 0;
   int index = 0;
   while (index < len) {
-    int first = findFirstOccurrence(arr, index + 1, len - 1, value - arr[index]);
+    int first = findFirstOccurrence(arr,
+                                    index + 1,
+                                    len - 1,
+                                    value - arr[index]);
     int last = findLastOccurrence(arr, index + 1, len - 1, value - arr[index]);
     if (first != -1 && last != -1) {
       count += last - first + 1;
