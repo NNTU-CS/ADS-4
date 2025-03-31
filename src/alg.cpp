@@ -15,16 +15,12 @@ int countPairs2(int* arr, int len, int value) {
     int count = 0;
     int lboard = 0;
     int rboard = len - 1;
-    for (int i = 0; i < rboard; ++i)
-    {
-        for (int j = rboard - 1; j > lboard; --j)
-        {
-            if (arr[j] > value)
-            {
+    for (int i = 0; i < rboard; ++i){
+        for (int j = rboard - 1; j > lboard; --j){
+            if (arr[j] > value){
                 rboard -= 1;
             }
-            if (arr[i] + arr[j] == value)
-            {
+            if (arr[i] + arr[j] == value){
                 count += 1;
             }
         }
@@ -41,15 +37,12 @@ int binarySearch(int* arr, int left, int right, int target, bool find_first) {
             result = mid;
             if (find_first) {
                 right = mid - 1;
-            }
-            else {
+            } else {
                 left = mid + 1;
             }
-        }
-        else if (arr[mid] < target) {
+        } else if (arr[mid] < target) {
             left = mid + 1;
-        }
-        else {
+        } else {
             right = mid - 1;
         }
     }
