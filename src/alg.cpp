@@ -1,5 +1,4 @@
 // Copyright 2021 NNTU-CS
-// Наивный метод с двойным циклом (O(n²))
 int countPairs1(int *arr, int len, int value) {
     int count = 0;
     for (int i = 0; i < len; ++i) {
@@ -12,82 +11,41 @@ int countPairs1(int *arr, int len, int value) {
     return count;
 }
 
-// Метод двух указателей (O(n))
-int countPairs2(int *arr, int len, int value) {
+int countPairs2(int* arr, int len, int value) {
     int count = 0;
-    int left = 0;
-    int right = len - 1;
-    
+    int left = 0, right = len - 1;
     while (left < right) {
         int sum = arr[left] + arr[right];
         if (sum == value) {
-            // Обработка дубликатов
-            if (arr[left] == arr[right]) {
-                int n = right - left + 1;
-                count += n * (n - 1) / 2;
-                break;
-            }
-            
-            int left_count = 1;
-            int right_count = 1;
-            
-            while (left + left_count < right && arr[left] == arr[left + left_count]) {
-                left_count++;
-            }
-            
-            while (right - right_count > left && arr[right] == arr[right - right_count]) {
-                right_count++;
-            }
-            
-            count += left_count * right_count;
-            left += left_count;
-            right -= right_count;
-        } else if (sum < value) {
+            count++;
             left++;
-        } else {
+            right--;
+        }
+        else if (sum < value) {
+            left++;
+        }
+        else {
             right--;
         }
     }
     return count;
 }
 
-// Бинарный поиск (O(n log n))
-int binarySearchFirst(int *arr, int left, int right, int target) {
-    int result = -1;
+bool binarySearch(int* arr, int left, int right, int target) {
     while (left <= right) {
         int mid = left + (right - left) / 2;
-        if (arr[mid] >= target) {
-            right = mid - 1;
-            if (arr[mid] == target) result = mid;
-        } else {
-            left = mid + 1;
-        }
+        if (arr[mid] == target) return true;
+        else if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
     }
-    return result;
+    return false;
 }
 
-int binarySearchLast(int *arr, int left, int right, int target) {
-    int result = -1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] <= target) {
-            left = mid + 1;
-            if (arr[mid] == target) result = mid;
-        } else {
-            right = mid - 1;
-        }
-    }
-    return result;
-}
-
-int countPairs3(int *arr, int len, int value) {
+int countPairs3(int* arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len; ++i) {
-        int complement = value - arr[i];
-        int first = binarySearchFirst(arr, i + 1, len - 1, complement);
-        if (first != -1) {
-            int last = binarySearchLast(arr, first, len - 1, complement);
-            count += last - first + 1;
+    for (int i = 0; i < len - 1; ++i) {
+        if (binarySearch(arr, i + 1, len - 1, value - arr[i])) {
+            count++;
         }
     }
     return count;
