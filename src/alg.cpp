@@ -23,17 +23,17 @@ int countPairs3(int* arr, int len, int value) {
   for (int i = 0; i < len; ++i) {
     int lbound = i + 1, rbound = len - 1, target = value - arr[i];
     while (lbound <= rbound) {
-      if (arr[(rbound - lbound) / 2 + lbound] == target) {
+      int mid = lbound + (rbound - lbound) / 2;
+      if (arr[mid] == target) {
         ++count;
-        int current = (rbound - lbound) / 2 + lbound;
-        while (++current < rbound && arr[current] == target) ++count;
-        current = (rbound - lbound) / 2 + lbound;
-        while (--current > lbound && arr[current] == target) ++count;
-      }
-      else if ((rbound - lbound) / 2 + lbound > target) {
-        rbound = (rbound - lbound) / 2 + lbound - 1;
-      }
-      else lbound = (rbound - lbound) / 2 + lbound + 1;
+        int current = mid;
+        while (++current <= rbound && arr[current] == target) ++count;
+        current = mid;
+        while (--current >= lbound && arr[current] == target) ++count;
+        break;
+      } else if (arr[mid] > target) {
+        rbound = mid - 1;
+      } else lbound = mid + 1;
     }
   }
   return count;
