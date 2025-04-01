@@ -49,9 +49,10 @@ int findMatch(int *data, int start, int end, int goal) {
   int lower = start;
   int upper = end;
   while (lower <= upper) {
-    int middle = lower + (upper - lower) / 2;
-    if (data[middle] == goal) return middle;
-    if (data[middle] < goal) lower = middle + 1;
+    int middle = (lower + upper) >> 1;
+    int value = data[middle];
+    if (value == goal) return middle;
+    if (value < goal) lower = middle + 1;
     else upper = middle - 1;
   }
   return -1;
@@ -62,6 +63,14 @@ int countPairs3(int *sequence, int count, int desired) {
   int position = 0;
   while (position < count - 1) {
     int complement = desired - sequence[position];
+    if (complement < 0 || complement < sequence[position + 1]) {
+      position++;
+      continue;
+    }
+    if (complement > sequence[count - 1]) {
+      position++;
+      continue;
+    }
     int match = findMatch(sequence, position + 1, count - 1, complement);
     if (match != -1) {
       matches++;
@@ -69,11 +78,10 @@ int countPairs3(int *sequence, int count, int desired) {
         match++;
       }
     }
-    while (position < count - 1 &&
-           sequence[position] == sequence[position + 1]) {
+    int current = sequence[position];
+    while (position < count - 1 && sequence[position] == current) {
       position++;
-           }
-    position++;
+    }
   }
   return matches;
 }
