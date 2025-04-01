@@ -10,7 +10,7 @@
 
 int countPairs1(const int *arr, int len, int value);
 int countPairs2(const int *arr, int len, int value);
-int countPairs3(const int *arr, int len, int value);
+int countPairs3(int *arr, int len, int value);
 
 void generateSorted(int *arr, int min, int max, int len) {
     int value = 0, j = 0;
