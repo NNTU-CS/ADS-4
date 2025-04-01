@@ -63,11 +63,7 @@ int countPairs3(int *sequence, int count, int desired) {
   int position = 0;
   while (position < count - 1) {
     int complement = desired - sequence[position];
-    if (complement < 0 || complement < sequence[position + 1]) {
-      position++;
-      continue;
-    }
-    if (complement > sequence[count - 1]) {
+    if (complement < 0) {
       position++;
       continue;
     }
