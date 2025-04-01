@@ -1,5 +1,4 @@
 // Copyright 2021 NNTU-CS
-// Copyright 2021 NNTU-CS
 int countPairs1(int *array, int size, int sum) {
   int total = 0;
   int outer = 0;
@@ -9,10 +8,16 @@ int countPairs1(int *array, int size, int sum) {
       int pairSum = array[outer] + array[inner];
       if (pairSum == sum) {
         total++;
+        while (inner < size - 1 && array[inner] == array[inner + 1]) {
+          inner++;
+        }
         break;
       }
       if (pairSum > sum) break;
       inner++;
+    }
+    while (outer < size - 1 && array[outer] == array[outer + 1]) {
+      outer++;
     }
     outer++;
   }
@@ -40,36 +45,16 @@ int countPairs2(int *numbers, int length, int target) {
   return pairs;
 }
 
-int locateFirstMatch(int *data, int start, int end, int goal) {
-  int earliest = -1;
+int findMatch(int *data, int start, int end, int goal) {
   int lower = start;
   int upper = end;
   while (lower <= upper) {
     int middle = lower + (upper - lower) / 2;
-    if (data[middle] < goal) {
-      lower = middle + 1;
-    } else {
-      if (data[middle] == goal) earliest = middle;
-      upper = middle - 1;
-    }
+    if (data[middle] == goal) return middle;
+    if (data[middle] < goal) lower = middle + 1;
+    else upper = middle - 1;
   }
-  return earliest;
-}
-
-int locateLastMatch(int *values, int begin, int finish, int aim) {
-  int latest = -1;
-  int low = begin;
-  int high = finish;
-  while (low <= high) {
-    int center = low + (high - low) / 2;
-    if (values[center] > aim) {
-      high = center - 1;
-    } else {
-      if (values[center] == aim) latest = center;
-      low = center + 1;
-    }
-  }
-  return latest;
+  return -1;
 }
 
 int countPairs3(int *sequence, int count, int desired) {
@@ -77,19 +62,17 @@ int countPairs3(int *sequence, int count, int desired) {
   int position = 0;
   while (position < count - 1) {
     int complement = desired - sequence[position];
-    int first = locateFirstMatch(sequence, position + 1,
-                                 count - 1, complement);
-    if (first == -1) {
-      position++;
-      continue;
+    int match = findMatch(sequence, position + 1, count - 1, complement);
+    if (match != -1) {
+      matches++;
+      while (match < count - 1 && sequence[match] == sequence[match + 1]) {
+        match++;
+      }
     }
-    int last = locateLastMatch(sequence, position + 1,
-                               count - 1, complement);
-    matches += (last - first + 1);
     while (position < count - 1 &&
            sequence[position] == sequence[position + 1]) {
       position++;
-    }
+           }
     position++;
   }
   return matches;
