@@ -1,97 +1,86 @@
 // Copyright 2021 NNTU-CS
-
-int countPairs1(const int *arr, int len, int value) {
+int findParis(int* arr, int value, int n, int l, int r) {
   int count = 0;
-  for (int i = 0; i < len; i++) {
-    for (int j = i + 1; j < len; j++) {
+  int middle = (l + r) / 2;
+
+  int l_indx = -1;
+  int r_indx = -1;
+
+  if (r < l) {
+    return 0;
+  } else if (n + arr[middle] == value) {
+    count++;
+
+    if (middle - 1 >= l) {
+      l_indx = middle - 1;
+    }
+
+    if (middle + 1 <= r) {
+      r_indx = middle + 1;
+    }
+
+    while (l_indx >= l && n + arr[l_indx] == value) {
+      count++;
+      l_indx--;
+    }
+
+    while (r_indx <= r && r_indx != -1 && n + arr[r_indx] == value) {
+      count++;
+      r_indx++;
+    }
+
+    return count;
+  } else {
+    if (n + arr[middle] < value) {
+      return findParis(arr, value, n, middle + 1, r);
+    }
+
+    return findParis(arr, value, n, l, middle - 1);
+  }
+}
+
+int countPairs1(const int* arr, int len, int value) {
+  int count = 0;
+  for (int i = 0; i < len - 1; ++i) {
+    for (int j = i + 1; j < len; ++j) {
       if (arr[i] + arr[j] == value) {
         count++;
-        while (j + 1 < len && arr[j] == arr[j + 1])
-          j++;
       }
     }
-    while (i + 1 < len && arr[i] == arr[i + 1])
-      i++;
   }
+
   return count;
 }
 
-int countPairs2(const int *arr, int len, int value) {
+int countPairs2(const int* arr, int len, int value) {
   int count = 0;
-  int left = 0;
-  int right = len - 1;
+  int l_indx = 0;
+  int r_indx = len - 1;
+  while (arr[r_indx] > value && r_indx != l_indx) {
+    r_indx--;
+  }
 
-  while (left < right) {
-    int sum = arr[left] + arr[right];
-    if (sum == value) {
-      if (arr[left] == arr[right]) {
-        int n = right - left + 1;
-        count += n * (n - 1) / 2;
-        break;
+  while (arr[l_indx] + arr[r_indx] < value && l_indx != r_indx) {
+    l_indx++;
+  }
+
+  for (int i = l_indx; i < r_indx; ++i) {
+    for (int j = i + 1; j <= r_indx; ++j) {
+      if (arr[i] + arr[j] == value) {
+        count++;
       }
-
-      int left_count = 1;
-      int right_count = 1;
-
-      while (left + 1 < right && arr[left] == arr[left + 1]) {
-        left_count++;
-        left++;
-      }
-
-      while (right - 1 > left && arr[right] == arr[right - 1]) {
-        right_count++;
-        right--;
-      }
-
-      count += left_count * right_count;
-      left++;
-      right--;
-    } else if (sum < value) {
-      left++;
-    } else {
-      right--;
     }
   }
+
   return count;
 }
 
-int binarySearch(const int *arr, int left, int right, int target) {
-  while (left <= right) {
-    int mid = left + (right - left) / 2;
-    if (arr[mid] == target) {
-      return mid;
-    } else if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-  return -1;
-}
-
-int countPairs3(const int *arr, int len, int value) {
+int countPairs3(int* arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len; i++) {
-    int target = value - arr[i];
-    if (target < arr[i])
-      break;
 
-    int pos = binarySearch(arr, i + 1, len - 1, target);
-    if (pos != -1) {
-      count++;
-      int right = pos + 1;
-      while (right < len && arr[right] == target) {
-        count++;
-        right++;
-      }
-      int left = pos - 1;
-      while (left > i && arr[left] == target) {
-        count++;
-        left--;
-      }
-    }
-    while (i + 1 < len && arr[i] == arr[i + 1])
-      i++;
+  for (int i = 0; i < len - 1; ++i) {
+    count += findParis(arr, value, arr[i], i + 1, len - 1);
   }
+
   return count;
 }
