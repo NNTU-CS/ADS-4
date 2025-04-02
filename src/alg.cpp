@@ -49,24 +49,26 @@ int countPairs3(int *arr, int len, int value) {
     int high = len - 1;
     while (low <= high) {
       int mid = low + (high - low) / 2;
-      if (arr[mid] == targ) {
-        count++;
-        int left = mid - 1;
-        while (left > i && arr[left] == targ) {
-          count++;
-          left--;
-        }
-        int right = mid + 1;
-        while (right < len && arr[right] == targ) {
-          count++;
-          right++;
-        }
-        break;
-      } else if (arr[mid] < targ) {
+      if (arr[mid] >= targ) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+    int first = low;
+    low = i + 1;
+    high = len - 1;
+    while (low <= high) {
+      int mid = low + (high - low) / 2;
+      if (arr[mid] <= targ) {
         low = mid + 1;
       } else {
         high = mid - 1;
       }
+    }
+    int last = high;
+    if (first <= last) {
+      count += last - first + 1;
     }
   }
   return count;
