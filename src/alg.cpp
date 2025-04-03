@@ -16,7 +16,7 @@ int countPairs1(int *arr, int len, int value) {
   return kol;
 }
 
-int countPairs2(int* arr, int len, int value) {
+int countPairs2(int *arr, int len, int value) {
   // cppcheck-suppress constParameterPointer
   int kol = 0;
   int right = len - 1;
