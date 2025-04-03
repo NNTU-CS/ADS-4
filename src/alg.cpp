@@ -1,4 +1,6 @@
 // Copyright 2021 NNTU-CS
+#include <algorithm>
+#include <cstdlib>
 #include <utility>
 
 void swap(int& a, int& b) {
@@ -53,45 +55,55 @@ void sortArray(int* arr, int len) {
 }
 
 int countPairs1(int* arr, int len, int value) {
-  sortArray(arr, len);
+  int* copy = new int[len];
+  for (int i = 0; i < len; i++) {
+    copy[i] = arr[i];
+  }
+  sortArray(copy, len);
   int count = 0;
   for (int i = 0; i < len; i++) {
     for (int j = i + 1; j < len; j++) {
-      if (arr[i] + arr[j] == value) count++;
+      if (copy[i] + copy[j] == value) count++;
     }
   }
+  delete[] copy;
   return count;
 }
 
 int countPairs2(int* arr, int len, int value) {
-  sortArray(arr, len);
+  int* copy = new int[len];
+  for (int i = 0; i < len; i++) {
+    copy[i] = arr[i];
+  }
+  sortArray(copy, len);
   int count = 0;
   int left = 0, right = len - 1;
   while (left < right) {
-    int sum = arr[left] + arr[right];
+    int sum = copy[left] + copy[right];
     if (sum < value) {
       left++;
     } else if (sum > value) {
       right--;
     } else {
-      if (arr[left] == arr[right]) {
+      if (copy[left] == copy[right]) {
         int n = right - left + 1;
         count += n * (n - 1) / 2;
         break;
       }
-      int leftVal = arr[left], rightVal = arr[right];
+      int leftVal = copy[left], rightVal = copy[right];
       int leftCount = 0, rightCount = 0;
-      while (left < len && arr[left] == leftVal) {
+      while (left < len && copy[left] == leftVal) {
         leftCount++;
         left++;
       }
-      while (right >= 0 && arr[right] == rightVal) {
+      while (right >= 0 && copy[right] == rightVal) {
         rightCount++;
         right--;
       }
       count += leftCount * rightCount;
     }
   }
+  delete[] copy;
   return count;
 }
 
@@ -120,14 +132,19 @@ int upperBound(int* arr, int start, int end, int target) {
 }
 
 int countPairs3(int* arr, int len, int value) {
-  sortArray(arr, len);
+  int* copy = new int[len];
+  for (int i = 0; i < len; i++) {
+    copy[i] = arr[i];
+  }
+  sortArray(copy, len);
   int count = 0;
   for (int i = 0; i < len - 1; i++) {
-    int target = value - arr[i];
-    int lb = lowerBound(arr, i + 1, len, target);
-    if (lb == len || arr[lb] != target) continue;
-    int ub = upperBound(arr, i + 1, len, target);
+    int target = value - copy[i];
+    int lb = lowerBound(copy, i + 1, len, target);
+    if (lb == len || copy[lb] != target) continue;
+    int ub = upperBound(copy, i + 1, len, target);
     count += (ub - lb);
   }
+  delete[] copy;
   return count;
 }
