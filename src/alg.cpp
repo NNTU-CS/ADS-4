@@ -4,6 +4,7 @@
 #include <algorithm>
 
 int countPairs1(int *arr, int len, int value) {
+  const int *constArr = arr;
   int kol = 0;
   for (int i = 0; i < len; i++) {
     for (int j = i + 1; j < len; j++) {
@@ -16,6 +17,7 @@ int countPairs1(int *arr, int len, int value) {
 }
 
 int countPairs2(int *arr, int len, int value) {
+  const int *constArr = arr;
   int kol = 0;
   int right = len - 1;
   while (right > 0) {
@@ -35,6 +37,7 @@ int countPairs2(int *arr, int len, int value) {
 }
 
 int Binar_poisk(int *arr, int low, int high, int value) {
+  const int *constArr = arr;
   int first = -1;
   int left = low, right = high;
   while (left <= right) {
@@ -63,6 +66,7 @@ int Binar_poisk(int *arr, int low, int high, int value) {
 }
 
 int countPairs3(int *arr, int len, int value) {
+  const int *constArr = arr;
   int kol = 0;
   for (int i = 0; i < len; ++i) {
     kol += Binar_poisk(arr, i + 1, len - 1, value - arr[i]);
