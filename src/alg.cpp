@@ -1,5 +1,4 @@
 // Copyright 2021 NNTU-CS
-#include <algorithm>
 #include <utility>
 
 void swap(int& a, int& b) {
@@ -96,15 +95,39 @@ int countPairs2(int* arr, int len, int value) {
   return count;
 }
 
+int lowerBound(int* arr, int start, int end, int target) {
+  int low = start, high = end;
+  while (low < high) {
+    int mid = low + (high - low) / 2;
+    if (arr[mid] < target)
+      low = mid + 1;
+    else
+      high = mid;
+  }
+  return low;
+}
+
+int upperBound(int* arr, int start, int end, int target) {
+  int low = start, high = end;
+  while (low < high) {
+    int mid = low + (high - low) / 2;
+    if (arr[mid] <= target)
+      low = mid + 1;
+    else
+      high = mid;
+  }
+  return low;
+}
+
 int countPairs3(int* arr, int len, int value) {
   sortArray(arr, len);
   int count = 0;
   for (int i = 0; i < len - 1; i++) {
     int target = value - arr[i];
-    auto lb = std::lower_bound(arr + i + 1, arr + len, target);
-    if (lb == arr + len || *lb != target) continue;
-    auto ub = std::upper_bound(arr + i + 1, arr + len, target);
-    count += static_cast<int>(ub - lb);
+    int lb = lowerBound(arr, i + 1, len, target);
+    if (lb == len || arr[lb] != target) continue;
+    int ub = upperBound(arr, i + 1, len, target);
+    count += (ub - lb);
   }
   return count;
 }
