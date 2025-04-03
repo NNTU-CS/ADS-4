@@ -52,9 +52,10 @@ int countPairs2(int *arr, int len, int value) {
 }
 
 // cppcheck-suppress constParameterPointer
-int Binar_poisk(int *arr, int low, int high, int value) {
+int Binar_poisk(int *arr, int wit, int high, int value) {
   int first = -1;
-  int left = wit, right = high;
+  int left = wit;
+  int right = high;
   while (left <= right) {
     int mid = left + (right - left) / 2;
     if (arr[mid] >= value) {
