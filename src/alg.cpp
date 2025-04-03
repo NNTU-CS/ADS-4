@@ -5,84 +5,67 @@
 
 int countPairs1(int *arr, int len, int value) {
   int kol = 0;
-  int ind = 0;
-  while (ind < len - 1) {
-    int inn = ind + 1;
-    while (inn < len) {
-      int sum = arr[ind] + arr[inn];
-      if (sum == value) {
+  for (int i = 0; i < len; i++) {
+    for (int j = i + 1; j < len; j++) {
+      if (arr[i] + arr[j] == value) {
         kol++;
-        while (inn < len - 1 && arr[inn] == arr[inn + 1]) {
-          inn++;
-        }
-        break;
       }
-      if (sum > value) break;
-      inn++;
     }
-    while (ind < len - 1 && arr[ind] == arr[ind + 1]) {
-      ind++;
-    }
-    ind++;
   }
   return kol;
 }
 
-int countPairs2(int *arr, int len, int value) {
+int countPairs2(int* arr, int len, int value) {
   int kol = 0;
-  int left = 0;
-  int right = len - 1;
-  while (left < right) {
-    int sum = arr[left] + arr[right];
-    if (sum == value) {
-      kol++;
-      while (left < right && arr[left] == arr[left + 1]) left++;
-      while (left < right && arr[right] == arr[right - 1]) right--;
-      left++;
-      right--;
-    } else if (sum < value) {
-      left++;
+  int end = len - 1;
+  while (end > 0) {
+    if (arr[end] > value) {
+      end--;
     } else {
-      right--;
+      break;
+    }
+  }
+  for (int i = 0; i < len; i++) {
+    for (int j = end; j > i; j--) {
+      if (arr[i] + arr[j] == value)
+        kol++;
     }
   }
   return kol;
 }
 
-int binar_poisk(int *arr, int nach, int end, int sdv) {
-  int low = nach;
-  int iind = end;
-  while (low <= iind) {
-    int mid = (low + iind) >> 1;
-    int value = arr[mid];
-    if (value == sdv) return mid;
-    if (value < sdv) low = mid + 1;
-    else iind = mid - 1;
+int binar_poisk(int *arr, int low, int high, int value) {
+  int first = -1;
+  int left = low, right = high;
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] >= value) {
+      right = mid - 1;
+      if (arr[mid] == value) first = mid;
+    } else {
+    left = mid + 1;
+    }
   }
-  return -1;
+  if (first == -1) return 0;
+  int last = first;
+  left = first;
+  right = high;
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] <= value) {
+      left = mid + 1;
+      if (arr[mid] == value) last = mid;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return last - first + 1;
 }
 
 int countPairs3(int *arr, int len, int value) {
-    int kol = 0;
-    int position = 0;
-    while (position < len - 1) {
-        int complement = value - arr[position];
-        if (complement < 0) {
-            position++;
-            continue;
-        }
-        int match = binar_poisk(arr, position + 1, len - 1, complement);
-        if (match != -1) {
-            kol++;
-            while (match < len - 1 && arr[match] == arr[match + 1]) {
-                match++;
-            }
-        }
-        int current = arr[position];
-        while (position < len - 1 && arr[position] == current) {
-            position++;
-        }
-        position++;
-    }
-    return kol;
+  int kol = 0;
+  for (int i = 0; i < len; ++i) {
+    kol += binar_poisk(arr, i + 1, len - 1, value - arr[i]);
+  }
+  return kol;
 }
