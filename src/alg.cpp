@@ -66,12 +66,12 @@ int countPairs3(int *arr, int len, int value) {
     int kol = 0;
     int position = 0;
     while (position < len - 1) {
-        int compl = value - arr[position];
-        if (compl < 0) {
+        int complement = value - arr[position];
+        if (complement < 0) {
             position++;
             continue;
         }
-        int match = binar_poisk(arr, position + 1, len - 1, compl);
+        int match = binar_poisk(arr, position + 1, len - 1, complement);
         if (match != -1) {
             kol++;
             while (match < len - 1 && arr[match] == arr[match + 1]) {
