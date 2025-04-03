@@ -1,19 +1,16 @@
-// Copyright 2021 NNTU-CS
 void insertionSort(int arr[], int n) {
   for (int i = 1; i < n; ++i) {
     int key = arr[i];
     int j = i - 1;
-
     while (j >= 0 && arr[j] > key) {
       arr[j + 1] = arr[j];
-      j = j - 1;
+      j--;
     }
     arr[j + 1] = key;
   }
 }
 
-int countPairs1(int* arr, int len, int value) {
-  insertionSort(arr, len);
+int countPairs1(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len; i++) {
     for (int j = i + 1; j < len; j++) {
@@ -23,11 +20,9 @@ int countPairs1(int* arr, int len, int value) {
   return count;
 }
 
-int countPairs2(int* arr, int len, int value) {
-  insertionSort(arr, len);
+int countPairs2(int *arr, int len, int value) {
   int count = 0;
-  int left = 0;
-  int right = len - 1;
+  int left = 0, right = len - 1;
   while (left < right) {
     int sum = arr[left] + arr[right];
     if (sum == value) {
@@ -36,14 +31,12 @@ int countPairs2(int* arr, int len, int value) {
         count += n * (n - 1) / 2;
         break;
       } else {
-        int leftVal = arr[left];
-        int countLeft = 0;
+        int leftVal = arr[left], countLeft = 0;
         while (left < len && arr[left] == leftVal) {
           countLeft++;
           left++;
         }
-        int rightVal = arr[right];
-        int countRight = 0;
+        int rightVal = arr[right], countRight = 0;
         while (right >= 0 && arr[right] == rightVal) {
           countRight++;
           right--;
@@ -59,39 +52,43 @@ int countPairs2(int* arr, int len, int value) {
   return count;
 }
 
-int countPairs3(int* arr, int len, int value) {
-  insertionSort(arr, len);
-  int count = 0;
-  for (int i = 0; i < len; i++) {
-    int target = value - arr[i];
-    int lo = i + 1, hi = len - 1;
-    int firstIndex = -1, lastIndex = -1;
+int countPairs3(int *arr, int len, int value) {
+  int count = 0, i = 0;
+  while (i < len) {
+    int a = arr[i];
+    if (a > value - a) break;
+    int countA = 0;
+    while (i < len && arr[i] == a) {
+      countA++;
+      i++;
+    }
+    int complement = value - a;
+    int lo = 0, hi = len - 1, firstIndex = -1, lastIndex = -1;
     while (lo <= hi) {
       int mid = lo + (hi - lo) / 2;
-      if (arr[mid] < target) {
+      if (arr[mid] < complement)
         lo = mid + 1;
-      } else {
+      else
         hi = mid - 1;
-      }
     }
-    if (lo < len && arr[lo] == target) {
+    if (lo < len && arr[lo] == complement)
       firstIndex = lo;
-    } else {
+    else
       continue;
-    }
-    lo = i + 1;
-    hi = len - 1;
+    lo = 0, hi = len - 1;
     while (lo <= hi) {
       int mid = lo + (hi - lo) / 2;
-      if (arr[mid] <= target) {
+      if (arr[mid] <= complement)
         lo = mid + 1;
-      } else {
+      else
         hi = mid - 1;
-      }
     }
     lastIndex = hi;
-    count += (lastIndex - firstIndex + 1);
+    int countB = lastIndex - firstIndex + 1;
+    if (a == complement)
+      count += countA * (countA - 1) / 2;
+    else
+      count += countA * countB;
   }
   return count;
 }
-
