@@ -1,10 +1,12 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len; ++i) {
-    for (int j = i + 1; j < len; ++j) {
+  for (int i = 0; i < len - 1; i++) {
+    if (arr[i] == arr[i - 1]) continue;
+    for (int j = i + 1; j < len; j++) {
       if (arr[i] + arr[j] == value) {
         count++;
+        break;
       }
     }
   }
@@ -18,14 +20,14 @@ int countPairs2(int *arr, int len, int value) {
     int sum = arr[left] + arr[right];
     if (sum == value) {
       count++;
-      if (arr[left] == arr[left +1]) {
+      while (arr[left] == arr[left + 1]) {
         left++;
-      } else if(arr[right] == arr[right -1]) {
-        right--;
-      } else {
-        left++;
+      }
+      while (arr[right] == arr[right - 1]) {
         right--;
       }
+      left++;
+      right--;
     } else if (sum < value) {
       left++;
     } else {
@@ -34,26 +36,22 @@ int countPairs2(int *arr, int len, int value) {
   }
   return count;
 }
+int binarySearch(int* arr, int left, int right, int target) {
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target) return mid;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return -1;
+}
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len; ++i) {
-    int complement = value - arr[i];
-    int left = i + 1;
-    int right = len - 1;
-    while (left <= right) {
-      int mid = left + (right - left) / 2;
-      if (arr[mid] == complement) {
-        count++;
-        while (arr[mid-1] == complement) {
-          count++;
-          mid--;
-        }
-        break;
-      } else if (arr[mid] < complement) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
-      }
+  for (int i = 0; i < len - 1; ++i) {
+    if (arr[i] == arr[i - 1]) continue;
+    int find = value - arr[i];
+    if (binarySearch(arr, i + 1, len - 1, find) != -1) {
+      count++;
     }
   }
   return count;
