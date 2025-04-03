@@ -53,48 +53,53 @@ int countPairs2(int *arr, int len, int value) {
   return count;
 }
 
+int lower_bound_index(int *arr, int len, int target, int start) {
+  int lo = start, hi = len;
+  while (lo < hi) {
+    int mid = lo + (hi - lo) / 2;
+    if (arr[mid] < target)
+      lo = mid + 1;
+    else
+      hi = mid;
+  }
+  return (lo < len && arr[lo] == target) ? lo : -1;
+}
+
+int upper_bound_index(int *arr, int len, int target, int start) {
+  int lo = start, hi = len;
+  while (lo < hi) {
+    int mid = lo + (hi - lo) / 2;
+    if (arr[mid] <= target)
+      lo = mid + 1;
+    else
+      hi = mid;
+  }
+  return lo;
+}
+
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
-  int i = 0;
-  while (i < len) {
+
+  for (int i = 0; i < len;) {
     int a = arr[i];
-    if (a > value - a) break;
     int countA = 0;
     while (i < len && arr[i] == a) {
       countA++;
       i++;
     }
     int complement = value - a;
+
+    if (a > complement) break;
     if (a == complement) {
       count += countA * (countA - 1) / 2;
     } else {
-      int lo = 0, hi = len - 1, first = -1, last = -1;
-      lo = 0;
-      hi = len - 1;
-      while (lo <= hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (arr[mid] < complement)
-          lo = mid + 1;
-        else
-          hi = mid - 1;
-      }
-      if (lo < len && arr[lo] == complement)
-        first = lo;
-      else
-        continue;
-      lo = 0;
-      hi = len - 1;
-      while (lo <= hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (arr[mid] <= complement)
-          lo = mid + 1;
-        else
-          hi = mid - 1;
-      }
-      last = hi;
-      int countB = last - first + 1;
+      int lo = lower_bound_index(arr, len, complement, i);
+      if (lo == -1) continue;
+      int hi = upper_bound_index(arr, len, complement, i);
+      int countB = hi - lo;
       count += countA * countB;
     }
   }
   return count;
 }
+
