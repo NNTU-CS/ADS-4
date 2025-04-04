@@ -24,17 +24,13 @@ int countPairs2(int *arr, int len, int value) {
             }
             int left_val = arr[left];
             int right_val = arr[right];
-            int left_count = 0;
-            int right_count = 0;
-            while (left < len && arr[left] == left_val) {
+            while (arr[left] == left_val) {
                 left++;
-                left_count++;
             }
-            while (right >= 0 && arr[right] == right_val) {
+            while (arr[right] == right_val) {
                 right--;
-                right_count++;
             }
-            count += left_count * right_count;
+            count += (left_val + right_val == value) ? (left - 0) * (len - right - 1) : 0;
         } else if (sum < value) {
             left++;
         } else {
@@ -43,35 +39,31 @@ int countPairs2(int *arr, int len, int value) {
     }
     return count;
 }
-int binarySearch(int *arr, int left, int right, int target) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) {
-            return mid;
-        } else if (arr[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    return -1;
-}
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
     for (int i = 0; i < len; ++i) {
         int target = value - arr[i];
-        int idx = binarySearch(arr, i + 1, len - 1, target);
-        if (idx != -1) {
-            count++;
-            int left = idx - 1;
-            while (left > i && arr[left] == target) {
+        int left = i + 1;
+        int right = len - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
                 count++;
-                left--;
-            }
-            int right = idx + 1;
-            while (right < len && arr[right] == target) {
-                count++;
-                right++;
+                int l = mid - 1;
+                while (l >= left && arr[l] == target) {
+                    count++;
+                    l--;
+                }
+                int r = mid + 1;
+                while (r <= right && arr[r] == target) {
+                    count++;
+                    r++;
+                }
+                break;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
     }
