@@ -1,9 +1,8 @@
 // Copyright 2021 NNTU-CS
-#include <algorithm>
 int countPairs1(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len; ++i) {
-        for (int j = i + 1; j < len; ++j) {
+    for (int i = 0; i < len; i++) {
+        for (int j = i + 1; j < len; j++) {
             if (arr[i] + arr[j] == value) {
                 count++;
             }
@@ -12,7 +11,15 @@ int countPairs1(int *arr, int len, int value) {
     return count;
 }
 int countPairs2(int *arr, int len, int value) {
-    std::sort(arr, arr + len);
+    for (int i = 0; i < len - 1; i++) {
+        for (int j = 0; j < len - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
     int count = 0;
     int left = 0;
     int right = len - 1;
@@ -47,9 +54,17 @@ int countPairs2(int *arr, int len, int value) {
     return count;
 }
 int countPairs3(int *arr, int len, int value) {
-    std::sort(arr, arr + len);
+    for (int i = 0; i < len - 1; i++) {
+        for (int j = 0; j < len - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
     int count = 0;
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i < len; i++) {
         int target = value - arr[i];
         int left = i + 1;
         int right = len - 1;
