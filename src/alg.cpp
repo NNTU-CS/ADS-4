@@ -58,7 +58,7 @@ int bsStep(int *arr, int left, int right, int value) {
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len; ++i) {
-    count += binar_poisk(arr, i + 1, len - 1, value - arr[i]);
+    count += bsStep(arr, i + 1, len - 1, value - arr[i]);
   }
   return count;
 }
