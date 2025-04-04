@@ -4,15 +4,10 @@
 #include <vector>
 int countPairs1(int *arr, int len, int value) {
   int count = 0;
-    std::unordered_set<std::string> seen;
     for (int i = 0; i < len; i++) {
         for (int j = i + 1; j < len; j++) {
             if (arr[i] + arr[j] == value) {
-                std::string pair = std::to_string(arr[i]) + '-' + std::to_string(arr[j]);
-                if (seen.find(pair) == seen.end()) {
-                    seen.insert(pair);
-                    count++;
-                }
+                count++;
             }
         }
     }
