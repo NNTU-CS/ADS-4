@@ -1,5 +1,6 @@
 // Copyright 2021 NNTU-CS
-int countPairs1(const int* arr, int len, int value) {
+// cppcheck-suppress constParameterPointer
+int countPairs1(int* arr, int len, int value) {
 int count1 = 0;
 for (int i = 0; i < len; ++i) {
 for (int j = i + 1; j < len; ++j) {
@@ -10,7 +11,9 @@ count1++;
 }
 return count1;
 }
-int countPairs2(const int* arr, int len, int value) {
+
+// cppcheck-suppress constParameterPointer
+int countPairs2(int* arr, int len, int value) {
 int count2 = 0;
 int end = len - 1;
 while (end > 0) {
@@ -29,7 +32,8 @@ count2++;
 return count2;
 }
 
-int binarySearch(const int* arr, int low, int high, int value) {
+// cppcheck-suppress constParameterPointer
+int binarySearch(int* arr, int low, int high, int value) {
 int first = -1;
 int left = low;
 int right = high;
@@ -61,6 +65,7 @@ right = mid - 1;
 return last - first + 1;
 }
 
+// cppcheck-suppress constParameterPointer
 int countPairs3(int* arr, int len, int value) {
 int count3 = 0;
 for (int i = 0; i < len; ++i) {
