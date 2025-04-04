@@ -22,65 +22,39 @@ int countPairs2(int *arr, int len, int value) {
                 int n = right - left + 1;
                 count += n * (n - 1) / 2;
                 break;
-            } else {
-                int left_val = arr[left];
-                int right_val = arr[right];
-                int left_count = 0;
-                int right_count = 0;
-                while (left < len && arr[left] == left_val) {
-                    left++;
-                    left_count++;
-                }
-                while (right >= 0 && arr[right] == right_val) {
-                    right--;
-                    right_count++;
-                }
-                count += left_count * right_count;
             }
+            int left_val = arr[left];
+            int right_val = arr[right];
+            int left_count = 1;
+            int right_count = 1;
+            while (left + 1 < right && arr[left + 1] == left_val) {
+                left++;
+                left_count++;
+            }
+            while (right - 1 > left && arr[right - 1] == right_val) {
+                right--;
+                right_count++;
+            }
+            count += left_count * right_count;
+            left++;
+            right--;
         } else if (sum < value) {
             left++;
         } else {
             right--;
         }
     }
-    
     return count;
 }
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
     for (int i = 0; i < len; ++i) {
         int target = value - arr[i];
-        if (target < 0) continue;
-        int left = i + 1;
-        int right = len - 1;
-        int first = -1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (arr[mid] >= target) {
-                right = mid - 1;
-                if (arr[mid] == target) {
-                    first = mid;
-                }
-            } else {
-                left = mid + 1;
-            }
-        }
-        if (first != -1) {
-            left = first;
-            right = len - 1;
-            int last = first;
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                if (arr[mid] <= target) {
-                    left = mid + 1;
-                    if (arr[mid] == target) {
-                        last = mid;
-                    }
-                } else {
-                    right = mid - 1;
-                }
-            }
-            count += last - first + 1;
+        if (target < arr[i]) break;
+        int* lower = std::lower_bound(arr + i + 1, arr + len, target);
+        if (lower != arr + len && *lower == target) {
+            int* upper = std::upper_bound(arr + i + 1, arr + len, target);
+            count += upper - lower;
         }
     }
     return count;
