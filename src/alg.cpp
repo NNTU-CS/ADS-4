@@ -22,19 +22,12 @@ int countPairs2(int *arr, int len, int value) {
             if (arr[left] != arr[right]) {
                 int left_val = arr[left];
                 int right_val = arr[right];
-                int left_count = 0;
-                int right_count = 0;
-                while (left < len && arr[left] == left_val) {
-                    left++;
-                    left_count++;
-                }
-                while (right >= 0 && arr[right] == right_val) {
-                    right--;
-                    right_count++;
-                }
-                count += left_count * right_count;
+                while (left < len && arr[left] == left_val) left++;
+                while (right >= 0 && arr[right] == right_val) right--;
+                count++;
             } else {
-                count += (right - left + 1) * (right - left) / 2;
+                int n = right - left + 1;
+                count += n * (n - 1) / 2;
                 break;
             }
         } else if (sum < value) {
@@ -50,13 +43,33 @@ int countPairs3(int *arr, int len, int value) {
     for (int i = 0; i < len; i++) {
         if (i > 0 && arr[i] == arr[i-1]) continue;
         int target = value - arr[i];
-        int j = i + 1;
-        while (j < len && arr[j] <= target) {
-            if (arr[j] == target) {
-                count++;
-                while (j + 1 < len && arr[j] == arr[j+1]) j++;
+        int left = i + 1;
+        int right = len - 1;
+        bool found = false;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                found = true;
+                right = mid - 1;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
-            j++;
+        }
+        if (found) {
+            int first = left;
+            left = i + 1;
+            right = len - 1;
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (arr[mid] <= target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            count += right - first + 1;
         }
     }
     return count;
