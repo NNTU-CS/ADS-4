@@ -1,12 +1,12 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len - 1; i++) {
         if (i > 0 && arr[i] == arr[i-1]) continue;
         for (int j = i + 1; j < len; j++) {
             if (arr[i] + arr[j] == value) {
                 count++;
-                while (j + 1 < len && arr[j] == arr[j+1]) j++;
+                while (j < len - 1 && arr[j] == arr[j+1]) j++;
             }
         }
     }
@@ -22,9 +22,20 @@ int countPairs2(int *arr, int len, int value) {
             if (arr[left] != arr[right]) {
                 int left_val = arr[left];
                 int right_val = arr[right];
-                while (left < len && arr[left] == left_val) left++;
-                while (right >= 0 && arr[right] == right_val) right--;
-                count++;
+                int left_count = 1;
+                int right_count = 1;
+                
+                while (left + 1 < right && arr[left+1] == left_val) {
+                    left++;
+                    left_count++;
+                }
+                while (right - 1 > left && arr[right-1] == right_val) {
+                    right--;
+                    right_count++;
+                }
+                count += left_count * right_count;
+                left++;
+                right--;
             } else {
                 int n = right - left + 1;
                 count += n * (n - 1) / 2;
@@ -40,36 +51,31 @@ int countPairs2(int *arr, int len, int value) {
 }
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len - 1; i++) {
         if (i > 0 && arr[i] == arr[i-1]) continue;
         int target = value - arr[i];
-        int left = i + 1;
-        int right = len - 1;
-        bool found = false;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
+        int low = i + 1;
+        int high = len - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
             if (arr[mid] == target) {
-                found = true;
-                right = mid - 1;
-            } else if (arr[mid] < target) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        if (found) {
-            int first = left;
-            left = i + 1;
-            right = len - 1;
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                if (arr[mid] <= target) {
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
+                count++;
+                int left = mid - 1;
+                while (left > i && arr[left] == target) {
+                    count++;
+                    left--;
                 }
+                int right = mid + 1;
+                while (right < len && arr[right] == target) {
+                    count++;
+                    right++;
+                }
+                break;
+            } else if (arr[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
-            count += right - first + 1;
         }
     }
     return count;
