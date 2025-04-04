@@ -1,30 +1,40 @@
 // Copyright 2021 NNTU-CS
-void insertionSort(int* arr, int len) {
-    for (int i = 1; i < len; i++) {
-        int key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
+void quickSort(int* arr, int left, int right) {
+    if (left >= right) return;
+    int pivot = arr[(left + right) / 2];
+    int i = left;
+    int j = right;
+    
+    while (i <= j) {
+        while (arr[i] < pivot) i++;
+        while (arr[j] > pivot) j--;
+        if (i <= j) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
             j--;
         }
-        arr[j + 1] = key;
     }
+    quickSort(arr, left, j);
+    quickSort(arr, i, right);
 }
 int countPairs1(int* arr, int len, int value) {
     int count = 0;
     for (int i = 0; i < len; i++) {
         for (int j = i + 1; j < len; j++) {
-            if (arr[i] + arr[j] == value) count++;
+            if (arr[i] + arr[j] == value) {
+                count++;
+            }
         }
     }
     return count;
 }
 int countPairs2(int* arr, int len, int value) {
-    insertionSort(arr, len);
+    quickSort(arr, 0, len - 1);
     int count = 0;
     int left = 0;
     int right = len - 1;
-
     while (left < right) {
         int sum = arr[left] + arr[right];
         if (sum == value) {
@@ -36,12 +46,11 @@ int countPairs2(int* arr, int len, int value) {
             int right_val = arr[right];
             int left_count = 0;
             int right_count = 0;
-
-            while (arr[left] == left_val) {
+            while (left < len && arr[left] == left_val) {
                 left_count++;
                 left++;
             }
-            while (arr[right] == right_val) {
+            while (right >= 0 && arr[right] == right_val) {
                 right_count++;
                 right--;
             }
@@ -55,27 +64,21 @@ int countPairs2(int* arr, int len, int value) {
     return count;
 }
 int countPairs3(int* arr, int len, int value) {
-    insertionSort(arr, len);
+    quickSort(arr, 0, len - 1);
     int count = 0;
-
     for (int i = 0; i < len; i++) {
         int target = value - arr[i];
         int low = i + 1;
         int high = len - 1;
-
         while (low <= high) {
             int mid = low + (high - low) / 2;
             if (arr[mid] == target) {
                 count++;
-                int left = mid - 1;
-                while (left >= low && arr[left] == target) {
+                for (int j = mid - 1; j >= low && arr[j] == target; j--) {
                     count++;
-                    left--;
                 }
-                int right = mid + 1;
-                while (right <= high && arr[right] == target) {
+                for (int j = mid + 1; j <= high && arr[j] == target; j++) {
                     count++;
-                    right++;
                 }
                 break;
             } else if (arr[mid] < target) {
