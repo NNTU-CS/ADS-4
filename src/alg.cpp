@@ -38,11 +38,9 @@ int countPairs2(int *arr, int len, int value) {
                 right_count++;
             }
             count += left_count * right_count;
-        } 
-        else if (sum < value) {
+        } else if (sum < value) {
             left++;
-        } 
-        else {
+        } else {
             right--;
         }
     }
@@ -70,11 +68,9 @@ int countPairs3(int *arr, int len, int value) {
                     j++;
                 }
                 break;
-            } 
-            else if (arr[mid] < target) {
+            } else if (arr[mid] < target) {
                 left = mid + 1;
-            } 
-            else {
+            } else {
                 right = mid - 1;
             }
         }
