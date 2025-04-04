@@ -1,6 +1,7 @@
 // Copyright 2021 NNTU-CS
 #include <iostream>
 #include <unordered_set>
+#include <vector>
 int countPairs1(int *arr, int len, int value) {
   int count = 0;
     std::unordered_set<std::string> seen;
@@ -40,22 +41,35 @@ int countPairs2(int *arr, int len, int value) {
     }
     return count;
 }
+int binarySearch(int *arr, int len, int target, int startIndex) {
+    int left = startIndex + 1;
+    int right = len - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
     std::unordered_set<std::string> seen;
+
     for (int i = 0; i < len; i++) {
         int complement = value - arr[i];
-        for (int j = i + 1; j < len; j++) {
-            if (arr[j] == complement) {
-                std::string pair = std::to_string(arr[i]) + '-' + std::to_string(arr[j]);
+        if (complement >= 0) {
+            int index = binarySearch(arr, len, complement, i);
+            if (index != -1 && index != i) {
+                std::string pair = std::to_string(arr[i]) + '-' + std::to_string(arr[index]);
                 if (seen.find(pair) == seen.end()) {
                     seen.insert(pair);
                     count++;
                 }
-                break;
-            }
-            if (arr[j] > complement) {
-                break;
             }
         }
     }
