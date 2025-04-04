@@ -21,28 +21,29 @@ int countPairs2(int *arr, int len, int value) {
         int sum = arr[left] + arr[right];
         if (sum == value) {
             if (arr[left] == arr[right]) {
+                // Все элементы между left и right одинаковы
                 int n = right - left + 1;
                 count += n * (n - 1) / 2;
                 break;
             }
             int left_val = arr[left];
-            int left_count = 1;
-            while (left + 1 < right && arr[left + 1] == left_val) {
+            int right_val = arr[right];
+            int left_count = 0;
+            while (left < len && arr[left] == left_val) {
                 left_count++;
                 left++;
             }
-            int right_val = arr[right];
-            int right_count = 1;
-            while (right - 1 > left && arr[right - 1] == right_val) {
+            int right_count = 0;
+            while (right >= 0 && arr[right] == right_val) {
                 right_count++;
                 right--;
             }
             count += left_count * right_count;
+        }
+        else if (sum < value) {
             left++;
-            right--;
-        } else if (sum < value) {
-            left++;
-        } else {
+        }
+        else {
             right--;
         }
     }
@@ -70,9 +71,11 @@ int countPairs3(int *arr, int len, int value) {
                     j++;
                 }
                 break;
-            } else if (arr[mid] < target) {
+            }
+            else if (arr[mid] < target) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
