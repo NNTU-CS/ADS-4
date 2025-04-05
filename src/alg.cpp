@@ -1,61 +1,143 @@
 // Copyright 2021 NNTU-CS
+#include <algorithm>
 
-int countPairs1(int *arr, int len, int value) {
-  int count = 0;
-  for (int i = 0; i < len - 1; ++i) {
-    for (int j = i + 1; j < len; ++j) {
-      if (arr[i] + arr[j] == value) {
-        ++count;
-      } else if (arr[i] + arr[j] > value) {
-        break;
+void myInsertionSort(int* data, int size) {
+  for (int i = 1; i < size; ++i) {
+    int currentValue = data[i];
+    int j = i - 1;
+
+    while (j >= 0 && data[j] > currentValue) {
+      data[j + 1] = data[j];
+      j--;
+    }
+
+    data[j + 1] = currentValue;
+  }
+}
+
+int countMatchingPairs_Naive(int* array, int arrayLength, int targetSum) {
+  int pairCount = 0;
+  for (int i = 0; i < arrayLength; ++i) {
+    for (int j = i + 1; j < arrayLength; ++j) {
+      if (array[i] + array[j] == targetSum) {
+        pairCount++;
       }
     }
   }
-  return count;
+  return pairCount;
 }
 
-int countPairs2(int *arr, int len, int value) {
-  int count = 0;
-  int left = 0;
-  int right = len - 1;
+int countMatchingPairs_TwoPointers(int* array, int arrayLength, int targetSum) {
+  int pairCount = 0;
+  int leftIndex = 0;
+  int rightIndex = arrayLength - 1;
 
-  while (left < right) {
-    int sum = arr[left] + arr[right];
-    if (sum == value) {
-      ++count;
-      ++left;
-    } else if (sum < value) {
-      ++left;
+  while (leftIndex < rightIndex) {
+    int currentSum = array[leftIndex] + array[rightIndex];
+
+    if (currentSum == targetSum) {
+      if (array[leftIndex] == array[rightIndex]) {
+        int numEqual = rightIndex - leftIndex + 1;
+        pairCount += numEqual * (numEqual - 1) / 2;
+        break;
+      } else {
+        int leftValue = array[leftIndex];
+        int leftCount = 0;
+        while (leftIndex < arrayLength && array[leftIndex] == leftValue) {
+          leftCount++;
+          leftIndex++;
+        }
+
+        int rightValue = array[rightIndex];
+        int rightCount = 0;
+        while (rightIndex >= 0 && array[rightIndex] == rightValue) {
+          rightCount++;
+          rightIndex--;
+        }
+
+        pairCount += leftCount * rightCount;
+      }
+    } else if (currentSum < targetSum) {
+      leftIndex++;
     } else {
-      --right;
+      rightIndex--;
     }
   }
-  return count;
+  return pairCount;
 }
 
-int binarySearch(int *arr, int left, int right, int target) {
-  while (left <= right) {
-    int mid = left + (right - left) / 2;
-    if (arr[mid] == target) {
-      return mid;
-    } else if (arr[mid] < target) {
-      left = mid + 1;
+int findLowerBoundIndex(int* array, int arrayLength, int targetValue,
+                        int startIndex) {
+  int low = startIndex;
+  int high = arrayLength;
+
+  while (low < high) {
+    int middle = low + (high - low) / 2;
+
+    if (array[middle] < targetValue) {
+      low = middle + 1;
     } else {
-      right = mid - 1;
+      high = middle;
     }
   }
-  return -1;
+
+  return (low < arrayLength && array[low] == targetValue) ? low : -1;
 }
 
-int countPairs3(int *arr, int len, int value) {
-  int count = 0;
-  for (int i = 0; i < len - 1; ++i) {
-    int complement = value - arr[i];
-    if (complement < arr[i]) continue;
-    int idx = binarySearch(arr, i + 1, len - 1, complement);
-    if (idx != -1) {
-      ++count;
+int findUpperBoundIndex(int* array, int arrayLength, int targetValue,
+                        int startIndex) {
+  int low = startIndex;
+  int high = arrayLength;
+
+  while (low < high) {
+    int middle = low + (high - low) / 2;
+
+    if (array[middle] <= targetValue) {
+      low = middle + 1;
+    } else {
+      high = middle;
     }
   }
-  return count;
+
+  return low;
+}
+
+int countMatchingPairs_BinarySearch(int* array, int arrayLength,
+                                    int targetSum) {
+  int pairCount = 0;
+
+  for (int i = 0; i < arrayLength;) {
+    int currentValue = array[i];
+    int currentCount = 0;
+
+    while (i < arrayLength && array[i] == currentValue) {
+      currentCount++;
+      i++;
+    }
+
+    int complementValue = targetSum - currentValue;
+
+    if (currentValue > complementValue) {
+      break;
+    }
+
+    if (currentValue == complementValue) {
+      pairCount += currentCount * (currentCount - 1) / 2;
+    } else {
+      int lowerIndex =
+          findLowerBoundIndex(array, arrayLength, complementValue, i);
+      if (lowerIndex == -1) {
+        continue;
+      }
+
+      int upperIndex =
+          findUpperBoundIndex(array, arrayLength, complementValue, i);
+
+      int complementCount = upperIndex - lowerIndex;
+
+      pairCount += currentCount * complementCount;
+    }
+  }
+
+  return pairCount;
 }
