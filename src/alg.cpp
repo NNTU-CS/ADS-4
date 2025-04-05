@@ -35,25 +35,30 @@ return cnt;
 int countPairs3(int *arr, int len, int value) {
 int cnt = 0;
 for (int i = 0; i < len; ++i) {
-int target = value - arr[i];
-int left = i + 1;
-int right = len - 1;
+int first = -1, left = i + 1, right = len - 1, target = value - arr[i];
 while (left <= right) {
-int mid = left + (right - left) / 2;
-if (arr[mid] == target) {
-cnt++;
-while (mid + 1 < len && arr[mid] == arr[mid + 1]) {
-mid++;
-}
-break;
-} else if (arr[mid] < target) {
-left = mid + 1;
+int x = left + (right - left) / 2;
+if (arr[x] >= target) {
+right = x - 1;
+if (arr[x] == target) first = x;
 } else {
-right = mid - 1;
+left = x + 1;
 }
 }
-while (i + 1 < len && arr[i] == arr[i + 1]) {
-i++;
+if (first != -1) {
+int last = first;
+left = first;
+right = len - 1;
+while (left <= right) {
+int x = left + (right - left) / 2;
+if (arr[x] <= target) {
+left = x + 1;
+if (arr[x] == target) last = x;
+} else {
+right = x - 1;
+}
+}
+cnt += last - first + 1;
 }
 }
 return cnt;
