@@ -1,4 +1,5 @@
-void sort(int* array, int left, int right) {
+// Copyright 2021 NNTU-CS
+void ssort(int* array, int left, int right) {
     if (left < right) {
         int pivot = array[left + (right - left) / 2];
         int l = left, r = right;
@@ -13,13 +14,13 @@ void sort(int* array, int left, int right) {
                 r--;
             }
         }
-        sort(array, left, r);
-        sort(array, l, right);
+        ssort(array, left, r);
+        ssort(array, l, right);
     }
 }
 
 int countPairs1(int *array, int len, int value) {
-    sort(array, 0, len - 1);
+    ssort(array, 0, len - 1);
     int count = 0;
     for (int i = 0; i < len - 1; i++) {
         if (i > 0 && array[i] == array[i - 1]) continue;
@@ -37,7 +38,7 @@ int countPairs1(int *array, int len, int value) {
 }
 
 int countPairs2(int *array, int len, int value) {
-    sort(array, 0, len - 1);
+    ssort(array, 0, len - 1);
     int count = 0;
     int left = 0, right = len - 1;
     while (left < right) {
@@ -58,7 +59,7 @@ int countPairs2(int *array, int len, int value) {
 }
 
 int countPairs3(int *array, int len, int value) {
-    sort(array, 0, len - 1);
+    ssort(array, 0, len - 1);
     int count = 0;
     int l = 0, r = len - 1;
 
