@@ -62,7 +62,7 @@ int countPairs2(int *arr, int len, int value) {
   }
   return count;
 }
-int binarySearch(int arr[], int left, int right, int target) {
+int binarySearch(const int arr[], int left, int right, int target) {
   while (left <= right) {
     int mid = left + (right - left) / 2;
     if (arr[mid] == target) {
