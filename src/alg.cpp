@@ -15,7 +15,7 @@ int current = index;
 while (current >= 0 && current < len && arr[current] == arr[index]) {
 current += direction;
 }
-return current;
+return current - 1;
 }
 int countPairs2(int *arr, int len, int value) {
 int cnt = 0;
