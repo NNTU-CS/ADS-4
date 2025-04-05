@@ -1,6 +1,6 @@
 // Copyright 2021 NNTU-CS
 
-int countPairs1(const int* array, int length, int target_sum) {
+int countPairs1(int* array, int length, int target_sum) {
   int pair_count = 0;
   for (int first = 0; first < length; ++first) {
     for (int second = first + 1; second < length; ++second) {
@@ -12,7 +12,7 @@ int countPairs1(const int* array, int length, int target_sum) {
   return pair_count;
 }
 
-int countPairs2(const int* array, int length, int target_sum) {
+int countPairs2(int* array, int length, int target_sum) {
   int pair_count = 0;
   int left_index = 0;
   int right_index = length - 1;
@@ -49,7 +49,7 @@ int countPairs2(const int* array, int length, int target_sum) {
   return pair_count;
 }
 
-int binarySearchFun(const int* array, int low, int high, int key) {
+int binarySearchFun(int* array, int low, int high, int key) {
   while (low <= high) {
     int mid = low + (high - low) / 2;
     if (array[mid] == key) {
@@ -63,7 +63,7 @@ int binarySearchFun(const int* array, int low, int high, int key) {
   return -1;
 }
 
-int countPairs3(const int* array, int length, int target_sum) {
+int countPairs3(int* array, int length, int target_sum) {
   int pair_count = 0;
   for (int i = 0; i < length; ++i) {
     int complement = target_sum - array[i];
