@@ -48,34 +48,33 @@ int binarySearch(int *arr, int left, int right, int target) {
     while (left <= right) {
         int mid = left + (right - left) / 2;
         if (arr[mid] == target) {
-            return mid;
+            int count = 1;
+            int l = mid - 1;
+            while (l >= 0 && arr[l] == target) {
+                count++;
+                l--;
+            }
+            int r = mid + 1;
+            while (r <= right && arr[r] == target) {
+                count++;
+                r++;
+            }
+            return count;
         } else if (arr[mid] < target) {
             left = mid + 1;
         } else {
             right = mid - 1;
         }
     }
-    return -1;
+    return 0;
 }
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
-    for (int i = 0; i < len; ++i) {
-        if (arr[i] > value) continue;
+    for (int i = 0; i < len - 1; ++i) {
         int target = value - arr[i];
-        int idx = binarySearch(arr, i + 1, len - 1, target);
-        if (idx != -1) {
-            count++;
-            int left = idx - 1;
-            while (left > i && arr[left] == target) {
-                count++;
-                left--;
-            }
-            int right = idx + 1;
-            while (right < len && arr[right] == target) {
-                count++;
-                right++;
-            }
-        }
+        if (target < 0) continue;
+        int found = binarySearch(arr, i + 1, len - 1, target);
+        count += found;
     }
     return count;
 }
