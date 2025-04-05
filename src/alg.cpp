@@ -1,10 +1,8 @@
 // Copyright 2021 NNTU-CS
-#include <iostream>
-#include <algorithm>
 int countPairs1(int *arr, int len, int value) {
     int count = 0;
-    for(int i = 0; i < len-1; ++i) {
-        for(int j = i+1; j < len; ++j) {
+    for(int i = 0; i < len-1; i++) {
+        for(int j = i+1; j < len; j++) {
             if(arr[i] + arr[j] == value) {
                 count++;
             }
@@ -13,43 +11,24 @@ int countPairs1(int *arr, int len, int value) {
     return count;
 }
 int countPairs2(int *arr, int len, int value) {
-    int count = 0;
-    int left = 0;
-    int right = len - 1;
-    
-    while(left < right) {
-        int current_sum = arr[left] + arr[right];
-        if(current_sum == value) {
-            if(arr[left] == arr[right]) {
-                int n = right - left + 1;
-                count += (n * (n - 1)) / 2;
-                break;
-            } else {
-                int count_left = 1;
-                while(left + 1 < right && arr[left] == arr[left + 1]) {
-                    count_left++;
-                    left++;
-                }
-                int count_right = 1;
-                while(right - 1 > left && arr[right] == arr[right - 1]) {
-                    count_right++;
-                    right--;
-                }
-                count += count_left * count_right;
-            }
+    int countPairs2(int *arr, int len, int value) {
+        int count = 0;
+        int end = len - 1;
+        while (end > 0) {
+          if (arr[end] > value) {
+            end--;
+          } else {
+            break;
+          }
         }
-        if(current_sum < value) {
-            left++;
+        for (int i = 0; i < len; i++) {
+          for (int j = end; j > i; j--) {
+            if (arr[i] + arr[j] == value)
+              count++;
+          }
         }
-        else if(current_sum > value) {
-            right--;
-        }
-        else {
-            left++;
-            right--;
-        }
-    }
-    return count;
+        return count;
+      }
 }
 int countPairs3(int *arr, int len, int value) {
     int count = 0;
