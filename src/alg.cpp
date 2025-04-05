@@ -1,108 +1,110 @@
 // Copyright 2021 NNTU-CS
+
 #include <iostream>
-using namespace std;
 
-
-int countPairs1(int *arr, int len, int value) {
-    int k = 0;
-    for (int i = 0; i < len; i++) {
-        for (int j = 0; j < len; j++) {
-            if (arr[i] + arr[j] == value) {
-                k++;
-            }
-        }
+int CountPairs1(const int* array, int length, int target_sum) {
+  int pair_count = 0;
+  for (int i = 0; i < length; ++i) {
+    for (int j = i + 1; j < length; ++j) {
+      if (array[i] + array[j] == target_sum) {
+        ++pair_count;
+      }
     }
-    return k;
+  }
+  return pair_count;
 }
 
-int countPairs2(int *arr, int len, int value) {
-    int k = 0;
-    int left = 0;
-    int right = len - 1;
+int CountPairs2(const int* array, int length, int target_sum) {
+  int pair_count = 0;
+  int left = 0;
+  int right = length - 1;
 
-    while (left < right) {
-        int summa = arr[left] + arr[right];
-        if (summa < value) {
-            left++;
-        } else if (summa > value) {
-            right--;
-        } else {
-            if (arr[left] == arr[right]) {
-                int count = right-left+1;
-                k += count * (count-1) / 2;
-                break;
-            } else {
-                int countLeft = 1;
-                int currentLeft = left;
-                while (currentLeft + 1 < right && arr[currentLeft + 1] == arr[currentLeft+1]) {
-                    countLeft = countLeft + 1;
-                    currentLeft = currentLeft + 1;
-                }
-                int countRight = 1;
-                int currentRight = right;
-                while (left < currentRight - 1 && arr[currentRight] == arr[currentRight-1]) {
-                    countRight = countRight + 1;
-                    currentRight = currentRight - 1;
-                }
-                k += countLeft * countRight;
-                left = currentLeft+1;
-                right = currentRight-1;
-            }
-        }
+  while (left < right) {
+    const int current_sum = array[left] + array[right];
+    if (current_sum < target_sum) {
+      ++left;
+    } else if (current_sum > target_sum) {
+      --right;
+    } else {
+      if (array[left] == array[right]) {
+        const int duplicate_count = right - left + 1;
+        pair_count += duplicate_count * (duplicate_count - 1) / 2;
+        break;
+      }
+
+      int left_duplicates = 1;
+      int current_left = left;
+      while (current_left + 1 < right && 
+             array[current_left + 1] == array[left]) {
+        ++left_duplicates;
+        ++current_left;
+      }
+
+      int right_duplicates = 1;
+      int current_right = right;
+      while (left < current_right - 1 && 
+             array[current_right - 1] == array[right]) {
+        ++right_duplicates;
+        --current_right;
+      }
+
+      pair_count += left_duplicates * right_duplicates;
+      left = current_left + 1;
+      right = current_right - 1;
     }
-    return k;
+  }
+  return pair_count;
 }
 
-int binSearch1(int *arr, int high, int low, int target) {
-    int rez = -1;
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (arr[mid] == target) {
-            rez = mid;
-            high = mid - 1;
-        } else if (arr[mid] < target) {
-            low = mid + 1;
-        } else {
-            high = mid - 1;
-        }
+int BinarySearchFirst(const int* array, int high, int low, int target) {
+  int result = -1;
+  while (low <= high) {
+    const int mid = low + (high - low) / 2;
+    if (array[mid] == target) {
+      result = mid;
+      high = mid - 1;
+    } else if (array[mid] < target) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
     }
-    return rez;
+  }
+  return result;
 }
 
-
-int binSearch2(int *arr, int high, int low, int target) {
-    int rez = -1;
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (arr[mid] == target) {
-            rez = mid;
-            low = mid + 1;
-        } else if (arr[mid] < target) {
-            low = mid + 1;
-        } else {
-            high = mid - 1;
-        }
+int BinarySearchLast(const int* array, int high, int low, int target) {
+  int result = -1;
+  while (low <= high) {
+    const int mid = low + (high - low) / 2;
+    if (array[mid] == target) {
+      result = mid;
+      low = mid + 1;
+    } else if (array[mid] < target) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
     }
-    return rez;
+  }
+  return result;
 }
 
-int countPairs3(int *arr, int len, int value) {
-    int k = 0;
-    for (int i = 0; i < len-1; i++) {
-        int target = value - arr[i];
-        if (target < arr[i]) {
-            continue;
-        }
-        int low = i + 1;
-        int high = len - 1;
-        int first = binSearch1(arr, low, high, target);
-        if (first == -1) {
-            continue;
-        }
-        int last = binSearch2(arr, low, high, target);
-        k += (last - first + 1);
+int CountPairs3(const int* array, int length, int target_sum) {
+  int pair_count = 0;
+  for (int i = 0; i < length - 1; ++i) {
+    const int complement = target_sum - array[i];
+    if (complement < array[i]) {
+      continue;
     }
-    return k;
+
+    const int low = i + 1;
+    const int high = length - 1;
+    const int first = BinarySearchFirst(array, high, low, complement);
+    if (first == -1) {
+      continue;
+    }
+
+    const int last = BinarySearchLast(array, high, low, complement);
+    pair_count += (last - first + 1);
+  }
+  return pair_count;
 }
-
-
