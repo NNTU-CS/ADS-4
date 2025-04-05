@@ -10,6 +10,13 @@ cnt++;
 }
 return cnt;
 }
+int skipDuplicates(int* arr, int len, int index, int direction) {
+int current = index;
+while (current >= 0 && current < len && arr[current] == arr[index]) {
+current += direction;
+}
+return current;
+}
 int countPairs2(int *arr, int len, int value) {
 int cnt = 0;
 int right = len - 1;
@@ -28,13 +35,6 @@ right--;
 }
 return cnt;
 }
-int skipDuplicates(int* arr, int len, int index, int direction) {
-int current = index;
-while (current >= 0 && current < len && arr[current] == arr[index]) {
-current += direction;
-}
-return current;
-}
 int countPairs3(int *arr, int len, int value) {
 int cnt = 0;
 for (int i = 0; i < len; ++i) {
@@ -47,8 +47,7 @@ if (arr[mid] == target) {
 cnt++;
 while (mid + 1 < len && arr[mid] == arr[mid + 1]) {
 mid++;
-}
-break; 
+} break; 
 } else if (arr[mid] < target) {
 left = mid + 1;
 } else {
