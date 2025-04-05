@@ -43,28 +43,20 @@ int left = i + 1;
 int right = len - 1;
 while (left <= right) {
 int mid = left + (right - left) / 2;
-if (arr[mid] >= target) {
-right = mid - 1;
+if (arr[mid] == target) { 
+cnt++;
+while (mid + 1 < len && arr[mid] == arr[mid + 1]) {
+mid++;
 }
-else {
+break; 
+} else if (arr[mid] < target) {
 left = mid + 1;
-}
-}
-int first = left;
-left = i + 1;
-right = len - 1;
-while (left <= right) {
-int mid = left + (right - left) / 2;
-if (arr[mid] <= target) {
-left = mid + 1;
-}
-else {
+} else {
 right = mid - 1;
 }
 }
-int last = right;
-if (first <= last) {
-cnt += last - first + 1;
+while (i + 1 < len && arr[i] == arr[i + 1]) {
+i++;
 }
 }
 return cnt;
