@@ -62,28 +62,32 @@ int countPairs2(int *arr, int len, int value) {
   }
   return count;
 }
-int countPairs3(int *arr, int len, int value) {
+int binarySearch(int arr[], int left, int right, int target) {
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target) {
+      return mid;
+    } else if (arr[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+}
+int countPairs3(int arr[], int len, int value) {
   quickSort(arr, 0, len - 1);
   int count = 0;
-  for (int i = 0; i < len; i++) {
-    int firstElement = arr[i];
-    int secondElement = value - firstElement;
-    if (i > 0 && arr[i] == arr[i - 1]) {
-      continue;
-    }
-    int left = i + 1;
-    int right = len - 1;
-    while (left <= right) {
-      int mid = left + (right - left) / 2;
-      if (arr[mid] == secondElement) {
+  for (int i = 0; i < len - 1; i++) {
+    int complement = value - arr[i];
+    int index = binarySearch(arr, i + 1, len - 1, complement);
+    if (index != -1) {
+      count++;
+      while (index + 1 < len && arr[index + 1] == complement) {
         count++;
-        break;
-      } else if (arr[mid] < secondElement) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
+        index++;
       }
     }
   }
-return count;
+  return count;
 }
