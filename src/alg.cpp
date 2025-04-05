@@ -1,80 +1,88 @@
 // Copyright 2021 NNTU-CS
-int countPairs1(int *arr, int len, int value) {
-    int count = 0;
-    for (int i = 0; i < len; ++i) {
-        for (int j = i + 1; j < len; ++j) {
-            if (arr[i] + arr[j] == value) {
-                count++;
+int countPairs1(int *data, int size, int target) {
+    int result = 0;
+    for (int first = 0; first < size - 1; first++) {
+        for (int second = first + 1; second < size; second++) {
+            if (data[first] + data[second] == target) {
+                result++;
             }
         }
     }
-    return count;
+    return result;
 }
-int countPairs2(int *arr, int len, int value) {
-    int count = 0;
-    int left = 0;
-    int right = len - 1;
-    while (left < right) {
-        int sum = arr[left] + arr[right];
-        if (sum == value) {
-            if (arr[left] != arr[right]) {
-                int left_val = arr[left];
-                int right_val = arr[right];
-                int left_count = 0;
-                int right_count = 0;
-                while (left < len && arr[left] == left_val) {
-                    left++;
-                    left_count++;
+int countPairs2(int *array, int length, int sum) {
+    int pairs = 0;
+    int high = length - 1;
+    
+    while (high > 0 && array[high] > sum) {
+        high--;
+    }
+    for (int low = 0; low < high; low++) {
+        int current = array[low];
+        int needed = sum - current;
+        
+        int left = low + 1;
+        int right = high;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (array[mid] == needed) {
+                pairs++;
+                int temp = mid - 1;
+                while (temp >= left && array[temp] == needed) {
+                    pairs++;
+                    temp--;
                 }
-                while (right >= 0 && arr[right] == right_val) {
-                    right--;
-                    right_count++;
+                temp = mid + 1;
+                while (temp <= right && array[temp] == needed) {
+                    pairs++;
+                    temp++;
                 }
-                count += left_count * right_count;
-            } else {
-                int n = right - left + 1;
-                count += n * (n - 1) / 2;
                 break;
+            } else if (array[mid] < needed) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
-        } else if (sum < value) {
-            left++;
-        } else {
-            right--;
         }
     }
-    return count;
+    return pairs;
 }
-int binarySearch(int *arr, int left, int right, int target) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) {
-            int count = 1;
-            int l = mid - 1;
-            while (l >= 0 && arr[l] == target) {
-                count++;
-                l--;
-            }
-            int r = mid + 1;
-            while (r <= right && arr[r] == target) {
-                count++;
-                r++;
-            }
-            return count;
-        } else if (arr[mid] < target) {
-            left = mid + 1;
+int findMatches(int *numbers, int start, int end, int match) {
+    int first = -1;
+    int low = start;
+    int high = end;
+
+    while (low <= high) {
+        int center = low + (high - low) / 2;
+        if (numbers[center] >= match) {
+            if (numbers[center] == match) first = center;
+            high = center - 1;
         } else {
-            right = mid - 1;
+            low = center + 1;
         }
     }
-    return 0;
-}
-int countPairs3(int *arr, int len, int value) {
-    int count = 0;
-    for (int i = 0; i < len - 1; ++i) {
-        int target = value - arr[i];
-        if (target < 0) continue;
-        int found = binarySearch(arr, i + 1, len - 1, target);
-        count += found;
+    if (first == -1) return 0;
+    int last = first;
+    low = first;
+    high = end;
+    while (low <= high) {
+        int center = low + (high - low) / 2;
+        if (numbers[center] <= match) {
+            if (numbers[center] == match) last = center;
+            low = center + 1;
+        } else {
+            high = center - 1;
+        }
     }
-    return count;
+    return last - first + 1;
+}
+int countPairs3(int *elements, int count, int total) {
+    int found = 0;
+    for (int index = 0; index < count; index++) {
+        int complement = total - elements[index];
+        if (complement < 0) continue;
+        found += findMatches(elements, index + 1, count - 1, complement);
+    }
+    return found;
 }
