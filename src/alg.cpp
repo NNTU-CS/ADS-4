@@ -41,53 +41,53 @@ int countPairs1(int *arr, int len, int value) {
 }
 
 int countPairs2(int *arr, int len, int value) {
-  quickSort(arr, 0, len - 1);
-  int cnt = 0;
-  int left = 0;
-  int right = len - 1;
-  while (left < right) {
-    int summa = arr[left] + arr[right];
-    if (summa == value) {
-      cnt++;
-      left++;
-      right--;
-      while ((left < right) && (arr[left] == arr[left - 1])) {
-        left++;
-      }
-      while ((left < right) && (arr[right] == arr[right + 1])) {
-        right--;
-      }
-    } else if (summa < value) {
-      left++;
-    } else {
-      right--;
+    quickSort(arr, 0, len - 1);
+    int cnt = 0;
+    int left = 0;
+    int right = len - 1;
+    while (left < right) {
+        int summa = arr[left] + arr[right];
+        if (summa == value) {
+            cnt++;
+            int l = arr[left];
+            int r = arr[right];
+            while (left < right && arr[left] == l) {
+                left++;
+            }
+            while (left < right && arr[right] == r) {
+                right--;
+            }
+        } else if (summa < value) {
+            left++;
+        } else {
+            right--;
+        }
     }
-  }
-  return cnt;
+    return cnt;
 }
 
 int countPairs3(int *arr, int len, int value) {
-  quickSort(arr, 0, len - 1);
-  int cnt = 0;
-  int left = 0;
-  int right = len - 1;
-  while (left < right) {
-    int summa = arr[left] + arr[right];
-    if (summa == value) {
-      cnt++;
-      left++;
-      right--;
-      while ((left < right) && (arr[left] == arr[left - 1])) {
-        left++;
-      }
-      while ((left < right) && (arr[right] == arr[right + 1])) {
-        right--;
-      }
-    } else if (summa < value) {
-      left++;
-    } else {
-      right--;
+    quickSort(arr, 0, len - 1);
+    int cnt = 0;
+    int left = 0;
+    int right = len - 1;
+    while (left < right) {
+        int summa = arr[left] + arr[right];
+        if (summa == value) {
+            cnt++;
+            left++;
+            right--;
+            while (left < right && arr[left] == arr[left - 1]) {
+                left++;
+            }
+            while (left < right && arr[right] == arr[right + 1]) {
+                right--;
+            }
+        } else if (summa < value) {
+            left++;
+        } else {
+            right--;
+        }
     }
-  }
-  return cnt;
+    return cnt;
 }
