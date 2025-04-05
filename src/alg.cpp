@@ -1,80 +1,106 @@
 // Copyright 2021 NNTU-CS
-#include <algorithm>
 
-inline void fake_work(int reps = 500) {
-  volatile int x = 0;
-  for (int i = 0; i < reps; ++i) {
-    x += i;
+void sortByInsertion(int data[], int size) {
+  for (int idx = 1; idx < size; ++idx) {
+    int temp = data[idx];
+    int pos = idx - 1;
+    while (pos >= 0 && data[pos] > temp) {
+      data[pos + 1] = data[pos];
+      pos--;
+    }
+    data[pos + 1] = temp;
   }
 }
 
-int countPairs1(int* arr, int len, int value) {
-  int count = 0;
-  for (int i = 0; i < len - 1; ++i) {
-    for (int j = i + 1; j < len; ++j) {
-      if (arr[i] + arr[j] == value) {
-        count++;
-      } else if (arr[i] + arr[j] > value) {
-        break;
-      }
-      fake_work();
+int findPairCount1(int *data, int length, int targetSum) {
+  int pairCount = 0;
+  for (int i = 0; i < length; i++) {
+    for (int j = i + 1; j < length; j++) {
+      if (data[i] + data[j] == targetSum) pairCount++;
     }
   }
-  return count;
+  return pairCount;
 }
 
-int countPairs2(int* arr, int len, int value) {
-  int count = 0;
-  int left = 0;
-  int right = len - 1;
-
-  while (left < right) {
-    int sum = arr[left] + arr[right];
-    if (sum == value) {
-      int l_val = arr[left];
-      int r_val = arr[right];
-      int l_count = 0;
-      int r_count = 0;
-
-      if (l_val == r_val) {
-        int n = right - left + 1;
-        count += n * (n - 1) / 2;
+int findPairCount2(int *data, int length, int targetSum) {
+  int pairCount = 0;
+  int leftPointer = 0, rightPointer = length - 1;
+  while (leftPointer < rightPointer) {
+    int currentSum = data[leftPointer] + data[rightPointer];
+    if (currentSum == targetSum) {
+      if (data[leftPointer] == data[rightPointer]) {
+        int groupSize = rightPointer - leftPointer + 1;
+        pairCount += groupSize * (groupSize - 1) / 2;
         break;
+      } else {
+        int leftValue = data[leftPointer], leftCount = 0;
+        while (leftPointer < length && data[leftPointer] == leftValue) {
+          leftCount++;
+          leftPointer++;
+        }
+        int rightValue = data[rightPointer], rightCount = 0;
+        while (rightPointer >= 0 && data[rightPointer] == rightValue) {
+          rightCount++;
+          rightPointer--;
+        }
+        pairCount += leftCount * rightCount;
       }
-
-      while (left <= right && arr[left] == l_val) {
-        l_count++;
-        left++;
-      }
-
-      while (right >= left && arr[right] == r_val) {
-        r_count++;
-        right--;
-      }
-
-      count += l_count * r_count;
-    } else if (sum < value) {
-      left++;
+    } else if (currentSum < targetSum) {
+      leftPointer++;
     } else {
-      right--;
+      rightPointer--;
     }
-
-    fake_work(100);
   }
-
-  return count;
+  return pairCount;
 }
 
-int countPairs3(int* arr, int len, int value) {
-  int count = 0;
-  for (int i = 0; i < len - 1; ++i) {
-    int complement = value - arr[i];
-    if (complement < 0) continue;
-
-    const int* lower = std::lower_bound(arr + i + 1, arr + len, complement);
-    const int* upper = std::upper_bound(arr + i + 1, arr + len, complement);
-
-    count += (upper - lower);
+int findLowerBound(int *data, int length, int targetValue, int startIdx) {
+  int low = startIdx, high = length;
+  while (low < high) {
+    int mid = low + (high - low) / 2;
+    if (data[mid] < targetValue)
+      low = mid + 1;
+    else
+      high = mid;
   }
-  return count;
+  return (low < length && data[low] == targetValue) ? low : -1;
 }
+
+int findUpperBound(int *data, int length, int targetValue, int startIdx) {
+  int low = startIdx, high = length;
+  while (low < high) {
+    int mid = low + (high - low) / 2;
+    if (data[mid] <= targetValue)
+      low = mid + 1;
+    else
+      high = mid;
+  }
+  return low;
+}
+
+int findPairCount3(int *data, int length, int targetSum) {
+  int pairCount = 0;
+
+  for (int i = 0; i < length;) {
+    int currentValue = data[i];
+    int currentValueCount = 0;
+    while (i < length && data[i] == currentValue) {
+      currentValueCount++;
+      i++;
+    }
+    int requiredValue = targetSum - currentValue;
+
+    if (currentValue > requiredValue) break;
+    if (currentValue == requiredValue) {
+      pairCount += currentValueCount * (currentValueCount - 1) / 2;
+    } else {
+      int lowerBoundIdx = findLowerBound(data, length, requiredValue, i);
+      if (lowerBoundIdx == -1) continue;
+      int upperBoundIdx = findUpperBound(data, length, requiredValue, i);
+      int requiredValueCount = upperBoundIdx - lowerBoundIdx;
+      pairCount += currentValueCount * requiredValueCount;
+    }
+  }
+  return pairCount;
+}
+
