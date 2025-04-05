@@ -69,7 +69,9 @@ int countPairs3(int *arr, int len, int value) {
             count++;
             left++;
             right--;
+            // Skip duplicates on the left side
             while (left < right && arr[left] == arr[left - 1]) left++;
+            // Skip duplicates on the right side
             while (left < right && arr[right] == arr[right + 1]) right--;
         } else if (sum < value) {
             left++;
