@@ -27,7 +27,7 @@ int binarySearch_index(int *arr, int len, int value) {
   int lbound = 0;
   int rbound = len - 1;
   while (rbound > lbound) {
-    int middle = (lbound + rbound) / 2;
+    int middle = lbound + (rbound - lbound) / 2;
     if (arr[middle] == value) {
       while (arr[middle - 1] == arr[middle]) {
         middle--;
