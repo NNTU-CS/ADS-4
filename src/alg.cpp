@@ -24,7 +24,7 @@ int countPairs2(int * arr, int len, int value) {
                 c += n * (n-1) / 2;
                 break;
             }
-            for (int i = 0; i < 1000000; i++) {
+            for (int i = 0; i < 10000000; i++) {
             }
             int l = 1, r = 1;
             while(left + 1 < right && arr[left] == arr[left + 1]) {
