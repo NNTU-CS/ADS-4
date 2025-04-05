@@ -55,7 +55,12 @@ left = mid + 1;
 right = mid - 1;
 }
 }
-i = skipDuplicates(arr, len, i, 1) - 1;
+int next_i = skipDuplicates(arr, len, i, 1);
+if( next_i < len) {
+i = next_i - 1;
+} else {
+break;
+}
 }
 return cnt;
 }
