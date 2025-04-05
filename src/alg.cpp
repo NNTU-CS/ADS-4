@@ -56,10 +56,12 @@ int countPairs3(int *arr, int len, int value) {
             flag = 0;
           }
         }
-      } else if (arr[middle] < (value - arr[i])) {
-        left_bound = arr[middle] + 1;
-      } else if (arr[middle] > (value - arr[i])) {
-        right_bound = arr[middle - 1];
+      }
+      if ((arr[middle]) < (value - arr[i])) {
+        left_bound = middle + 1;
+      }
+      if ((arr[middle]) > (value - arr[i])) {
+        right_bound = middle - 1;
       }
     }
   }
