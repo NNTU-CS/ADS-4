@@ -61,20 +61,24 @@ int countPairs2(int *arr, int len, int value) {
 int countPairs3(int *arr, int len, int value) {
     quickSort(arr, 0, len - 1);
     int count = 0;
-    const int MAX = 10000;
-    char used[MAX] = {0};
-    char visited[MAX] = {0};
+    int left = 0, right = len - 1;
 
-    for (int i = 0; i < len; i++) {
-        int complement = value - arr[i];
-        if (complement >= 0 && complement < MAX &&
-            visited[complement] && !used[arr[i]] && !used[complement]) {
+    while (left < right) {
+        int sum = arr[left] + arr[right];
+        if (sum == value) {
             count++;
-            used[arr[i]] = 1;
-            used[complement] = 1;
+            left++;
+            right--;
+            // Skip duplicates
+            while (left < right && arr[left] == arr[left - 1]) left++;
+            while (left < right && arr[right] == arr[right + 1]) right--;
+        } else if (sum < value) {
+            left++;
+        } else {
+            right--;
         }
-        visited[arr[i]] = 1;
     }
     return count;
 }
+
 
