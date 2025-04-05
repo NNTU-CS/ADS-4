@@ -22,4 +22,45 @@ int countPairs2(int *arr, int len, int value) {
     }
   }
   return count; }
-int countPairs3(int *arr, int len, int value) { return 0; }
+int countPairs3(int *arr, int len, int value) { 
+  int count = 0;
+  for (int i = 0; i < len; i++) {
+    int left_bound = 0;
+    int right_bound = len-1;
+    while (left_bound < right_bound) {
+      int middle = (left_bound + right_bound) / 2;
+      if (arr[middle] == (value - arr[i])) {
+        count++;
+        bool flag = 1;
+        int left = middle - 1, right = middle + 1;
+        while (flag) {
+          if (arr[left] == arr[middle] &&
+              arr[right] != arr[middle]) {
+            count++;
+            left--;
+            continue;
+          }
+          if (arr[left] != arr[middle] && arr[right] == arr[middle]) {
+            count++;
+            right++;
+            continue;
+          }
+          if (arr[left] == arr[middle] && arr[right] == arr[middle]) {
+            count += 2;
+            left--;
+            right++;
+            continue;
+          }
+          if (arr[left] != arr[middle] && arr[right] != arr[middle]) {
+            left_bound = right_bound + 5;
+            flag = 0;
+          }
+        }
+      } else if (arr[middle] < (value - arr[i])) {
+        left_bound = arr[middle] + 1;
+      } else if (arr[middle] > (value - arr[i])) {
+        right_bound = arr[middle - 1];
+      }
+    }
+  }
+  return count; }
