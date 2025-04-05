@@ -58,7 +58,6 @@ int binarySearch_count(int *arr, int len, int index ) {
       right++;
     }
     if (arr[left] != arr[index] && arr[right] != arr[index]) {
-      flag = 0;
       break;
     }
   }
@@ -67,11 +66,9 @@ int binarySearch_count(int *arr, int len, int index ) {
 
 int countPairs3(int *arr, int len, int value) { 
   int count = 0;
-  int *temp_arr = arr;
-   int temp_len = len;
   for (int i = 0; i < len; i++) {
-    temp_arr = &arr[i];
-    temp_len = len - (i + 1);
+    int* temp_arr = &arr[i];
+    int temp_len = len - (i + 1);
     int find = value - arr[i];
     int index = binarySearch_index(temp_arr, temp_len, find);
     count += binarySearch_count(temp_arr, temp_len, index);
