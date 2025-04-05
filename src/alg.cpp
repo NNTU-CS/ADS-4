@@ -1,5 +1,26 @@
 // Copyright 2021 NNTU-CS
+int partition(int * arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+
+        if (arr[j] <= pivot) {
+            i++;
+            std::swap(arr[i], arr[j]);
+        }
+    }
+    std::swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+void quickSort(int* arr, int low, int high) {
+    if (low < high) {
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
 int countPairs1(int *arr, int len, int value) {
+  quickSort(arr, 0, len - 1);
   int count = 0;
   for (int i = 0; i < len; i++) {
 	  for (int j = i + 1; j < len; j++) {
@@ -13,6 +34,7 @@ int countPairs1(int *arr, int len, int value) {
   return count;
 }
 int countPairs2(int *arr, int len, int value) {
+  quickSort(arr, 0, len - 1);
   int left = 0;
   int right = len - 1;
   int count = 0;
@@ -38,6 +60,7 @@ int countPairs2(int *arr, int len, int value) {
   return count;
 }
 int countPairs3(int *arr, int len, int value) {
+  quickSort(arr, 0, len - 1);
   int count = 0;
   for (int i = 0; i < len; i++) {
     int firstElement = arr[i];
