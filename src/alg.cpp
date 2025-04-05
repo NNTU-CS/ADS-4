@@ -47,13 +47,15 @@ if (arr[mid] == target) {
 cnt++;
 while (mid + 1 < len && arr[mid] == arr[mid + 1]) {
 mid++;
-} break; 
+}
+break; 
 } else if (arr[mid] < target) {
 left = mid + 1;
 } else {
 right = mid - 1;
 }
 }
+i = skipDuplicates(arr, len, i, 1) - 1;
 }
 return cnt;
 }
