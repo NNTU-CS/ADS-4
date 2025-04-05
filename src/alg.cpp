@@ -25,8 +25,8 @@ while (left < right) {
 int sum = arr[left] + arr[right];
 if (sum == value) {
 cnt++;
-right = skipDuplicates(arr, len, right, -1);
 left = skipDuplicates(arr, len, left, 1);
+right = skipDuplicates(arr, len, right, -1);
 } else if (sum < value) {
 left++;
 } else {
