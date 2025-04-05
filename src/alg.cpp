@@ -1,132 +1,125 @@
 // Copyright 2021 NNTU-CS
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-void insertionSort(int *data, int length) {
-  for (int idx = 1; idx < length; ++idx) {
-    int value = data[idx];
-    int pos = idx - 1;
-    while (pos >= 0 && data[pos] > value) {
-      data[pos + 1] = data[pos];
-      --pos;
+void sortArray(int *arr, int size) {
+  for (int i = 1; i < size; ++i) {
+    int key = arr[i];
+    int j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      --j;
     }
-    data[pos + 1] = value;
+    arr[j + 1] = key;
   }
 }
 
-int bruteForcePairCount(int *data, int length, int targetSum) {
-  int total = 0;
-  for (int a = 0; a < length; ++a) {
-    for (int b = a + 1; b < length; ++b) {
-      if (data[a] + data[b] == targetSum) {
-        ++total;
+int countPairs1(int *arr, int size, int sum) {
+  int count = 0;
+  for (int i = 0; i < size; ++i) {
+    for (int j = i + 1; j < size; ++j) {
+      if (arr[i] + arr[j] == sum) {
+        ++count;
       }
     }
   }
-  return total;
+  return count;
 }
 
-int optimizedPairCount(int *data, int length, int targetSum) {
-  int total = 0;
-  int start = 0;
-  int end = length - 1;
+int countPairs2(int *arr, int size, int sum) {
+  int count = 0;
+  int left = 0;
+  int right = size - 1;
 
-  while (start < end) {
-    int sum = data[start] + data[end];
+  while (left < right) {
+    int currentSum = arr[left] + arr[right];
 
-    if (sum == targetSum) {
-      if (data[start] == data[end]) {
-        int range = end - start + 1;
-        total += range * (range - 1) / 2;
+    if (currentSum == sum) {
+      if (arr[left] == arr[right]) {
+        int numEqualElements = right - left + 1;
+        count += numEqualElements * (numEqualElements - 1) / 2;
         break;
       } else {
-        int leftValue = data[start];
-        int leftDup = 0;
-        while (start < length && data[start] == leftValue) {
-          ++leftDup;
-          ++start;
+        int leftVal = arr[left];
+        int leftCount = 0;
+        while (left < size && arr[left] == leftVal) {
+          ++leftCount;
+          ++left;
         }
 
-        int rightValue = data[end];
-        int rightDup = 0;
-        while (end >= 0 && data[end] == rightValue) {
-          ++rightDup;
-          --end;
+        int rightVal = arr[right];
+        int rightCount = 0;
+        while (right >= 0 && arr[right] == rightVal) {
+          ++rightCount;
+          --right;
         }
-
-        total += leftDup * rightDup;
+        count += leftCount * rightCount;
       }
-    } else if (sum < targetSum) {
-      ++start;
+    } else if (currentSum < sum) {
+      ++left;
     } else {
-      --end;
+      --right;
     }
   }
 
-  return total;
+  return count;
 }
 
-int getLowerIndex(int *data, int length, int value, int from) {
-  int low = from;
-  int high = length;
-
+int findLowerBoundIndex(int *arr, int size, int target, int start) {
+  int low = start;
+  int high = size;
   while (low < high) {
     int mid = low + (high - low) / 2;
-    if (data[mid] < value) {
+    if (arr[mid] < target) {
       low = mid + 1;
     } else {
       high = mid;
     }
   }
-
-  return (low < length && data[low] == value) ? low : -1;
+  return (low < size && arr[low] == target) ? low : -1;
 }
 
-int getUpperIndex(int *data, int length, int value, int from) {
-  int low = from;
-  int high = length;
-
+int findUpperBoundIndex(int *arr, int size, int target, int start) {
+  int low = start;
+  int high = size;
   while (low < high) {
     int mid = low + (high - low) / 2;
-    if (data[mid] <= value) {
+    if (arr[mid] <= target) {
       low = mid + 1;
     } else {
       high = mid;
     }
   }
-
   return low;
 }
 
-int frequencyBasedPairCount(int *data, int length, int targetSum) {
-  int total = 0;
-  int idx = 0;
+int countPairs3(int *arr, int size, int sum) {
+  int count = 0;
 
-  while (idx < length) {
-    int val = data[idx];
-    int freq = 0;
-
-    while (idx < length && data[idx] == val) {
-      ++freq;
-      ++idx;
+  for (int i = 0; i < size;) {
+    int currentVal = arr[i];
+    int currentCount = 0;
+    while (i < size && arr[i] == currentVal) {
+      ++currentCount;
+      ++i;
     }
 
-    int counterpart = targetSum - val;
-    if (val > counterpart) break;
+    int complement = sum - currentVal;
 
-    if (val == counterpart) {
-      total += freq * (freq - 1) / 2;
+    if (currentVal > complement) break;
+    if (currentVal == complement) {
+      count += currentCount * (currentCount - 1) / 2;
     } else {
-      int lower = getLowerIndex(data, length, counterpart, idx);
-      if (lower == -1) continue;
+      int lowerIndex = findLowerBoundIndex(arr, size, complement, i);
+      if (lowerIndex == -1) continue;
 
-      int upper = getUpperIndex(data, length, counterpart, idx);
-      int count = upper - lower;
+      int upperIndex = findUpperBoundIndex(arr, size, complement, i);
+      int complementCount = upperIndex - lowerIndex;
 
-      total += freq * count;
+      count += currentCount * complementCount;
     }
   }
 
-  return total;
+  return count;
 }
