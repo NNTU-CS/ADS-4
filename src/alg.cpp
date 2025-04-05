@@ -29,6 +29,9 @@ int binarySearch_index(int *arr, int len, int value) {
   while (rbound > lbound) {
     int middle = (lbound + rbound) / 2;
     if (arr[middle] == value) {
+      while (arr[middle - 1] == arr[middle]) {
+        middle--;
+      }
       return middle;
     }
     if (arr[middle] < value) {
@@ -42,24 +45,13 @@ int binarySearch_index(int *arr, int len, int value) {
 
 int binarySearch_count(int *arr, int len, int index ) { 
   int count = 1;
+  int temp = index;
   if (index == -1) {
     return 0;
   }
-  bool flag = 1;
-  int left = index-1;
-  int right = index + 1;
-  while (flag) {
-    if (arr[left] == arr[index] && left != -1) {
-      count++;
-      left--;
-    }
-    if (arr[right] == arr[index] && right != len) {
-      count++;
-      right++;
-    }
-    if (arr[left] != arr[index] && arr[right] != arr[index]) {
-      flag = 0;
-    }
+  while (arr[temp] == arr[temp + 1]) {
+    count++;
+    temp++;
   }
   return count;
   }
