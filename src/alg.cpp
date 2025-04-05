@@ -49,7 +49,7 @@ int countPairs2(int* arr, int len, int value) {
   return count;
 }
 
-static int binarySearchFirst(const int* arr, int high, int low, int target) {
+int binarySearchFirst(const int* arr, int high, int low, int target) {
   int result = -1;
   while (low <= high) {
     const int mid = low + (high - low) / 2;
@@ -65,7 +65,7 @@ static int binarySearchFirst(const int* arr, int high, int low, int target) {
   return result;
 }
 
-static int binarySearchLast(const int* arr, int high, int low, int target) {
+int binarySearchLast(const int* arr, int high, int low, int target) {
   int result = -1;
   while (low <= high) {
     const int mid = low + (high - low) / 2;
