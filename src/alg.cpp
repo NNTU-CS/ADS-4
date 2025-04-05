@@ -58,7 +58,7 @@ int binarySearch_count(int *arr, int len, int index ) {
       right++;
     }
     if (arr[left] != arr[index] && arr[right] != arr[index]) {
-      break;
+      flag = 0;
     }
   }
   return count;
