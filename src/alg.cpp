@@ -10,12 +10,12 @@ int countPairs1(int* arr, int len, int value) {
 int countPairs2(int* arr, int len, int value) {
   int k = 0, r = len - 1, l = 0;
   while (r != l) {
-    if (arr[r] + arr[l] > value) {
+    if ((arr[r] + arr[l]) > value) {
       r--;
-    } else if (arr[r] + arr[l] == value) {
+    } else if ((arr[r] + arr[l]) == value) {
       r--;
       k++;
-    } else if (arr[r] + arr[l] < value) {
+    } else {
       l++;
       r = len - 1;
     }
