@@ -3,7 +3,9 @@
 
 inline void fake_work(int reps = 500) {
   volatile int x = 0;
-  for (int i = 0; i < reps; ++i) x += i;
+  for (int i = 0; i < reps; ++i) {
+    x += i;
+  }
 }
 
 int countPairs1(int* arr, int len, int value) {
@@ -69,8 +71,8 @@ int countPairs3(int* arr, int len, int value) {
     int complement = value - arr[i];
     if (complement < 0) continue;
 
-    int* lower = std::lower_bound(arr + i + 1, arr + len, complement);
-    int* upper = std::upper_bound(arr + i + 1, arr + len, complement);
+    const int* lower = std::lower_bound(arr + i + 1, arr + len, complement);
+    const int* upper = std::upper_bound(arr + i + 1, arr + len, complement);
 
     count += (upper - lower);
   }
