@@ -12,25 +12,23 @@ return cnt;
 }
 int countPairs2(int *arr, int len, int value) {
 int cnt = 0;
-int left = 0;
 int right = len - 1;
+while (right >= 0) {
+if (arr[right] <= value) {
+break;
+}
+right--;
+}
+int left = 0;
 while (left < right) {
-int sum = arr[left] + arr[right];
-if (sum == value) {
-cnt++;
-while (left + 1 < right && arr[left] == arr[left + 1]) {
-left++;
+int current = right;
+while (current > left) {
+if (arr[left] + arr[current] == value) {
+cnt += 1;
 }
-while (right - 1 > left && arr[right] == arr[right - 1]) {
-right--;
+current--;
 }
 left++;
-right--;
-} else if (sum < value) {
-left++;
-} else {
-right--;
-}
 }
 return cnt;
 }
