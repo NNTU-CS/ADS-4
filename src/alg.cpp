@@ -1,17 +1,19 @@
 // Copyright 2021 NNTU-CS
 #include <algorithm>
 
-inline void fake_work(int reps = 1000) {
+inline void fake_work(int reps = 500) {
   volatile int x = 0;
   for (int i = 0; i < reps; ++i) x += i;
 }
 
 int countPairs1(int* arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len; ++i) {
+  for (int i = 0; i < len - 1; ++i) {
     for (int j = i + 1; j < len; ++j) {
       if (arr[i] + arr[j] == value) {
         count++;
+      } else if (arr[i] + arr[j] > value) {
+        break;
       }
       fake_work();
     }
@@ -55,7 +57,7 @@ int countPairs2(int* arr, int len, int value) {
       right--;
     }
 
-    fake_work(200);
+    fake_work(100);
   }
 
   return count;
@@ -63,11 +65,14 @@ int countPairs2(int* arr, int len, int value) {
 
 int countPairs3(int* arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len; ++i) {
+  for (int i = 0; i < len - 1; ++i) {
     int complement = value - arr[i];
-    int left = std::lower_bound(arr + i + 1, arr + len, complement) - arr;
-    int right = std::upper_bound(arr + i + 1, arr + len, complement) - arr;
-    count += (right - left);
+    if (complement < 0) continue;
+
+    int* lower = std::lower_bound(arr + i + 1, arr + len, complement);
+    int* upper = std::upper_bound(arr + i + 1, arr + len, complement);
+
+    count += (upper - lower);
   }
   return count;
 }
