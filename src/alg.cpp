@@ -1,4 +1,3 @@
-// Copyright 2021 NNTU-CS
 void sort(int* array, int left, int right) {
     if (left < right) {
         int pivot = array[left + (right - left) / 2];
@@ -18,30 +17,38 @@ void sort(int* array, int left, int right) {
         sort(array, l, right);
     }
 }
-int countPairs1(int* array, int size, int targetSum) {
-    sort(array, 0, size - 1);
+
+int countPairs1(int *array, int len, int value) {
+    sort(array, 0, len - 1);
     int count = 0;
-    for (int i = 0; i < size; ++i) {
-        for (int j = i + 1; j < size; ++j) {
-            if (array[i] + array[j] == targetSum) {
+    for (int i = 0; i < len - 1; i++) {
+        if (i > 0 && array[i] == array[i - 1]) continue;
+        for (int j = i + 1; j < len; j++) {
+            if (j > i + 1 && array[j] == array[j - 1]) continue;
+            if (array[i] + array[j] == value) {
                 count++;
+                break;
+            } else if (array[i] + array[j] > value) {
+                break;
             }
         }
     }
     return count;
 }
-int countPairs2(int* array, int size, int targetSum) {
-    sort(array, 0, size - 1);
+
+int countPairs2(int *array, int len, int value) {
+    sort(array, 0, len - 1);
     int count = 0;
-    int left = 0;
-    int right = size - 1;
+    int left = 0, right = len - 1;
     while (left < right) {
-        int currentSum = array[left] + array[right];
-        if (currentSum == targetSum) {
+        int sum = array[left] + array[right];
+        if (sum == value) {
             count++;
-            left++;
-            right--;
-        } else if (currentSum < targetSum) {
+            int l = array[left];
+            int r = array[right];
+            while (left < right && array[left] == l) left++;
+            while (left < right && array[right] == r) right--;
+        } else if (sum < value) {
             left++;
         } else {
             right--;
@@ -49,28 +56,24 @@ int countPairs2(int* array, int size, int targetSum) {
     }
     return count;
 }
-int bin(int* array, int size, int target, int startIndex) {
-    int left = startIndex + 1;
-    int right = size - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (array[mid] == target) {
-            return mid; 
-        } else if (array[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    return -1; 
-}
-int countPairs3(int* array, int size, int targetSum) {
-    sort(array, 0, size - 1);
+
+int countPairs3(int *array, int len, int value) {
+    sort(array, 0, len - 1);
     int count = 0;
-    for (int i = 0; i < size - 1; ++i) {
-        int complement = targetSum - array[i];
-        if (bin(array, size, complement, i) != -1) {
+    int l = 0, r = len - 1;
+
+    while (l < r) {
+        int sum = array[l] + array[r];
+        if (sum == value) {
             count++;
+            l++;
+            r--;
+            while (l < r && array[l] == array[l - 1]) l++;
+            while (l < r && array[r] == array[r + 1]) r--;
+        } else if (sum < value) {
+            l++;
+        } else {
+            r--;
         }
     }
     return count;
