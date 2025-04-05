@@ -43,11 +43,9 @@ int countPairs3(int *arr, int len, int value) {
             if (arr[mid] == complement) {
                 first = mid;
                 right = mid - 1;
-            }
-            else if (arr[mid] < complement) {
+            } else if (arr[mid] < complement) {
                 left = mid + 1;
-            }
-            else {
+            } else {
                 right = mid - 1;
             }
         }
@@ -57,14 +55,12 @@ int countPairs3(int *arr, int len, int value) {
         int last = first;
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            if(arr[mid] == complement) {
+            if (arr[mid] == complement) {
                 last = mid;
                 left = mid + 1;
-            }
-            else if (arr[mid] < complement) {
+            } else if (arr[mid] < complement) {
                 left = mid + 1;
-            }
-            else {
+            } else {
                 right = mid - 1;
             }
         }
