@@ -15,7 +15,7 @@ int current = index;
 while (current >= 0 && current < len && arr[current] == arr[index]) {
 current += direction;
 }
-return current - 1;
+return current;
 }
 int countPairs2(int *arr, int len, int value) {
 int cnt = 0;
@@ -43,23 +43,28 @@ int left = i + 1;
 int right = len - 1;
 while (left <= right) {
 int mid = left + (right - left) / 2;
-if (arr[mid] == target) {
-cnt++;
-while (mid + 1 < len && arr[mid] == arr[mid + 1]) {
-mid++;
+if (arr[mid] >= target) {
+right = mid - 1;
 }
-break; 
-} else if (arr[mid] < target) {
+else {
 left = mid + 1;
-} else {
+}
+}
+int first = left;
+left = i + 1;
+right = len - 1;
+while (left <= right) {
+int mid = left + (right - left) / 2;
+if (arr[mid] <= target) {
+left = mid + 1;
+}
+else {
 right = mid - 1;
 }
 }
-int next_i = skipDuplicates(arr, len, i, 1);
-if( next_i < len) {
-i = next_i - 1;
-} else {
-break;
+int last = right;
+if (first <= last) {
+cnt += last - first + 1;
 }
 }
 return cnt;
