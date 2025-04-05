@@ -1,12 +1,11 @@
 // Copyright 2021 NNTU-CS
 #include <iostream>
-#include <unordered_set>
-#include <vector>
+#include <algorithm>
 int countPairs1(int *arr, int len, int value) {
-  int count = 0;
-    for (int i = 0; i < len; i++) {
-        for (int j = i + 1; j < len; j++) {
-            if (arr[i] + arr[j] == value) {
+    int count = 0;
+    for(int i = 0; i < len-1; ++i) {
+        for(int j = i+1; j < len; ++j) {
+            if(arr[i] + arr[j] == value) {
                 count++;
             }
         }
@@ -14,59 +13,85 @@ int countPairs1(int *arr, int len, int value) {
     return count;
 }
 int countPairs2(int *arr, int len, int value) {
-  int count = 0;
+    int count = 0;
     int left = 0;
     int right = len - 1;
-    std::unordered_set<int> seen;
-    while (left < right) {
-        int sum = arr[left] + arr[right];
-        if (sum == value) {
-            if (seen.find(arr[left]) == seen.end() && seen.find(arr[right]) == seen.end()) {
-                count++;
-                seen.insert(arr[left]);
-                seen.insert(arr[right]);
+    
+    while(left < right) {
+        int current_sum = arr[left] + arr[right];
+        if(current_sum == value) {
+            if(arr[left] == arr[right]) {
+                int n = right - left + 1;
+                count += (n * (n - 1)) / 2;
+                break;
+            } else {
+                int count_left = 1;
+                while(left + 1 < right && arr[left] == arr[left + 1]) {
+                    count_left++;
+                    left++;
+                }
+                int count_right = 1;
+                while(right - 1 > left && arr[right] == arr[right - 1]) {
+                    count_right++;
+                    right--;
+                }
+                count += count_left * count_right;
             }
+        }
+        if(current_sum < value) {
             left++;
+        }
+        else if(current_sum > value) {
             right--;
-        } else if (sum < value) {
+        }
+        else {
             left++;
-        } else {
             right--;
         }
     }
     return count;
 }
-int binarySearch(int *arr, int len, int target, int startIndex) {
-    int left = startIndex + 1;
-    int right = len - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) {
-            return mid;
-        } else if (arr[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    return -1;
-}
 int countPairs3(int *arr, int len, int value) {
-  int count = 0;
-    std::unordered_set<std::string> seen;
-
-    for (int i = 0; i < len; i++) {
+    int count = 0;
+    for(int i = 0; i < len; ++i) {
         int complement = value - arr[i];
-        if (complement >= 0) {
-            int index = binarySearch(arr, len, complement, i);
-            if (index != -1 && index != i) {
-                std::string pair = std::to_string(arr[i]) + '-' + std::to_string(arr[index]);
-                if (seen.find(pair) == seen.end()) {
-                    seen.insert(pair);
-                    count++;
-                }
+        if(complement < arr[i]) {
+            break;
+        }
+        int left = i + 1;
+        int right = len - 1;
+        int first = -1;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if(arr[mid] == complement) {
+                first = mid;
+                right = mid - 1;
+            }
+            else if(arr[mid] < complement) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
             }
         }
+        if(first == -1) continue;
+        left = first;
+        right = len - 1;
+        int last = first;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if(arr[mid] == complement) {
+                last = mid;
+                left = mid + 1;
+            }
+            else if(arr[mid] < complement) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+        count += (last - first + 1);
     }
     return count;
 }
